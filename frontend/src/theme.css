@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+
+:root {
+  --color-bg: #f8f9fb; /*f7f9fe f8f9fb*/
+  --color-surface: #ffffff;
+  --color-on-dark: #ffffff;
+  --color-header: rgba(255, 255, 255, 0.9);
+  --color-sidebar: #1b1b1b;
+  --color-accent: #86c232;
+  --color-accent-dark: #61892f;
+  --color-text: #181c20;
+  --color-muted: #747969;
+  --color-muted-2: #6b6e70;
+  --color-backfon: #eff1f3; /*eff1f3 E5E8ED */
+  --color-border: rgba(71, 75, 79, 0.1);
+  --color-border-light: rgba(71, 75, 79, 0.05); /*rgba(71, 75, 79, 0.05)*/
+  --color-input: #f1f4f9;
+  --color-input-border: rgba(224, 227, 231, 0.3);
+  --color-card-bg: #f8fafc;
+  --color-sidebar-hover: rgba(255, 255, 255, 0.06);
+  --color-album-bg: #f1f5f9;
+  --color-tile-bg: #e2e8f0;
+  --color-tile-text: #43493b;
+  --color-badge-bg: #b3f35e;
+  --color-badge-text: #456e00;
+  --color-avatar-bg: #e0e3e7;
+  --color-avatar-icon: #6b6e70;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-green: 0 10px 15px -3px rgba(97, 137, 47, 0.2),
+    0 4px 6px -4px rgba(97, 137, 47, 0.2);
+  --shadow-sidebar: inset -10px 0 20px -10px rgba(0, 0, 0, 0.5);
+  --shadow-image: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  --speed-hover: ease-in-out 0.35s;
+
+  --font-body: 'Nimbus Sans', 'Manrope', 'Segoe UI', 'Helvetica', 'Arial',
+    sans-serif;
+  --font-heading: 'Manrope', 'Segoe UI', 'Helvetica', 'Arial', sans-serif;
+}
