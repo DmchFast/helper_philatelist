@@ -1,7 +1,15 @@
 import { NavLink } from 'react-router-dom'
+import { useAuth } from '../auth/AuthContext'
 import './Sidebar.css'
 
 function Sidebar({ items }) {
+  const { user } = useAuth()
+
+  // Филтрация пуктов меню, администрирование только для admin
+  const visibleItems = items.filter(
+    (item) => item.id !== 'admin' || user?.role === 'admin'
+)
+
   const getPath = (id) => {
     switch (id) {
       case 'catalog': return '/catalog'
@@ -20,7 +28,7 @@ function Sidebar({ items }) {
         <div className="sidebar__brand-text">СПРАВОЧНИК <text>ФИЛАТЕЛИСТА</text></div>
       </div>
       <nav className="sidebar__nav">
-        {items.map((item) => {
+        {visibleItems.map((item) => {   // ← Было items, стало visibleItems
           const path = getPath(item.id)
           return (
             <NavLink
