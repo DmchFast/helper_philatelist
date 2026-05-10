@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Avatar, Input, Typography, Button } from 'antd'
 import { useAuth } from '../auth/AuthContext'
+import LoginModal from '../auth/LoginModal'
+import RegisterModal from '../auth/RegisterModal'
 import './HeaderBar.css'
 
 const { Text } = Typography
@@ -47,6 +49,9 @@ function HeaderBar({ searchTerm, onSearchChange, placeholder }) {
           </div>
         )}
       </div>
+
+      <LoginModal open={loginOpen} onCancel={() => setLoginOpen(false)} />
+      <RegisterModal open={registerOpen} onCancel={() => setRegisterOpen(false)} />
     </header>
   )
 }
