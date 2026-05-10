@@ -1,0 +1,116 @@
+.album-stamp-card {
+  width: 220px;
+  background: var(--color-surface);
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: var(--speed-hover);
+}
+
+.album-stamp-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card), var(--shadow-green);
+}
+
+.album-stamp-card__image {
+  background: var(--color-input);
+  max-height: 190px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.album-stamp-card__image img {
+  width: 132px;
+  height: 132px;
+  object-fit: cover;
+  box-shadow: var(--shadow-image);
+}
+
+.album-stamp-card__body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  flex: 1;
+}
+
+.album-stamp-card__title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28px;
+  color: var(--color-text);
+  margin-bottom: 4px;
+}
+
+.album-stamp-card__meta {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-muted);
+}
+
+.album-stamp-card__meta-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.album-stamp-card__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.album-stamp-card__view-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border-light);
+  background: var(--color-input);
+  color: var(--color-muted-2);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.album-stamp-card__view-btn:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-on-dark);
+}
+
+.album-stamp-card__badge {
+  background: var(--color-badge-bg);
+  color: var(--color-badge-text);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 16px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+  user-select: none;
+}
+
+
+.album-stamp-card__badge {
+  border: 1px solid var(--color-border-light);
+}
+
+@media (max-width: 900px) {
+  .album-stamp-card {
+    width: 100%;
+  }
+}
