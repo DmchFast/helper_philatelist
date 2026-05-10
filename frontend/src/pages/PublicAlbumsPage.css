@@ -55,6 +55,31 @@
   overflow-x: hidden;
 }
 
+.album-header-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.album-back-btn {
+  padding: 0px;
+  height: 32px;
+  border-color: var(--color-badge-text);
+}
+
+.album-back-btn:hover{
+  background-color: var(--color-accent) !important;
+}
+
+.album-back-icon {
+  font-size: 20px;
+}
+
+.album-header-title .title {
+  margin: 0;
+}
+
 @media (max-width: 1200px) {
   .albums-title {
     flex-direction: column;

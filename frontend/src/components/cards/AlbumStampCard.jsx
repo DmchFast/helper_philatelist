@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Typography } from 'antd'
-import AlbumDetailModal from '../modal/AlbumDetailModal'
+import AlbumDetailModal from '../modal/AlbumDetailModalCard'
 import './AlbumStampCard.css'
 
 const { Text } = Typography
