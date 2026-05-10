@@ -5,3 +5,14 @@ export const navItems = [
   { id: 'users', label: 'Пользователи', icon: 'group' },
   { id: 'admin', label: 'Администрирование', icon: 'admin_panel_settings' },
 ]
+
+export const stamps = []
+
+export const countryOptions = [
+  { value: 'Все страны', label: 'Все страны' },
+  { value: 'СССР', label: 'СССР' },
+]
+
+export const sortOptions = [
+  { value: 'По названию', label: 'По названию' },
+]

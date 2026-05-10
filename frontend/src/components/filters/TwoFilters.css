@@ -1,0 +1,46 @@
+.two-filters {
+  display: flex;
+  gap: 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: 12px;
+  padding: 16px;
+  width: 372px;
+}
+
+.two-filter {
+  min-width: 160px;
+}
+
+.two-filter .ant-select-selector {
+  background: var(--color-input);
+  border: 1px solid var(--color-input-border);
+  height: 38px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+}
+
+.two-filter .ant-select-arrow {
+  width: 24px;
+  height: 15px;
+  color: var(--color-muted);
+}
+
+.two-filter .ant-select-selection-item,
+.two-filter .ant-select-selection-placeholder {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+@media (max-width: 1200px) {
+  .two-filters {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .two-filter {
+    width: 100%;
+  }
+}
