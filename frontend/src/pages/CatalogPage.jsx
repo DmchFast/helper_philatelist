@@ -1,9 +1,11 @@
 import { useState } from 'react'
-import { Typography } from 'antd'
+import { Typography, message } from 'antd'
 import TwoFilters from '../components/filters/TwoFilters'
 import HeaderBar from '../components/bars/HeaderBar'
 import Sidebar from '../components/bars/Sidebar'
+import StampGrid from '../components/grids/StampGrid'
 import { countryOptions, navItems, sortOptions, stamps } from '../data/catalogData'
+import './CatalogPage.css'
 
 const { Title, Text } = Typography
 
@@ -20,23 +22,37 @@ function CatalogPage() {
       return matchesCountry && matchesSearch
     })
     .sort((a, b) => {
-      if (sortMode === 'По названию') return a.title.localeCompare(b.title)
+      if (sortMode === 'По названию') {
+        return a.title.localeCompare(b.title)
+      }
       return 0
     })
+
+  const handleAddStamp = () => {
+    message.success('Открыть форму добавления марки')
+  }
+
+  const handleAddToCollection = (title) => {
+    message.success(`Добавлено в коллекцию: ${title}`)
+  }
 
   return (
     <div className="catalog-page">
       <Sidebar items={navItems} />
+
       <div className="catalog-content">
         <HeaderBar
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
           placeholder="Поиск по маркам"
         />
+
         <main className="catalog-main">
           <div className="catalog-title">
             <div>
-              <Title level={2} className="title">Каталог марок</Title>
+              <Title level={2} className="title">
+                Каталог марок
+              </Title>
               <Text className="subtitle">Всего: {filteredStamps.length} марок</Text>
             </div>
             <TwoFilters
@@ -48,6 +64,11 @@ function CatalogPage() {
               onSecondChange={setSortMode}
             />
           </div>
+
+          <StampGrid
+            stamps={filteredStamps}
+            onAdd={(stamp) => handleAddToCollection(stamp.title)}
+          />
         </main>
       </div>
     </div>
