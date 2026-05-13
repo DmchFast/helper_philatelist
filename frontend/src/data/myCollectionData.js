@@ -26,6 +26,20 @@ export const albums = [
     extraCount: '+5',
     tiles: [stamp, stamp, stamp],
     isPublic: true,
+    stamps: [
+      createStamp('my-space-1', 'Гагарин', 'Первый полёт', '1961', 4800, {
+        rarity: 'Уникальная',
+        description: 'Марка с портретом Юрия Гагарина.',
+      }),
+      createStamp('my-space-2', 'Спутник', 'Космическая гонка', '1957', 2300, {
+        rarity: 'Редкая',
+        description: 'Первый искусственный спутник Земли.',
+      }),
+      createStamp('my-space-3', 'Луноход', 'Лунная программа', '1970', 1600, {
+        rarity: 'Коллекционная',
+        description: 'Советский луноход на поверхности Луны.',
+      }),
+    ],
   },
   {
     id: 'my-nature',
@@ -36,6 +50,20 @@ export const albums = [
     extraCount: '+2',
     tiles: [stamp, stamp, stamp],
     isPublic: false,
+    stamps: [
+      createStamp('my-nature-1', 'Байкал', 'Озёра СССР', '1978', 950, {
+        rarity: 'Коллекционная',
+        description: 'Живописный вид озера Байкал.',
+      }),
+      createStamp('my-nature-2', 'Кедр', 'Деревья', '1982', 720, {
+        rarity: 'Обычная',
+        description: 'Сибирский кедр на фоне гор.',
+      }),
+      createStamp('my-nature-3', 'Амурский тигр', 'Фауна', '1985', 1100, {
+        rarity: 'Редкая',
+        description: 'Редкий хищник дальневосточной тайги.',
+      }),
+    ],
   },
   {
     id: 'my-sport',
@@ -46,5 +74,19 @@ export const albums = [
     extraCount: '+0',
     tiles: [stamp, stamp, stamp],
     isPublic: true,
+    stamps: [
+      createStamp('my-sport-1', 'Олимпиада-80', 'Московская олимпиада', '1980', 1400, {
+        rarity: 'Коллекционная',
+        description: 'Символика летних Олимпийских игр 1980 года.',
+      }),
+      createStamp('my-sport-2', 'Хоккей', 'Зимние виды', '1975', 890, {
+        rarity: 'Обычная',
+        description: 'Советские хоккеисты на льду.',
+      }),
+      createStamp('my-sport-3', 'Футбол', 'Чемпионат мира', '1966', 1250, {
+        rarity: 'Редкая',
+        description: 'Марка, посвящённая чемпионату мира по футболу.',
+      }),
+    ],
   },
 ]

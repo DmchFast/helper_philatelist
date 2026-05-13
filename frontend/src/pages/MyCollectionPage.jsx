@@ -1,25 +1,43 @@
-import { useState, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Button, Typography } from 'antd'
 import Sidebar from '../components/bars/Sidebar'
 import HeaderBar from '../components/bars/HeaderBar'
 import AlbumGrid from '../components/grids/AlbumGrid'
 import MyAlbumCard from '../components/cards/MyAlbumCard'
+import AlbumStampsTable from '../components/tables/AlbumStampsTable'
+import StampsFilters from '../components/filters/StampsFilters'
 import { navItems } from '../data/catalogData'
 import { albums as initialAlbums } from '../data/myCollectionData'
 import './CatalogPage.css'
 import './MyCollectionPage.css'
 
-const { Title, Text } = Typography
+const { Title } = Typography
 
 function MyCollectionPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedAlbum, setSelectedAlbum] = useState(null)
+  const [countryValue, setCountryValue] = useState('Все страны')
+  const [yearValue, setYearValue] = useState('Все года')
+  const [sortValue, setSortValue] = useState('По названию')
+  const [priceLimit, setPriceLimit] = useState(0)
+  const [rareOnly, setRareOnly] = useState(false)
   const [albums, setAlbums] = useState(initialAlbums)
 
   const normalizedSearch = searchTerm.trim().toLowerCase()
+
   const filteredAlbums = albums.filter((album) =>
     album.title.join(' ').toLowerCase().includes(normalizedSearch)
   )
+
+  useEffect(() => {
+    if (selectedAlbum) {
+      const prices = selectedAlbum.stamps?.map((s) => s.price || 0) || [0]
+      const max = Math.max(...prices)
+      setPriceLimit(max)
+    } else {
+      setPriceLimit(0)
+    }
+  }, [selectedAlbum])
 
   const handleToggleVisibility = useCallback((albumId) => {
     setAlbums(prev =>
@@ -45,6 +63,42 @@ function MyCollectionPage() {
   const stampLabel = getPluralLabel(stampCount, 'марка', 'марки', 'марок')
 
   if (selectedAlbum) {
+    const albumStamps = selectedAlbum.stamps || []
+    const maxPrice = Math.max(
+      ...albumStamps.map((stamp) => (typeof stamp.price === 'number' ? stamp.price : 0)),
+      0
+    )
+    const uniqueCountries = Array.from(new Set(albumStamps.map((stamp) => stamp.country)))
+    const uniqueYears = Array.from(new Set(albumStamps.map((stamp) => stamp.year)))
+
+    const countryOptions = [
+      { value: 'Все страны', label: 'Все страны' },
+      ...uniqueCountries.map((country) => ({ value: country, label: country })),
+    ]
+    const yearOptions = [
+      { value: 'Все года', label: 'Все года' },
+      ...uniqueYears.map((year) => ({ value: year, label: year })),
+    ]
+    const sortOptions = [
+      { value: 'По названию', label: 'По названию' },
+      { value: 'По цене', label: 'По цене' },
+      { value: 'По году', label: 'По году' },
+    ]
+
+    const filteredStamps = albumStamps
+      .filter((stamp) => stamp.title.toLowerCase().includes(normalizedSearch))
+      .filter((stamp) =>
+        countryValue === 'Все страны' ? true : stamp.country === countryValue
+      )
+      .filter((stamp) => (yearValue === 'Все года' ? true : stamp.year === yearValue))
+      .filter((stamp) => (stamp.price ? stamp.price <= priceLimit : true))
+      .filter((stamp) => (rareOnly ? stamp.rarity !== 'Обычная' : true))
+      .sort((a, b) => {
+        if (sortValue === 'По цене') return (a.price || 0) - (b.price || 0)
+        if (sortValue === 'По году') return Number(a.year) - Number(b.year)
+        return a.title.localeCompare(b.title)
+      })
+
     return (
       <div className="catalog-page">
         <Sidebar items={navItems} />
@@ -63,6 +117,10 @@ function MyCollectionPage() {
                   onClick={() => {
                     setSelectedAlbum(null)
                     setSearchTerm('')
+                    setCountryValue('Все страны')
+                    setYearValue('Все года')
+                    setSortValue('По названию')
+                    setRareOnly(false)
                   }}
                   icon={
                     <span className="material-symbols-outlined my-collection-back-icon">
@@ -84,10 +142,25 @@ function MyCollectionPage() {
               </Button>
             </div>
 
-            <div className="my-collection-placeholder">
-              <Text className="my-collection-placeholder-text">
-                Таблица
-              </Text>
+            <StampsFilters
+              countryValue={countryValue}
+              yearValue={yearValue}
+              sortValue={sortValue}
+              priceLimit={priceLimit}
+              rareOnly={rareOnly}
+              onCountryChange={setCountryValue}
+              onYearChange={setYearValue}
+              onSortChange={setSortValue}
+              onPriceChange={setPriceLimit}
+              onRareToggle={() => setRareOnly((prev) => !prev)}
+              maxPrice={maxPrice}
+              countryOptions={countryOptions}
+              yearOptions={yearOptions}
+              sortOptions={sortOptions}
+            />
+
+            <div className="my-collection-table-wrapper">
+              <AlbumStampsTable stamps={filteredStamps} />
             </div>
           </main>
         </div>
