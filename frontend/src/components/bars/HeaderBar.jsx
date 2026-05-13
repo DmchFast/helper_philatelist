@@ -43,7 +43,7 @@ function HeaderBar({ searchTerm, onSearchChange, placeholder }) {
             <Button className="header-login-btn" onClick={() => setLoginOpen(true)}>
               Войти
             </Button>
-            <Button className="header-register-btn" onClick={() => setRegisterOpen(true)}>
+            <Button type='primary' className="header-register-btn" onClick={() => setRegisterOpen(true)}>
               Регистрация
             </Button>
           </div>
