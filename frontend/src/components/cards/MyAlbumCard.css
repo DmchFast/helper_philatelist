@@ -1,0 +1,153 @@
+.my-album-card {
+  background: var(--color-surface);
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 362px;
+  transition: var(--speed-hover);
+}
+
+.my-album-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card), var(--shadow-green);
+}
+
+.my-album-card__media {
+  background: var(--color-album-bg);
+  height: 224px;
+}
+
+.my-album-card__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  padding: 12px;
+  height: 100%;
+}
+
+.my-album-card__tile {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow-image);
+  position: relative;
+}
+
+.my-album-card__tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.my-album-card__tile--count {
+  background: var(--color-tile-bg);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-tile-text);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.my-album-card__body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.my-album-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.my-album-card__title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28px;
+  color: var(--color-text);
+}
+
+.my-album-card__badge {
+  background: var(--color-badge-bg);
+  color: var(--color-badge-text);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 16px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.my-album-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.my-album-card__visibility-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  transition: opacity 0.2s;
+}
+
+.my-album-card__visibility-btn:hover {
+  opacity: 0.5;
+}
+
+.my-album-card__visibility-btn .material-symbols-outlined {
+  font-size: 16px;
+  color: var(--color-muted-2);
+}
+
+.my-album-card__visibility-text {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-muted-2);
+}
+
+.my-album-card__trash {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border-light);
+  background: var(--color-input);
+  color: var(--color-muted-2);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.my-album-card__trash:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-on-dark);
+}
+
+@media (max-width: 900px) {
+  .my-album-card {
+    height: auto;
+  }
+}
