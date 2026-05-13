@@ -1,8 +1,45 @@
+.my-collection-back-btn {
+  padding: 0px;
+  height: 32px;
+  border-color: var(--color-badge-text);
+}
+
+.my-collection-back-btn:hover{
+  background-color: var(--color-accent) !important;
+}
+
+.my-collection-back-icon {
+  font-size: 20px;
+}
+
+.my-collection-album-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.my-collection-album-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.my-collection-album-title .title {
+  margin: 0;
+}
+
 .my-collection-grid-wrapper {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+.my-collection-table-wrapper {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .my-collection-title {
@@ -21,13 +58,57 @@
   box-shadow: var(--shadow-green);
 }
 
-.add-album-btn:hover {
+.add-stamp-btn {
+  background-color: var(--color-accent-dark);
+  border-radius: 12px !important;
+  height: 40px;
+  padding: 0 18px;
+  font-weight: 600;
+  box-shadow: var(--shadow-green);
+}
+
+.add-album-btn:hover{
   background-color: var(--color-accent) !important;
+}
+
+.add-stamp-btn:hover{
+  background-color: var(--color-accent) !important;
+}
+
+.my-collection-placeholder {
+  padding: 48px 24px;
+  text-align: center;
+  background: var(--color-surface);
+  border-radius: 16px;
+  border: 1px solid var(--color-border-light);
+}
+
+.my-collection-placeholder-text {
+  font-size: 18px;
+  color: var(--color-muted);
 }
 
 @media (max-width: 1200px) {
   .my-collection-title {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+@media (max-width: 900px) {
+  .my-collection-album-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .my-collection-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .my-collection-filter,
+  .my-collection-price-control,
+  .my-collection-rare-btn {
+    width: 100%;
   }
 }
