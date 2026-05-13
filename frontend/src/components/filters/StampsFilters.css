@@ -1,0 +1,113 @@
+.stamps-filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: 14px;
+  padding: 12px 16px;
+  gap: 12px;
+}
+
+.stamps-filters__select {
+  min-width: 180px;
+}
+
+.stamps-filters__select .ant-select-selector {
+  background: var(--color-input);
+  border: 1px solid var(--color-input-border);
+  height: 38px;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.stamps-filters__select .ant-select-selection-item,
+.stamps-filters__select .ant-select-selection-placeholder {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.stamps-filters__select .ant-select-arrow {
+  width: 24px;
+  height: 15px;
+  color: var(--color-muted);
+}
+
+.stamps-filters__price-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-input);
+  border: 1px solid var(--color-input-border);
+  border-radius: 10px;
+  height: 38px;
+  padding: 0 12px;
+  min-width: 240px;
+}
+
+.stamps-filters__price-label {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.stamps-filters__price-slider {
+  flex: 1;
+  margin: 0;
+}
+
+.stamps-filters__price-slider .ant-slider-rail {
+  background: var(--color-border-light);
+}
+
+.stamps-filters__price-slider .ant-slider-track {
+  background: var(--color-accent);
+}
+
+.stamps-filters__price-slider .ant-slider-handle::after {
+  box-shadow: 0 0 0 2px var(--color-accent);
+}
+
+.stamps-filters__price-value {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--color-muted-2);
+  white-space: nowrap;
+}
+
+.stamps-filters__rare-btn {
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid var(--color-input-border);
+  background: var(--color-input);
+  color: var(--color-muted-2);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.stamps-filters__rare-btn.is-active,
+.stamps-filters__rare-btn:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-on-dark);
+}
+
+@media (max-width: 900px) {
+  .stamps-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .stamps-filters__select,
+  .stamps-filters__price-control,
+  .stamps-filters__rare-btn {
+    width: 100%;
+  }
+}
