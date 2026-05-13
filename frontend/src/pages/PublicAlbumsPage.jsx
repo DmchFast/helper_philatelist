@@ -122,7 +122,11 @@ function PublicAlbumsPage() {
           </div>
 
           <div className="album-grid-wrapper">
-            <AlbumGrid albums={filteredAlbums} onAlbumClick={setSelectedAlbum} />
+            <AlbumGrid
+              albums={filteredAlbums}
+              onAlbumClick={setSelectedAlbum}
+              gridVariant="collection"
+            />
           </div>
         </main>
       </div>
