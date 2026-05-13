@@ -1,9 +1,17 @@
 import AlbumCard from '../cards/AlbumCard'
 import './AlbumGrid.css'
 
-function AlbumGrid({ albums, onAlbumClick }) {
+function AlbumGrid({
+  albums,
+  onAlbumClick,
+  gridVariant = 'default',
+  cardComponent: CardComponent = AlbumCard,
+  cardProps = {},
+}) {
+  const gridClass = `album-grid${gridVariant === 'collection' ? ' album-grid--collection' : ''}`
+
   return (
-    <div className="album-grid">
+    <div className={gridClass}>
       {albums.map((album) => (
         <div key={album.id}>
           {onAlbumClick ? (
@@ -12,10 +20,10 @@ function AlbumGrid({ albums, onAlbumClick }) {
               className="album-grid__item"
               onClick={() => onAlbumClick(album)}
             >
-              <AlbumCard album={album} />
+              <CardComponent album={album} {...cardProps} />
             </button>
           ) : (
-            <AlbumCard album={album} />
+            <CardComponent album={album} {...cardProps} />
           )}
         </div>
       ))}

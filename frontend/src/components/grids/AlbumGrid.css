@@ -6,6 +6,11 @@
   box-sizing: border-box;
 }
 
+.album-grid--collection {
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+}
+
 .album-grid__item {
   display: block;
   width: 100%;
@@ -24,6 +29,10 @@
 
 @media (max-width: 1200px) {
   .album-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .album-grid--collection {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
