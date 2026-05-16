@@ -1,14 +1,10 @@
-.album-grid {
+.album-grid,
+.album-grid--collection {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 360px);
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 24px;
   width: 100%;
   box-sizing: border-box;
-}
-
-.album-grid--collection {
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 20px;
 }
 
 .album-grid__item {
@@ -28,17 +24,15 @@
 }
 
 @media (max-width: 1200px) {
-  .album-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
+  .album-grid,
   .album-grid--collection {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 700px) {
-  .album-grid {
+  .album-grid,
+  .album-grid--collection {
     grid-template-columns: 1fr;
   }
 }
