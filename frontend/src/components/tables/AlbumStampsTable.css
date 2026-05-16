@@ -38,6 +38,17 @@
   border-bottom: none;
 }
 
+.album-stamps__row--empty {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  color: var(--color-muted-2);
+  font-family: var(--font-body);
+}
+
+.album-stamps__empty {
+  padding: 12px 0;
+}
+
 .album-stamps__cell {
   display: flex;
   align-items: center;

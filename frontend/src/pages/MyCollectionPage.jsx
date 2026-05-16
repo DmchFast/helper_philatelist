@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { Button, Typography } from 'antd'
 import Sidebar from '../components/bars/Sidebar'
 import HeaderBar from '../components/bars/HeaderBar'
@@ -9,27 +9,39 @@ import StampsFilters from '../components/filters/StampsFilters'
 import { navItems } from '../data/catalogData'
 import { useCollection } from '../context/CollectionContext'
 import CreateAlbumModal from '../components/modal/CreateAlbumModal'
+import CreateStampModal from '../components/modal/CreateStampModal'
 import './CatalogPage.css'
 import './MyCollectionPage.css'
 
 const { Title } = Typography
 
 function MyCollectionPage() {
-  const { albums, addAlbum, toggleAlbumVisibility } = useCollection()
+  const {
+    albums,
+    addAlbum,
+    deleteAlbum,
+    toggleAlbumVisibility,
+    addStampToAlbum,
+    updateStampInAlbum,
+    deleteStampFromAlbum,
+  } = useCollection()
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedAlbum, setSelectedAlbum] = useState(null)
+  const [selectedAlbumId, setSelectedAlbumId] = useState(null)
   const [countryValue, setCountryValue] = useState('Все страны')
   const [yearValue, setYearValue] = useState('Все года')
   const [sortValue, setSortValue] = useState('По названию')
   const [priceLimit, setPriceLimit] = useState(0)
   const [rareOnly, setRareOnly] = useState(false)
   const [createModalOpen, setCreateModalOpen] = useState(false)
+  const [createStampModalOpen, setCreateStampModalOpen] = useState(false)
 
   const normalizedSearch = searchTerm.trim().toLowerCase()
 
   const filteredAlbums = albums.filter((album) =>
     album.title.join(' ').toLowerCase().includes(normalizedSearch)
   )
+
+  const selectedAlbum = albums.find((album) => album.id === selectedAlbumId) || null
 
   useEffect(() => {
     if (selectedAlbum) {
@@ -43,6 +55,32 @@ function MyCollectionPage() {
 
   const handleCreateAlbum = (title) => {
     addAlbum(title)
+    setCreateModalOpen(false)
+  }
+
+  const handleDeleteAlbum = (albumId) => {
+    if (window.confirm('Вы уверены, что хотите удалить этот альбом?')) {
+      deleteAlbum(albumId)
+    }
+  }
+
+  const handleCreateStamp = (newStamp) => {
+    if (selectedAlbum) {
+      addStampToAlbum(selectedAlbum.id, newStamp)
+    }
+    setCreateStampModalOpen(false)
+  }
+
+  const handleEditStamp = (updatedStamp) => {
+    if (selectedAlbum) {
+      updateStampInAlbum(selectedAlbum.id, updatedStamp)
+    }
+  }
+
+  const handleDeleteStamp = (stampId) => {
+    if (selectedAlbum) {
+      deleteStampFromAlbum(selectedAlbum.id, stampId)
+    }
   }
 
   const getPluralLabel = (count, one, few, many) => {
@@ -106,14 +144,13 @@ function MyCollectionPage() {
             onSearchChange={setSearchTerm}
             placeholder="Поиск по маркам альбома"
           />
-
           <main className="catalog-main">
             <div className="my-collection-album-header">
               <div className="my-collection-album-title">
                 <Button
                   type="text"
                   onClick={() => {
-                    setSelectedAlbum(null)
+                    setSelectedAlbumId(null)
                     setSearchTerm('')
                     setCountryValue('Все страны')
                     setYearValue('Все года')
@@ -135,6 +172,7 @@ function MyCollectionPage() {
                 type="primary"
                 className="add-stamp-btn"
                 icon={<span className="material-symbols-outlined">add</span>}
+                onClick={() => setCreateStampModalOpen(true)}
               >
                 Добавить марку
               </Button>
@@ -158,10 +196,19 @@ function MyCollectionPage() {
             />
 
             <div className="my-collection-table-wrapper">
-              <AlbumStampsTable stamps={filteredStamps} />
+              <AlbumStampsTable
+                stamps={filteredStamps}
+                onEditStamp={handleEditStamp}
+                onDeleteStamp={handleDeleteStamp}
+              />
             </div>
           </main>
         </div>
+        <CreateStampModal
+          open={createStampModalOpen}
+          onCancel={() => setCreateStampModalOpen(false)}
+          onCreate={handleCreateStamp}
+        />
       </div>
     )
   }
@@ -175,7 +222,6 @@ function MyCollectionPage() {
           onSearchChange={setSearchTerm}
           placeholder="Поиск по альбомам"
         />
-
         <main className="catalog-main">
           <div className="my-collection-title">
             <div>
@@ -195,14 +241,13 @@ function MyCollectionPage() {
               Создать альбом
             </Button>
           </div>
-
           <div className="my-collection-grid-wrapper">
             <AlbumGrid
               albums={filteredAlbums}
-              onAlbumClick={setSelectedAlbum}
+              onAlbumClick={(album) => setSelectedAlbumId(album.id)}
               gridVariant="collection"
               cardComponent={MyAlbumCard}
-              cardProps={{ onToggleVisibility: toggleAlbumVisibility }}
+              cardProps={{ onToggleVisibility: toggleAlbumVisibility, onDelete: handleDeleteAlbum }}
             />
           </div>
         </main>
