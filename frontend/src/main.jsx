@@ -5,11 +5,14 @@ import 'antd/dist/reset.css'
 import './theme.css'
 import './index.css'
 import App from './App.jsx'
+import { CollectionProvider } from './context/CollectionContext'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <CollectionProvider>
+        <App />
+      </CollectionProvider>
     </BrowserRouter>
   </StrictMode>,
 )

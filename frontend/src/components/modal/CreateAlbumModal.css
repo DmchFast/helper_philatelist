@@ -1,0 +1,76 @@
+.auth-modal .ant-modal-content {
+  border-radius: 24px;
+  background: var(--color-surface);
+  padding: 0;
+}
+
+.auth-modal .ant-modal-body {
+  padding: 28px 28px 24px;
+}
+
+.auth-modal__title {
+  text-align: center;
+  margin-bottom: 18px;
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.auth-modal .ant-form-item-label > label {
+  font-family: var(--font-body);
+  color: var(--color-muted);
+}
+
+.auth-modal .ant-input,
+.auth-modal .ant-input-password {
+  background: var(--color-input);
+  border: 1px solid var(--color-input-border);
+  border-radius: 12px;
+  padding: 8px 16px;
+}
+
+.auth-modal .ant-form-item {
+  margin-bottom: 14px;
+}
+
+.auth-modal .ant-form-item-label > label {
+  font-size: 13px;
+}
+
+.auth-modal .ant-input::placeholder {
+  color: var(--color-muted);
+}
+
+.auth-modal__submit {
+  background: var(--color-accent-dark) !important;
+  border-color: var(--color-accent-dark) !important;
+  border-radius: 8px;
+  height: 44px;
+  font-weight: 500;
+  margin-top: 12px;
+}
+
+.auth-modal__submit[disabled] {
+  opacity: 0.6;
+}
+
+/* Ensure the form width and spacing look good on small screens */
+@media (max-width: 480px) {
+  .auth-modal .ant-modal-body {
+    padding: 18px;
+  }
+
+  .auth-modal__title {
+    font-size: 18px;
+  }
+
+  .auth-modal .ant-form-item-label > label {
+    font-size: 12px;
+  }
+}
+
+.auth-modal__submit:hover {
+  background: var(--color-accent) !important;
+  border-color: var(--color-accent) !important;
+}

@@ -7,13 +7,15 @@ import MyAlbumCard from '../components/cards/MyAlbumCard'
 import AlbumStampsTable from '../components/tables/AlbumStampsTable'
 import StampsFilters from '../components/filters/StampsFilters'
 import { navItems } from '../data/catalogData'
-import { albums as initialAlbums } from '../data/myCollectionData'
+import { useCollection } from '../context/CollectionContext'
+import CreateAlbumModal from '../components/modal/CreateAlbumModal'
 import './CatalogPage.css'
 import './MyCollectionPage.css'
 
 const { Title } = Typography
 
 function MyCollectionPage() {
+  const { albums, addAlbum, toggleAlbumVisibility } = useCollection()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedAlbum, setSelectedAlbum] = useState(null)
   const [countryValue, setCountryValue] = useState('Все страны')
@@ -21,7 +23,7 @@ function MyCollectionPage() {
   const [sortValue, setSortValue] = useState('По названию')
   const [priceLimit, setPriceLimit] = useState(0)
   const [rareOnly, setRareOnly] = useState(false)
-  const [albums, setAlbums] = useState(initialAlbums)
+  const [createModalOpen, setCreateModalOpen] = useState(false)
 
   const normalizedSearch = searchTerm.trim().toLowerCase()
 
@@ -39,13 +41,9 @@ function MyCollectionPage() {
     }
   }, [selectedAlbum])
 
-  const handleToggleVisibility = useCallback((albumId) => {
-    setAlbums(prev =>
-      prev.map(album =>
-        album.id === albumId ? { ...album, isPublic: !album.isPublic } : album
-      )
-    )
-  }, [])
+  const handleCreateAlbum = (title) => {
+    addAlbum(title)
+  }
 
   const getPluralLabel = (count, one, few, many) => {
     const mod10 = count % 10
@@ -192,6 +190,7 @@ function MyCollectionPage() {
               type="primary"
               className="add-album-btn"
               icon={<span className="material-symbols-outlined">add</span>}
+              onClick={() => setCreateModalOpen(true)}
             >
               Создать альбом
             </Button>
@@ -203,11 +202,16 @@ function MyCollectionPage() {
               onAlbumClick={setSelectedAlbum}
               gridVariant="collection"
               cardComponent={MyAlbumCard}
-              cardProps={{ onToggleVisibility: handleToggleVisibility }}
+              cardProps={{ onToggleVisibility: toggleAlbumVisibility }}
             />
           </div>
         </main>
       </div>
+      <CreateAlbumModal
+        open={createModalOpen}
+        onCancel={() => setCreateModalOpen(false)}
+        onCreate={handleCreateAlbum}
+      />
     </div>
   )
 }
