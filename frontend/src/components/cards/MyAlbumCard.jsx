@@ -1,4 +1,5 @@
 import { Typography } from 'antd'
+import defaultStamp from '../../assets/default-stamp.png'
 import './MyAlbumCard.css'
 
 const { Text } = Typography
@@ -7,6 +8,20 @@ function MyAlbumCard({ album, onToggleVisibility, onDelete }) {
   const isPublic = album.isPublic !== false
   const visibilityLabel = isPublic ? 'Публичный' : 'Приватный'
   const visibilityIcon = isPublic ? 'public' : 'lock'
+
+  const stamps = album.stamps || []
+  const totalStamps = stamps.length
+  const previewStamps = stamps.slice(0, 3)
+  const remainingCount = totalStamps - 3
+
+  // Первые 3 плитки
+  const tiles = [
+    ...previewStamps.map(s => s.image),
+    ...Array(3 - previewStamps.length).fill(defaultStamp)
+  ]
+
+  // Четвёртая плитка
+  const extraCount = remainingCount > 0 ? `+${remainingCount}` : ''
 
   const handleToggle = (e) => {
     e.stopPropagation()
@@ -28,13 +43,13 @@ function MyAlbumCard({ album, onToggleVisibility, onDelete }) {
     <article className="my-album-card">
       <div className="my-album-card__media">
         <div className="my-album-card__grid">
-          {album.tiles.map((src, index) => (
-            <div key={`${album.id}-${index}`} className="my-album-card__tile">
+          {tiles.map((src, index) => (
+            <div key={`${album.id}-tile-${index}`} className="my-album-card__tile">
               <img src={src} alt="" loading="lazy" />
             </div>
           ))}
           <div className="my-album-card__tile my-album-card__tile--count">
-            <span>{album.extraCount}</span>
+            <span>{extraCount}</span>
           </div>
         </div>
       </div>
