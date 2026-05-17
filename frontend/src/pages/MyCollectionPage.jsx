@@ -7,6 +7,7 @@ import MyAlbumCard from '../components/cards/MyAlbumCard'
 import AlbumStampsTable from '../components/tables/AlbumStampsTable'
 import StampsFilters from '../components/filters/StampsFilters'
 import { navItems } from '../data/catalogData'
+import { useAuth } from '../components/auth/AuthContext'
 import { useCollection } from '../context/CollectionContext'
 import CreateAlbumModal from '../components/modal/CreateAlbumModal'
 import CreateStampModal from '../components/modal/CreateStampModal'
@@ -16,6 +17,7 @@ import './MyCollectionPage.css'
 const { Title } = Typography
 
 function MyCollectionPage() {
+  const { user } = useAuth()
   const {
     albums,
     addAlbum,
@@ -54,7 +56,7 @@ function MyCollectionPage() {
   }, [selectedAlbum])
 
   const handleCreateAlbum = (title) => {
-    addAlbum(title)
+    addAlbum(title, user?.name || 'Гость')
     setCreateModalOpen(false)
   }
 

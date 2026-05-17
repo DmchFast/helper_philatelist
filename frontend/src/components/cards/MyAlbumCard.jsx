@@ -3,13 +3,14 @@ import './MyAlbumCard.css'
 
 const { Text } = Typography
 
-function MyAlbumCard({ album, onToggleVisibility }) {
+function MyAlbumCard({ album, onToggleVisibility, onDelete }) {
   const isPublic = album.isPublic !== false
   const visibilityLabel = isPublic ? 'Публичный' : 'Приватный'
   const visibilityIcon = isPublic ? 'public' : 'lock'
 
   const handleToggle = (e) => {
     e.stopPropagation()
+    e.preventDefault()
     if (onToggleVisibility) {
       onToggleVisibility(album.id)
     }
@@ -17,7 +18,10 @@ function MyAlbumCard({ album, onToggleVisibility }) {
 
   const handleDeleteClick = (e) => {
     e.stopPropagation()
-    // TODO: логика удаления
+    e.preventDefault()
+    if (onDelete) {
+      onDelete(album.id)
+    }
   }
 
   return (

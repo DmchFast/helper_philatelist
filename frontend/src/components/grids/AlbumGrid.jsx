@@ -15,13 +15,15 @@ function AlbumGrid({
       {albums.map((album) => (
         <div key={album.id}>
           {onAlbumClick ? (
-            <button
-              type="button"
+            <div
               className="album-grid__item"
               onClick={() => onAlbumClick(album)}
+              role="button"
+              tabIndex={0}
+              onKeyPress={(e) => { if (e.key === 'Enter' || e.key === ' ') onAlbumClick(album) }}
             >
               <CardComponent album={album} {...cardProps} />
-            </button>
+            </div>
           ) : (
             <CardComponent album={album} {...cardProps} />
           )}

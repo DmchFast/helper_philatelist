@@ -31,7 +31,7 @@ function AlbumCard({ album }) {
           <span className="album-card__avatar">
             <span className="material-symbols-outlined">person</span>
           </span>
-          <Text className="album-card__author-name">{album.author}</Text>
+          <Text className="album-card__author-name">{album.ownerName || album.author}</Text>
         </div>
       </div>
     </article>

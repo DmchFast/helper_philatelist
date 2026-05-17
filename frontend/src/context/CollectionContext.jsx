@@ -12,12 +12,13 @@ export const useCollection = () => {
 export const CollectionProvider = ({ children }) => {
   const [albums, setAlbums] = useState(initialAlbums)
 
-  const addAlbum = (title) => {
+  const addAlbum = (title, ownerName) => {
     const newAlbum = {
       id: `my-${Date.now()}`,
       title: [title],
       badge: '0 марок',
-      author: 'Я',
+      author: ownerName || 'Гость',
+      ownerName: ownerName || 'Гость',
       theme: 'Мои альбомы',
       extraCount: '+0',
       tiles: [],

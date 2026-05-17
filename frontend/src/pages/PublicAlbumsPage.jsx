@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Typography, Button } from 'antd'
 import TwoFilters from '../components/filters/TwoFilters'
 import Sidebar from '../components/bars/Sidebar'
@@ -6,13 +6,15 @@ import HeaderBar from '../components/bars/HeaderBar'
 import AlbumGrid from '../components/grids/AlbumGrid'
 import StampGrid from '../components/grids/StampGrid'
 import { countryOptions, navItems, sortOptions } from '../data/catalogData'
-import { albums, authorOptions, themeOptions } from '../data/publicAlbumsData'
+import { albums as publicAlbumsData, authorOptions, themeOptions } from '../data/publicAlbumsData'
+import { useCollection } from '../context/CollectionContext'
 import './PublicAlbumsPage.css'
 import './CatalogPage.css'
 
 const { Title, Text } = Typography
 
 function PublicAlbumsPage() {
+  const { albums: collectionAlbums } = useCollection()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedAlbum, setSelectedAlbum] = useState(null)
   const [authorValue, setAuthorValue] = useState('Все авторы')
@@ -20,8 +22,49 @@ function PublicAlbumsPage() {
   const [countryFilter, setCountryFilter] = useState('Все страны')
   const [sortMode, setSortMode] = useState('По названию')
 
-  if (selectedAlbum) {
-    const albumStamps = selectedAlbum.stamps || []
+  const allPublicAlbums = useMemo(() => {
+    const publicUserAlbums = collectionAlbums
+      .filter((album) => album.isPublic)
+      .map((album) => ({
+        ...album,
+        author: album.ownerName || album.author,
+        ownerName: album.ownerName || album.author,
+      }))
+
+    const staticPublicAlbums = publicAlbumsData.map((album) => ({
+      ...album,
+      author: album.ownerName || album.author,
+      ownerName: album.ownerName || album.author,
+    }))
+
+    return [...staticPublicAlbums, ...publicUserAlbums]
+  }, [collectionAlbums])
+
+  const publicAuthorOptions = useMemo(() => {
+    const authors = Array.from(
+      new Set(allPublicAlbums.map((album) => album.ownerName || album.author).filter(Boolean))
+    )
+    return [
+      { value: 'Все авторы', label: 'Все авторы' },
+      ...authors.map((author) => ({ value: author, label: author })),
+    ]
+  }, [allPublicAlbums])
+
+  const publicThemeOptions = useMemo(() => {
+    const themes = Array.from(new Set(allPublicAlbums.map((album) => album.theme).filter(Boolean)))
+    return [
+      { value: 'Все темы', label: 'Все темы' },
+      ...themes.map((theme) => ({ value: theme, label: theme })),
+    ]
+  }, [allPublicAlbums])
+
+  const selectedPublicAlbum = useMemo(
+    () => allPublicAlbums.find((album) => album.id === selectedAlbum?.id) || null,
+    [allPublicAlbums, selectedAlbum]
+  )
+
+  if (selectedPublicAlbum) {
+    const albumStamps = selectedPublicAlbum.stamps || []
     const normalizedSearch = searchTerm.trim().toLowerCase()
     const filteredStamps = albumStamps
       .filter((stamp) => {
@@ -62,7 +105,7 @@ function PublicAlbumsPage() {
                 />
                 <div>
                   <Title level={2} className="albums-heading">
-                    {selectedAlbum.title.join(' ')}
+                    {selectedPublicAlbum.title.join(' ')}
                   </Title>
                   <Text className="albums-subtitle">{filteredStamps.length} марок в альбоме</Text>
                 </div>
@@ -84,10 +127,11 @@ function PublicAlbumsPage() {
   }
 
   const normalizedSearch = searchTerm.trim().toLowerCase()
-  const filteredAlbums = albums.filter((album) => {
+  const filteredAlbums = allPublicAlbums.filter((album) => {
     const fullTitle = album.title.join(' ').toLowerCase()
     const matchesSearch = fullTitle.includes(normalizedSearch)
-    const matchesAuthor = authorValue === 'Все авторы' || album.author === authorValue
+    const albumAuthor = album.ownerName || album.author
+    const matchesAuthor = authorValue === 'Все авторы' || albumAuthor === authorValue
     const matchesTheme = themeValue === 'Все темы' || album.theme === themeValue
     return matchesSearch && matchesAuthor && matchesTheme
   })
@@ -114,8 +158,8 @@ function PublicAlbumsPage() {
             <TwoFilters
               firstValue={authorValue}
               secondValue={themeValue}
-              firstOptions={authorOptions}
-              secondOptions={themeOptions}
+              firstOptions={publicAuthorOptions.length > 1 ? publicAuthorOptions : authorOptions}
+              secondOptions={publicThemeOptions.length > 1 ? publicThemeOptions : themeOptions}
               onFirstChange={setAuthorValue}
               onSecondChange={setThemeValue}
             />
@@ -124,7 +168,7 @@ function PublicAlbumsPage() {
           <div className="album-grid-wrapper">
             <AlbumGrid
               albums={filteredAlbums}
-              onAlbumClick={setSelectedAlbum}
+              onAlbumClick={(album) => setSelectedAlbum(album)}
               gridVariant="collection"
             />
           </div>
