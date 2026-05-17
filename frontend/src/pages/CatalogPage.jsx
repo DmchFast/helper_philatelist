@@ -4,15 +4,23 @@ import TwoFilters from '../components/filters/TwoFilters'
 import HeaderBar from '../components/bars/HeaderBar'
 import Sidebar from '../components/bars/Sidebar'
 import StampGrid from '../components/grids/StampGrid'
+import SelectAlbumModal from '../components/modal/SelectAlbumModal'
+import CreateStampModal from '../components/modal/CreateStampModal'
+import { useCollection } from '../context/CollectionContext'
 import { countryOptions, navItems, sortOptions, stamps } from '../data/catalogData'
 import './CatalogPage.css'
 
 const { Title, Text } = Typography
 
 function CatalogPage() {
+  const { albums, addStampToAlbum } = useCollection()
   const [searchTerm, setSearchTerm] = useState('')
   const [countryFilter, setCountryFilter] = useState('Все страны')
   const [sortMode, setSortMode] = useState('По названию')
+  const [selectAlbumOpen, setSelectAlbumOpen] = useState(false)
+  const [createStampOpen, setCreateStampOpen] = useState(false)
+  const [selectedStampFromCatalog, setSelectedStampFromCatalog] = useState(null)
+  const [selectedAlbumId, setSelectedAlbumId] = useState(null)
 
   const normalizedSearch = searchTerm.trim().toLowerCase()
   const filteredStamps = stamps
@@ -28,13 +36,32 @@ function CatalogPage() {
       return 0
     })
 
-  const handleAddStamp = () => {
-    message.success('Открыть форму добавления марки')
+  const handleAddToCollection = (stamp) => {
+    setSelectedStampFromCatalog(stamp)
+    setSelectAlbumOpen(true)
   }
 
-  const handleAddToCollection = (title) => {
-    message.success(`Добавлено в коллекцию: ${title}`)
+  const handleSelectAlbum = (album) => {
+    setSelectedAlbumId(album.id)
+    setSelectAlbumOpen(false)
+    setCreateStampOpen(true)
   }
+
+  const handleCreateStampFromCatalog = (newStamp) => {
+    if (selectedAlbumId) {
+      addStampToAlbum(selectedAlbumId, newStamp);
+      const album = albums.find(a => a.id === selectedAlbumId);
+      const albumName = album
+        ? Array.isArray(album.title)
+          ? album.title.join(' ')
+          : album.title || album.name || 'альбом'
+        : 'альбом'
+      message.success(`Марка "${newStamp.title}" добавлена в альбом "${albumName}"`);
+    }
+    setCreateStampOpen(false);
+    setSelectedStampFromCatalog(null);
+    setSelectedAlbumId(null);
+  };
 
   return (
     <div className="catalog-page">
@@ -67,10 +94,32 @@ function CatalogPage() {
 
           <StampGrid
             stamps={filteredStamps}
-            onAdd={(stamp) => handleAddToCollection(stamp.title)}
+            onAdd={handleAddToCollection}
           />
         </main>
       </div>
+
+      <SelectAlbumModal
+        open={selectAlbumOpen}
+        onCancel={() => {
+          setSelectAlbumOpen(false)
+          setSelectedStampFromCatalog(null)
+        }}
+        onSelect={handleSelectAlbum}
+        albums={albums}
+      />
+
+      <CreateStampModal
+        open={createStampOpen}
+        onCancel={() => {
+          setCreateStampOpen(false)
+          setSelectedStampFromCatalog(null)
+          setSelectedAlbumId(null)
+        }}
+        onCreate={handleCreateStampFromCatalog}
+        initialData={selectedStampFromCatalog}
+        showImageUrlField={false}
+      />
     </div>
   )
 }

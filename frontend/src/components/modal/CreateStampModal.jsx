@@ -1,14 +1,33 @@
 import { Modal, Form, Input, InputNumber, Button } from 'antd'
+import { useEffect } from 'react'
 import defaultStamp from '../../assets/default-stamp.png'
 import './CreateStampModal.css'
 
-const CreateStampModal = ({ open, onCancel, onCreate }) => {
+const CreateStampModal = ({
+  open,
+  onCancel,
+  onCreate,
+  initialData,
+  showImageUrlField = true,
+}) => {
   const [form] = Form.useForm()
 
-  const handleCancel = () => {
-    form.resetFields()
-    onCancel()
-  }
+  useEffect(() => {
+    if (initialData && open) {
+      const initialImage = initialData.photo || initialData.image
+      form.setFieldsValue({
+        title: initialData.title,
+        series: initialData.series,
+        year: initialData.year,
+        country: initialData.country,
+        price: initialData.price || '',
+        imageUrl: initialImage === defaultStamp ? '' : initialImage,
+        description: '',
+      })
+    } else if (!open) {
+      form.resetFields()
+    }
+  }, [initialData, open, form])
 
   const handleOk = () => {
     form
@@ -21,7 +40,7 @@ const CreateStampModal = ({ open, onCancel, onCreate }) => {
           year: values.year,
           country: values.country,
           price: values.price,
-          image: values.imageUrl || defaultStamp,
+          image: values.imageUrl || initialData?.photo || initialData?.image || defaultStamp,
           description: values.description || '',
           rarity: 'Обычная',
           priceHistory: [
@@ -37,7 +56,7 @@ const CreateStampModal = ({ open, onCancel, onCreate }) => {
   return (
     <Modal
       open={open}
-      onCancel={handleCancel}
+      onCancel={onCancel}
       footer={null}
       centered
       width={520}
@@ -78,28 +97,22 @@ const CreateStampModal = ({ open, onCancel, onCreate }) => {
           label="Цена (₽)"
           rules={[{ required: true, message: 'Введите цену' }]}
         >
-          <InputNumber
-            min={0}
-            step={100}
-            style={{ width: '100%' }}
-            placeholder="1500"
-          />
+          <InputNumber min={0} step={100} style={{ width: '100%' }} placeholder="1500" />
         </Form.Item>
-        <Form.Item
-          name="imageUrl"
-          label="Ссылка на изображение (необязательно)"
-          extra="Если не указать, будет использована стандартная картинка"
-        >
-          <Input placeholder="https://example.com/stamp.jpg" />
-        </Form.Item>
-        <Form.Item
-          name="description"
-          label="Описание (необязательно)"
-        >
+        {showImageUrlField && (
+          <Form.Item
+            name="imageUrl"
+            label="Ссылка на изображение (необязательно)"
+            extra="Если не указать, будет использована стандартная картинка"
+          >
+            <Input placeholder="https://example.com/stamp.jpg" />
+          </Form.Item>
+        )}
+        <Form.Item name="description" label="Описание (необязательно)">
           <Input.TextArea rows={3} placeholder="Дополнительная информация о марке" />
         </Form.Item>
         <div className="create-stamp-modal__actions">
-          <Button onClick={handleCancel} className="create-stamp-modal__cancel">
+          <Button onClick={onCancel} className="create-stamp-modal__cancel">
             Отмена
           </Button>
           <Button type="primary" onClick={handleOk} className="create-stamp-modal__submit">

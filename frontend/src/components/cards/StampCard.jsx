@@ -11,7 +11,7 @@ function StampCard({ stamp, onAdd }) {
   return (
     <article className={`stamp-card${!canAdd ? ' stamp-card--no-button' : ''}`}>
       <div className="stamp-card__image">
-        <img src={stamp.image} alt="" loading="lazy" />
+        <img src={stamp.photo || stamp.image} alt="" loading="lazy" />
       </div>
       <div className="stamp-card__body">
         <div className="stamp-card__text">
