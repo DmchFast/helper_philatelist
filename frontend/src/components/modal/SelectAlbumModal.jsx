@@ -4,7 +4,9 @@ import './SelectAlbumModal.css'
 const { Text } = Typography
 
 const SelectAlbumModal = ({ open, onCancel, onSelect, albums }) => {
-  const myAlbums = albums.filter(album => album.author === 'Я')
+  const myAlbums = albums.filter(album =>
+    album?.author === 'Я' || album?.ownerName === 'Я' || (typeof album?.id === 'string' && album.id.startsWith('my-'))
+  )
 
   if (myAlbums.length === 0) {
     return (

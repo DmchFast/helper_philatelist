@@ -118,6 +118,7 @@ function CatalogPage() {
         }}
         onCreate={handleCreateStampFromCatalog}
         initialData={selectedStampFromCatalog}
+        showImageUrlField={false}
       />
     </div>
   )
