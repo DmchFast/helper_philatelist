@@ -1,0 +1,37 @@
+.single-filter {
+  display: flex;
+  gap: 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.single-filter__select {
+  min-width: 160px;
+}
+
+.single-filter__select.ant-select {
+  width: 100%;
+}
+
+.single-filter__select .ant-select-selector {
+  height: 40px !important;
+  border-radius: 12px !important;
+  border: 1px solid var(--color-input-border) !important;
+  background: var(--color-surface) !important;
+  box-shadow: var(--shadow-card);
+  padding: 0 14px !important;
+}
+
+.single-filter__select .ant-select-selection-item,
+.single-filter__select .ant-select-selection-placeholder {
+  line-height: 38px !important;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text) !important;
+}
+
+.single-filter__select .ant-select-arrow {
+  color: var(--color-muted);
+}
