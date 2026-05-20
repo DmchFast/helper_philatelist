@@ -9,6 +9,12 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
+  transition: var(--speed-hover);
+}
+
+.user-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card), var(--shadow-green);
 }
 
 .user-card__badge {

@@ -3,7 +3,7 @@ import { Typography } from 'antd'
 import Sidebar from '../components/bars/Sidebar'
 import HeaderBar from '../components/bars/HeaderBar'
 import SingleFilter from '../components/filters/SingleFilter'
-import UserCard from '../components/cards/UserCard'
+import UserGrid from '../components/grids/UserGrid'
 import UserInfoModal from '../components/modal/UserInfoModal'
 import { navItems } from '../data/catalogData'
 import { userRoleOptions, users } from '../data/usersData'
@@ -57,11 +57,9 @@ function UsersPage() {
             />
           </div>
 
-          <section className="users-grid" aria-label="Список пользователей">
-            {filteredUsers.map((user) => (
-              <UserCard key={user.id} user={user} onOpenProfile={setSelectedUser} />
-            ))}
-          </section>
+          <div className="users-grid-wrapper">
+            <UserGrid users={filteredUsers} onUserClick={setSelectedUser} />
+          </div>
         </main>
       </div>
 
