@@ -3,7 +3,14 @@ import { useEffect } from 'react'
 import defaultStamp from '../../assets/default-stamp.png'
 import './EditStampModal.css'
 
-const EditStampModal = ({ open, onCancel, onSave, stamp, showPriceField = true }) => {
+const EditStampModal = ({ 
+  open, 
+  onCancel, 
+  onSave, 
+  stamp, 
+  showPriceField = true,
+  showDescriptionField = true 
+}) => {
   const [form] = Form.useForm()
 
   const handleCancel = () => {
@@ -100,9 +107,11 @@ const EditStampModal = ({ open, onCancel, onSave, stamp, showPriceField = true }
         >
           <Input />
         </Form.Item>
-        <Form.Item name="description" label="Описание">
-          <Input.TextArea rows={3} />
-        </Form.Item>
+        {showDescriptionField && (
+          <Form.Item name="description" label="Описание">
+            <Input.TextArea rows={3} />
+          </Form.Item>
+        )}
         <div className="edit-stamp-modal__actions">
           <Button onClick={handleCancel} className="edit-stamp-modal__cancel">
             Отмена

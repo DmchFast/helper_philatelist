@@ -109,6 +109,7 @@ function AdminStampsTable({ stamps = [], onEditStamp, onDeleteStamp }) {
         }}
         onSave={handleSaveEdit}
         showPriceField={false}
+        showDescriptionField={false}
       />
       <DeleteConfirmModal
         open={deleteOpen}
