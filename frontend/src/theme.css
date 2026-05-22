@@ -9,8 +9,8 @@
   --color-sidebar: #1b1b1b;
   --color-accent: #86c232;
   --color-accent-dark: #61892f;
-  --color-error: #dc2626;
-  --color-error-light: #ef4444;
+  --color-error: #a52121; /*641313*/
+  --color-error-light: #dc2626; /*ef4444*/
   --color-text: #181c20;
   --color-muted: #747969;
   --color-muted-2: #6b6e70;
