@@ -2,10 +2,12 @@
   border-radius: 24px;
   background: var(--color-surface);
   padding: 0;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .create-stamp-modal .ant-modal-body {
-  padding: 24px;
+  padding: 20px 24px 24px;
 }
 
 .create-stamp-modal__title {
@@ -14,13 +16,19 @@
   font-size: 20px;
   line-height: 28px;
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   color: var(--color-text);
+}
+
+.create-stamp-modal .ant-form-item {
+  margin-bottom: 12px;
 }
 
 .create-stamp-modal .ant-form-item-label > label {
   font-family: var(--font-body);
   color: var(--color-muted);
+  font-size: 13px;
+  height: auto;
 }
 
 .create-stamp-modal .ant-input,
@@ -29,8 +37,8 @@
 .create-stamp-modal .ant-input-textarea textarea {
   background: var(--color-input);
   border: 1px solid var(--color-input-border);
-  border-radius: 12px;
-  padding: 8px 16px;
+  border-radius: 10px;
+  padding: 6px 12px;
 }
 
 .create-stamp-modal .ant-input-number {
@@ -38,37 +46,24 @@
 }
 
 .create-stamp-modal .ant-input-number-input {
-  padding: 8px 11px;
+  padding: 6px 11px;
+}
+
+.create-stamp-modal .ant-input-textarea textarea {
+  padding: 6px 12px;
 }
 
 .create-stamp-modal__actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 8px;
-}
-
-.create-stamp-modal__cancel {
-  border-radius: 12px;
-  height: 40px;
-  padding: 0 20px;
-  border: 1px solid var(--color-border);
-  background: transparent;
-  color: var(--color-muted-2);
-}
-
-.create-stamp-modal__cancel:hover {
-  border-color: var(--color-accent) !important;
-  color: var(--color-accent) !important;
+  margin-top: 16px;
 }
 
 .create-stamp-modal__submit {
   background: var(--color-accent-dark) !important;
   border-color: var(--color-accent-dark) !important;
   border-radius: 12px;
-  height: 40px;
-  padding: 0 20px;
+  height: 44px;
   font-weight: 500;
+  width: 100%;
 }
 
 .create-stamp-modal__submit:hover {

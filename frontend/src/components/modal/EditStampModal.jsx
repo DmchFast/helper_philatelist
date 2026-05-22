@@ -58,8 +58,9 @@ const EditStampModal = ({
       onCancel={handleCancel}
       footer={null}
       centered
-      width={520}
+      width={480}
       className="edit-stamp-modal"
+      closable={true}
     >
       <div className="edit-stamp-modal__title">Редактировать марку</div>
       <Form form={form} layout="vertical" requiredMark={false}>
@@ -77,20 +78,24 @@ const EditStampModal = ({
         >
           <Input />
         </Form.Item>
-        <Form.Item
-          name="year"
-          label="Год выпуска"
-          rules={[{ required: true, message: 'Введите год' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="country"
-          label="Страна"
-          rules={[{ required: true, message: 'Введите страну' }]}
-        >
-          <Input />
-        </Form.Item>
+        <div style={{ display: 'flex', gap: '12px' }}>
+          <Form.Item
+            name="year"
+            label="Год выпуска"
+            rules={[{ required: true, message: 'Введите год' }]}
+            style={{ flex: 1 }}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="country"
+            label="Страна"
+            rules={[{ required: true, message: 'Введите страну' }]}
+            style={{ flex: 1 }}
+          >
+            <Input />
+          </Form.Item>
+        </div>
         {showPriceField && (
           <Form.Item
             name="price"
@@ -109,14 +114,11 @@ const EditStampModal = ({
         </Form.Item>
         {showDescriptionField && (
           <Form.Item name="description" label="Описание">
-            <Input.TextArea rows={3} />
+            <Input.TextArea rows={2} />
           </Form.Item>
         )}
         <div className="edit-stamp-modal__actions">
-          <Button onClick={handleCancel} className="edit-stamp-modal__cancel">
-            Отмена
-          </Button>
-          <Button type="primary" onClick={handleOk} className="edit-stamp-modal__submit">
+          <Button type="primary" onClick={handleOk} className="edit-stamp-modal__submit" block>
             Сохранить
           </Button>
         </div>

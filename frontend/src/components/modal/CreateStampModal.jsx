@@ -47,7 +47,7 @@ const CreateStampModal = ({
         form.resetFields()
         onCreate(newStamp)
       })
-      .catch(() => { })
+      .catch(() => {})
   }
 
   return (
@@ -56,8 +56,9 @@ const CreateStampModal = ({
       onCancel={onCancel}
       footer={null}
       centered
-      width={520}
+      width={480}
       className="create-stamp-modal"
+      closable={true}
     >
       <div className="create-stamp-modal__title">Добавить марку</div>
       <Form form={form} layout="vertical" requiredMark={false}>
@@ -75,20 +76,24 @@ const CreateStampModal = ({
         >
           <Input placeholder="Например: Космическая программа" />
         </Form.Item>
-        <Form.Item
-          name="year"
-          label="Год выпуска"
-          rules={[{ required: true, message: 'Введите год' }]}
-        >
-          <Input placeholder="1961" />
-        </Form.Item>
-        <Form.Item
-          name="country"
-          label="Страна"
-          rules={[{ required: true, message: 'Введите страну' }]}
-        >
-          <Input placeholder="СССР" />
-        </Form.Item>
+        <div style={{ display: 'flex', gap: '12px' }}>
+          <Form.Item
+            name="year"
+            label="Год выпуска"
+            rules={[{ required: true, message: 'Введите год' }]}
+            style={{ flex: 1 }}
+          >
+            <Input placeholder="1961" />
+          </Form.Item>
+          <Form.Item
+            name="country"
+            label="Страна"
+            rules={[{ required: true, message: 'Введите страну' }]}
+            style={{ flex: 1 }}
+          >
+            <Input placeholder="СССР" />
+          </Form.Item>
+        </div>
         {showPriceField && (
           <Form.Item
             name="price"
@@ -108,13 +113,10 @@ const CreateStampModal = ({
           </Form.Item>
         )}
         <Form.Item name="description" label="Описание (необязательно)">
-          <Input.TextArea rows={3} placeholder="Дополнительная информация о марке" />
+          <Input.TextArea rows={2} placeholder="Дополнительная информация о марке" />
         </Form.Item>
         <div className="create-stamp-modal__actions">
-          <Button onClick={onCancel} className="create-stamp-modal__cancel">
-            Отмена
-          </Button>
-          <Button type="primary" onClick={handleOk} className="create-stamp-modal__submit">
+          <Button type="primary" onClick={handleOk} className="create-stamp-modal__submit" block>
             Создать
           </Button>
         </div>
