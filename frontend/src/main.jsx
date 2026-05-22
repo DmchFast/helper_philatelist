@@ -6,12 +6,18 @@ import './theme.css'
 import './index.css'
 import App from './App.jsx'
 import { CollectionProvider } from './context/CollectionContext'
+import { CatalogProvider } from './context/CatalogContext'
+import { UsersProvider } from './context/UsersContext'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <CollectionProvider>
-        <App />
+        <CatalogProvider>
+          <UsersProvider>
+            <App />
+          </UsersProvider>
+        </CatalogProvider>
       </CollectionProvider>
     </BrowserRouter>
   </StrictMode>,

@@ -6,12 +6,14 @@ import SingleFilter from '../components/filters/SingleFilter'
 import UserGrid from '../components/grids/UserGrid'
 import UserInfoModal from '../components/modal/UserInfoModal'
 import { navItems } from '../data/catalogData'
-import { userRoleOptions, users } from '../data/usersData'
+import { userRoleOptions } from '../data/usersData'
+import { useUsers } from '../context/UsersContext'
 import './UsersPage.css'
 
 const { Title } = Typography
 
 function UsersPage() {
+  const { users } = useUsers()
   const [searchTerm, setSearchTerm] = useState('')
   const [roleFilter, setRoleFilter] = useState('Все роли')
   const [selectedUser, setSelectedUser] = useState(null)
@@ -27,7 +29,7 @@ function UsersPage() {
 
       return matchesRole && matchesSearch
     })
-  }, [roleFilter, searchTerm])
+  }, [roleFilter, searchTerm, users])
 
   return (
     <div className="users-page">

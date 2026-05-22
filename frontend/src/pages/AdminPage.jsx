@@ -8,9 +8,10 @@ import AdminStampFilters from '../components/filters/AdminStampFilters'
 import SingleFilter from '../components/filters/SingleFilter'
 import CreateStampModal from '../components/modal/CreateStampModal'
 import DeleteConfirmModal from '../components/modal/DeleteConfirmModal'
-import { navItems, stamps as initialStamps } from '../data/catalogData'
-import { userRoleOptions, users as initialUsers } from '../data/usersData'
-import defaultStamp from '../assets/default-stamp.png'
+import { navItems } from '../data/catalogData'
+import { userRoleOptions } from '../data/usersData'
+import { useCatalog } from '../context/CatalogContext'
+import { useUsers } from '../context/UsersContext'
 import './AdminPage.css'
 
 const { Title, Text } = Typography
@@ -20,27 +21,18 @@ const stampSortOptions = [
   { value: 'По году', label: 'По году' },
 ]
 
-const normalizeStamp = (stamp, index) => ({
-  ...stamp,
-  image: stamp.image || stamp.photo || defaultStamp,
-  price: typeof stamp.price === 'number' ? stamp.price : (index + 1) * 250,
-  description: stamp.description || '',
-  rarity: stamp.rarity || 'Обычная',
-})
-
-const normalizedInitialStamps = initialStamps.map(normalizeStamp)
-
 function AdminPage() {
+  const { stamps, addStamp, updateStamp, deleteStamp } = useCatalog()
+  const { users, updateUserRole, deleteUser } = useUsers()
+
   const [searchTerm, setSearchTerm] = useState('')
   const [activeTab, setActiveTab] = useState('stamps')
-  const [stamps, setStamps] = useState(() => normalizedInitialStamps)
-  const [users, setUsers] = useState(() => initialUsers)
   const [createStampOpen, setCreateStampOpen] = useState(false)
   const [stampCountryValue, setStampCountryValue] = useState('Все страны')
   const [stampYearValue, setStampYearValue] = useState('Все года')
   const [stampSortValue, setStampSortValue] = useState('По названию')
   const [stampPriceLimit, setStampPriceLimit] = useState(() =>
-    Math.max(...normalizedInitialStamps.map((stamp) => Number(stamp.price) || 0), 0)
+    Math.max(...stamps.map((stamp) => Number(stamp.price) || 0), 0)
   )
   const [roleFilter, setRoleFilter] = useState('Все роли')
   const [userToDelete, setUserToDelete] = useState(null)
@@ -93,38 +85,29 @@ function AdminPage() {
   }, [normalizedSearch, roleFilter, users])
 
   const handleCreateStamp = (newStamp) => {
-    const nextPrice = Math.max(...stamps.map((stamp) => Number(stamp.price) || 0), 0) + 250
-    const stamped = normalizeStamp({ ...newStamp, price: nextPrice }, stamps.length)
-    setStamps((prev) => [stamped, ...prev])
-    setStampPriceLimit((current) => Math.max(current, nextPrice))
+    addStamp(newStamp)
     setCreateStampOpen(false)
+    // Обновляем лимит цены
+    const newMax = Math.max(...stamps.map(s => Number(s.price) || 0), Number(newStamp.price) || 0)
+    setStampPriceLimit(newMax)
   }
 
   const handleEditStamp = (updatedStamp) => {
-    setStamps((prev) =>
-      prev.map((stamp) => (stamp.id === updatedStamp.id ? normalizeStamp(updatedStamp) : stamp))
-    )
-    setStampPriceLimit((prev) => Math.max(prev, Number(updatedStamp.price) || 0))
+    updateStamp(updatedStamp)
+    setStampPriceLimit(prev => Math.max(prev, Number(updatedStamp.price) || 0))
   }
 
   const handleDeleteStamp = (stampId) => {
-    setStamps((prev) => prev.filter((stamp) => stamp.id !== stampId))
+    deleteStamp(stampId)
   }
 
   const handleRoleChange = (user, role) => {
-    const selectedRole = userRoleOptions.find((option) => option.value === role)
-    setUsers((prev) =>
-      prev.map((item) =>
-        item.id === user.id
-          ? { ...item, role, roleLabel: selectedRole?.label || item.roleLabel }
-          : item
-      )
-    )
+    updateUserRole(user.id, role)
   }
 
   const handleConfirmDeleteUser = () => {
     if (!userToDelete) return
-    setUsers((prev) => prev.filter((user) => user.id !== userToDelete.id))
+    deleteUser(userToDelete.id)
     setUserToDelete(null)
   }
 

@@ -16,7 +16,6 @@ export const stamps = [
     year: '1958',
     country: 'ГДР',
     image: stamp,
-    photo: stamp,
   },
   {
     id: '2',
@@ -24,8 +23,7 @@ export const stamps = [
     series: 'Москва-80',
     year: '1980',
     country: 'СССР',
-    image: stamp,
-    photo: 'https://yastatic.net/naydex/yandex-search/5vaNOo909/053265o4/7kKmvq4Ufn_PnGBDrJSiRUNUpiovjma13BryS5cl9l2VyjxttGopDqpLntv_Neb1VIpKtyPJep28-M0fxF0PSQvW5VwcF01o3b8D5T-WUzUT5WKbSz4DFl-w',
+    image: 'https://yastatic.net/naydex/yandex-search/5vaNOo909/053265o4/7kKmvq4Ufn_PnGBDrJSiRUNUpiovjma13BryS5cl9l2VyjxttGopDqpLntv_Neb1VIpKtyPJep28-M0fxF0PSQvW5VwcF01o3b8D5T-WUzUT5WKbSz4DFl-w',
   },
   {
     id: '3',
@@ -34,7 +32,6 @@ export const stamps = [
     year: '1980',
     country: 'СССР',
     image: stamp,
-    photo: stamp,
   },
   {
     id: '4',
@@ -43,7 +40,6 @@ export const stamps = [
     year: '1980',
     country: 'СССР',
     image: stamp,
-    photo: stamp,
   },
   {
     id: '5',
@@ -52,7 +48,6 @@ export const stamps = [
     year: '1966',
     country: 'СССР',
     image: stamp,
-    photo: stamp,
   },
   {
     id: '6',
@@ -61,7 +56,6 @@ export const stamps = [
     year: '1945',
     country: 'CCCР',
     image: stamp,
-    photo: stamp,
   },
 
 ]

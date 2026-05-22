@@ -7,12 +7,14 @@ import StampGrid from '../components/grids/StampGrid'
 import SelectAlbumModal from '../components/modal/SelectAlbumModal'
 import CreateStampModal from '../components/modal/CreateStampModal'
 import { useCollection } from '../context/CollectionContext'
-import { countryOptions, navItems, sortOptions, stamps } from '../data/catalogData'
+import { useCatalog } from '../context/CatalogContext'
+import { countryOptions, navItems, sortOptions } from '../data/catalogData'
 import './CatalogPage.css'
 
 const { Title, Text } = Typography
 
 function CatalogPage() {
+  const { stamps } = useCatalog()
   const { albums, addStampToAlbum } = useCollection()
   const [searchTerm, setSearchTerm] = useState('')
   const [countryFilter, setCountryFilter] = useState('Все страны')
