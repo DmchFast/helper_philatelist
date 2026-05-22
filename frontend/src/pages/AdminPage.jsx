@@ -89,7 +89,7 @@ function AdminPage() {
         <div className="admin-section">
           <div className="admin-section__head">
             <div className="admin-section__title-block">
-              <Title level={3} className="admin-section__title">
+              <Title level={3} className="title">
                 Каталог марок
               </Title>
               <div className="subtitle">
@@ -136,11 +136,11 @@ function AdminPage() {
         <div className="admin-section">
           <div className="admin-section__head">
             <div className="admin-section__title-block">
-              <Title level={3} className="admin-section__title">
+              <Title level={3} className="title">
                 Роли пользователей
               </Title>
-              <div className="admin-section__subtitle">
-                Управление ролями и удаляйте пользователей
+              <div className="subtitle">
+                Управление ролями и удаление пользователей
               </div>
             </div>
 
