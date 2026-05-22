@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import defaultStamp from '../../assets/default-stamp.png'
 import './EditStampModal.css'
 
-const EditStampModal = ({ open, onCancel, onSave, stamp }) => {
+const EditStampModal = ({ open, onCancel, onSave, stamp, showPriceField = true }) => {
   const [form] = Form.useForm()
 
   const handleCancel = () => {
@@ -42,7 +42,7 @@ const EditStampModal = ({ open, onCancel, onSave, stamp }) => {
         form.resetFields()
         onSave(updatedStamp)
       })
-      .catch(() => { })
+      .catch(() => {})
   }
 
   return (
@@ -84,13 +84,15 @@ const EditStampModal = ({ open, onCancel, onSave, stamp }) => {
         >
           <Input />
         </Form.Item>
-        <Form.Item
-          name="price"
-          label="Цена (₽)"
-          rules={[{ required: true, message: 'Введите цену' }]}
-        >
-          <InputNumber min={0} step={100} style={{ width: '100%' }} />
-        </Form.Item>
+        {showPriceField && (
+          <Form.Item
+            name="price"
+            label="Цена (₽)"
+            rules={[{ required: true, message: 'Введите цену' }]}
+          >
+            <InputNumber min={0} step={100} style={{ width: '100%' }} />
+          </Form.Item>
+        )}
         <Form.Item
           name="imageUrl"
           label="Ссылка на изображение (необязательно)"

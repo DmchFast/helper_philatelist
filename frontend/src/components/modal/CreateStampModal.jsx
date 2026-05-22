@@ -1,4 +1,4 @@
-import { Modal, Form, Input, InputNumber, Button } from 'antd'
+import { Modal, Form, Input, Button } from 'antd'
 import { useEffect } from 'react'
 import defaultStamp from '../../assets/default-stamp.png'
 import './CreateStampModal.css'
@@ -9,6 +9,7 @@ const CreateStampModal = ({
   onCreate,
   initialData,
   showImageUrlField = true,
+  showPriceField = true,
 }) => {
   const [form] = Form.useForm()
 
@@ -20,7 +21,6 @@ const CreateStampModal = ({
         series: initialData.series,
         year: initialData.year,
         country: initialData.country,
-        price: initialData.price || '',
         imageUrl: initialImage === defaultStamp ? '' : initialImage,
         description: '',
       })
@@ -39,13 +39,10 @@ const CreateStampModal = ({
           series: values.series,
           year: values.year,
           country: values.country,
-          price: values.price,
           image: values.imageUrl || initialData?.photo || initialData?.image || defaultStamp,
           description: values.description || '',
           rarity: 'Обычная',
-          priceHistory: [
-            { date: new Date().toLocaleDateString('ru-RU'), value: values.price }
-          ],
+          price: typeof values.price === 'number' ? values.price : initialData?.price || 0,
         }
         form.resetFields()
         onCreate(newStamp)
@@ -92,13 +89,15 @@ const CreateStampModal = ({
         >
           <Input placeholder="СССР" />
         </Form.Item>
-        <Form.Item
-          name="price"
-          label="Цена (₽)"
-          rules={[{ required: true, message: 'Введите цену' }]}
-        >
-          <InputNumber min={0} step={100} style={{ width: '100%' }} placeholder="1500" />
-        </Form.Item>
+        {showPriceField && (
+          <Form.Item
+            name="price"
+            label="Цена (₽)"
+            rules={[{ required: true, message: 'Введите цену' }]}
+          >
+            <Input placeholder="1500" />
+          </Form.Item>
+        )}
         {showImageUrlField && (
           <Form.Item
             name="imageUrl"
