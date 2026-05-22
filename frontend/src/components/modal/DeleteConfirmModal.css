@@ -11,7 +11,7 @@
 
 .delete-confirm-modal__icon {
   font-size: 48px;
-  color: var(--color-accent);
+  color: var(--color-error);
   margin-bottom: 16px;
 }
 
@@ -33,37 +33,28 @@
   font-size: 14px;
   color: var(--color-muted);
   margin-bottom: 28px;
+  word-break: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .delete-confirm-modal__actions {
   display: flex;
   justify-content: center;
-  gap: 12px;
-}
-
-.delete-confirm-modal__cancel {
-  border-radius: 12px;
-  height: 40px;
-  padding: 0 24px;
-  border: 1px solid var(--color-border);
-  background: transparent;
-  color: var(--color-muted-2);
-}
-
-.delete-confirm-modal__cancel:hover {
-  border-color: var(--color-accent) !important;
-  color: var(--color-accent) !important;
 }
 
 .delete-confirm-modal__submit {
   border-radius: 12px;
-  height: 40px;
+  height: 44px;
   padding: 0 24px;
-  background: #dc2626 !important;
-  border-color: #dc2626 !important;
+  color: var(--color-surface);
+  background: var(--color-error);
+  border-color: var(--color-error);
+  font-weight: 500;
+  width: 100%;
 }
 
 .delete-confirm-modal__submit:hover {
-  background: #ef4444 !important;
-  border-color: #ef4444 !important;
+  background: var(--color-error-light);
+  border-color: var(--color-error-light);
 }

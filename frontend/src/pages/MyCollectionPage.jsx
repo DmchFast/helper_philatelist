@@ -11,6 +11,7 @@ import { useAuth } from '../components/auth/AuthContext'
 import { useCollection } from '../context/CollectionContext'
 import CreateAlbumModal from '../components/modal/CreateAlbumModal'
 import CreateStampModal from '../components/modal/CreateStampModal'
+import DeleteConfirmModal from '../components/modal/DeleteConfirmModal'
 import './CatalogPage.css'
 import './MyCollectionPage.css'
 
@@ -36,6 +37,7 @@ function MyCollectionPage() {
   const [rareOnly, setRareOnly] = useState(false)
   const [createModalOpen, setCreateModalOpen] = useState(false)
   const [createStampModalOpen, setCreateStampModalOpen] = useState(false)
+  const [albumToDelete, setAlbumToDelete] = useState(null) // состояние для удаляемого альбома
 
   const normalizedSearch = searchTerm.trim().toLowerCase()
 
@@ -61,8 +63,19 @@ function MyCollectionPage() {
   }
 
   const handleDeleteAlbum = (albumId) => {
-    if (window.confirm('Вы уверены, что хотите удалить этот альбом?')) {
-      deleteAlbum(albumId)
+    // Находим альбом для отображения в модалке
+    const album = albums.find(a => a.id === albumId)
+    setAlbumToDelete(album)
+  }
+
+  const handleConfirmDeleteAlbum = () => {
+    if (albumToDelete) {
+      deleteAlbum(albumToDelete.id)
+      setAlbumToDelete(null)
+      // Если удалённый альбом был открыт – возвращаемся к списку
+      if (selectedAlbumId === albumToDelete.id) {
+        setSelectedAlbumId(null)
+      }
     }
   }
 
@@ -258,6 +271,12 @@ function MyCollectionPage() {
         open={createModalOpen}
         onCancel={() => setCreateModalOpen(false)}
         onCreate={handleCreateAlbum}
+      />
+      <DeleteConfirmModal
+        open={Boolean(albumToDelete)}
+        onCancel={() => setAlbumToDelete(null)}
+        onConfirm={handleConfirmDeleteAlbum}
+        title={`альбом "${albumToDelete?.title?.join(' ') || ''}"`}
       />
     </div>
   )
