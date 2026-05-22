@@ -16,6 +16,7 @@ function StampsFilters({
   countryOptions,
   yearOptions,
   sortOptions,
+  showRareButton = true,
 }) {
   return (
     <div className="stamps-filters">
@@ -52,13 +53,15 @@ function StampsFilters({
         options={sortOptions}
         suffixIcon={<span className="material-symbols-outlined">expand_more</span>}
       />
-      <button
-        type="button"
-        className={`stamps-filters__rare-btn${rareOnly ? ' is-active' : ''}`}
-        onClick={onRareToggle}
-      >
-        Редкие
-      </button>
+      {showRareButton && (
+        <button
+          type="button"
+          className={`stamps-filters__rare-btn${rareOnly ? ' is-active' : ''}`}
+          onClick={onRareToggle}
+        >
+          Редкие
+        </button>
+      )}
     </div>
   )
 }
