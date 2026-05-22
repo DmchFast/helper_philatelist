@@ -7,7 +7,7 @@
 body {
   margin: 0;
   font-family: var(--font-body);
-  background: var(--color-bg);
+  background: rgba(130, 218, 8, 0.658);
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;

@@ -12,6 +12,26 @@ function HeaderBar({ searchTerm, onSearchChange, placeholder }) {
   const [loginOpen, setLoginOpen] = useState(false)
   const [registerOpen, setRegisterOpen] = useState(false)
 
+  const handleSwitchToRegister = () => {
+    setRegisterOpen(true)
+    setTimeout(() => setLoginOpen(false), 250)
+  }
+
+  const handleSwitchToLogin = () => {
+    setLoginOpen(true)
+    setTimeout(() => setRegisterOpen(false), 250)
+  }
+
+  const openLogin = () => {
+    setLoginOpen(true)
+    setRegisterOpen(false)
+  }
+
+  const openRegister = () => {
+    setRegisterOpen(true)
+    setLoginOpen(false)
+  }
+
   return (
     <header className="catalog-header">
       <div className="header-search">
@@ -40,18 +60,26 @@ function HeaderBar({ searchTerm, onSearchChange, placeholder }) {
           </>
         ) : (
           <div className="header-buttons">
-            <Button className="header-login-btn" onClick={() => setLoginOpen(true)}>
+            <Button className="header-login-btn" onClick={openLogin}>
               Войти
             </Button>
-            <Button type='primary' className="header-register-btn" onClick={() => setRegisterOpen(true)}>
+            <Button type='primary' className="header-register-btn" onClick={openRegister}>
               Регистрация
             </Button>
           </div>
         )}
       </div>
 
-      <LoginModal open={loginOpen} onCancel={() => setLoginOpen(false)} />
-      <RegisterModal open={registerOpen} onCancel={() => setRegisterOpen(false)} />
+      <LoginModal
+        open={loginOpen}
+        onCancel={() => setLoginOpen(false)}
+        onSwitchToRegister={handleSwitchToRegister}
+      />
+      <RegisterModal
+        open={registerOpen}
+        onCancel={() => setRegisterOpen(false)}
+        onSwitchToLogin={handleSwitchToLogin}
+      />
     </header>
   )
 }
