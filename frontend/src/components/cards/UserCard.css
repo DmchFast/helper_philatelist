@@ -88,6 +88,7 @@
   color: var(--color-muted);
 }
 
+/* Стили кнопки "Перейти в профиль" — единообразно с другими кнопками проекта */
 .user-card__profile-btn.ant-btn {
   width: 100%;
   height: 48px;
@@ -104,13 +105,20 @@
   font-size: 14px;
   line-height: 20px;
   font-weight: 700;
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 
+/* Эффект при наведении — как у кнопки "Войти" */
 .user-card__profile-btn.ant-btn:hover {
-  background: rgba(220, 224, 228, 1);
-  color: var(--color-text) !important;
+  background: var(--color-accent) !important;
+  border-color: var(--color-accent) !important;
+  color: var(--color-on-dark) !important;
+  box-shadow: var(--shadow-green);
 }
 
-.user-card__profile-btn .material-symbols-outlined {
-  font-size: 16px;
+/* Эффект при нажатии (active) */
+.user-card__profile-btn.ant-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
 }

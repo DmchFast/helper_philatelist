@@ -18,13 +18,13 @@
 
 .user-info-modal__badge {
   align-self: flex-start;
-  padding: 4px 16px;
+  padding: 2px 16px;
   border-radius: 12px;
   background: rgba(97, 137, 47, 1);
   color: var(--color-on-dark);
   font-family: var(--font-heading);
-  font-size: 11px;
-  line-height: 16px;
+  font-size: 13px;
+  line-height: 30px;
   font-weight: 800;
   letter-spacing: 0.55px;
   text-transform: uppercase;
