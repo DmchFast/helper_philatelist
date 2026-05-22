@@ -7,7 +7,7 @@ import './LogRegModals.css'
 
 const { Title, Text } = Typography
 
-const LoginModal = ({ open, onCancel }) => {
+const LoginModal = ({ open, onCancel, onSwitchToRegister }) => {
   const [form] = Form.useForm()
   const { login } = useAuth()
 
@@ -19,6 +19,11 @@ const LoginModal = ({ open, onCancel }) => {
     } else {
       message.error('Неверный email или пароль')
     }
+  }
+
+  const handleSwitch = (e) => {
+    e.preventDefault()
+    if (onSwitchToRegister) onSwitchToRegister()
   }
 
   return (
@@ -51,6 +56,13 @@ const LoginModal = ({ open, onCancel }) => {
           Войти
         </Button>
       </Form>
+
+      <div className="auth-modal__switch">
+        <Text type="secondary">Нет аккаунта? </Text>
+        <a href="#" onClick={handleSwitch} className="auth-modal__switch-link">
+          Зарегистрироваться
+        </a>
+      </div>
 
       <Divider className="auth-modal__divider">или продолжить с</Divider>
 

@@ -77,11 +77,39 @@
   text-decoration: underline;
 }
 
+.auth-modal__switch {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.auth-modal__switch-link {
+  color: var(--color-badge-text);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+.auth-modal__switch-link:hover {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
 .app-icon{
   width: 20;
   height: 20;
 }
 
 .auth-modal-btn:hover{
-  background-color: var(--color-accent-dark) !important;
+  background-color: rgba(134, 194, 50, 0.639) !important;
+
+}
+
+.auth-modal .ant-modal-mask {
+  transition: opacity 0.2s ease;
+}
+
+.auth-modal .ant-modal-wrap {
+  transition: opacity 0.2s ease;
 }

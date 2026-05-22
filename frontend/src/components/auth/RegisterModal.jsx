@@ -7,7 +7,7 @@ import './LogRegModals.css'
 
 const { Title, Text } = Typography
 
-const RegisterModal = ({ open, onCancel }) => {
+const RegisterModal = ({ open, onCancel, onSwitchToLogin }) => {
   const [form] = Form.useForm()
   const { register } = useAuth()
 
@@ -20,6 +20,11 @@ const RegisterModal = ({ open, onCancel }) => {
     } else {
       message.error('Не удалось зарегистрироваться (возможно, email уже используется)')
     }
+  }
+
+  const handleSwitch = (e) => {
+    e.preventDefault()
+    if (onSwitchToLogin) onSwitchToLogin()
   }
 
   return (
@@ -63,6 +68,13 @@ const RegisterModal = ({ open, onCancel }) => {
           Регистрация по электронной почте
         </Button>
       </Form>
+
+      <div className="auth-modal__switch">
+        <Text type="secondary">Есть аккаунт? </Text>
+        <a href="#" onClick={handleSwitch} className="auth-modal__switch-link">
+          Войти
+        </a>
+      </div>
 
       <Divider className="auth-modal__divider">или продолжить с</Divider>
 
