@@ -13,6 +13,7 @@ import { userRoleOptions } from '../data/usersData'
 import { useCatalog } from '../context/CatalogContext'
 import { useUsers } from '../context/UsersContext'
 import './AdminPage.css'
+import './CatalogPage.css'
 
 const { Title, Text } = Typography
 
@@ -122,8 +123,8 @@ function AdminPage() {
               <Title level={3} className="admin-section__title">
                 Каталог марок
               </Title>
-              <div className="admin-section__subtitle">
-                Управляйте каталогом марок, изменяйте их и удаляйте лишние записи
+              <div className="subtitle">
+                Управление марками из каталога
               </div>
             </div>
 
@@ -175,7 +176,7 @@ function AdminPage() {
                 Роли пользователей
               </Title>
               <div className="admin-section__subtitle">
-                Управляйте ролями и удаляйте пользователей без перехода в отдельные экраны
+                Управление ролями и удаляйте пользователей
               </div>
             </div>
 
@@ -214,12 +215,9 @@ function AdminPage() {
         <main className="admin-main">
           <div className="admin-title-row">
             <div>
-              <Title level={2} className="admin-heading">
+              <Title level={2} className="title" style={{marginBottom: 0}}>
                 Администрирование
               </Title>
-              <Text className="admin-subtitle">
-                Управляйте каталогом марок и ролями пользователей в одном месте
-              </Text>
             </div>
           </div>
 

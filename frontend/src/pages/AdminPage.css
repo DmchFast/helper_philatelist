@@ -132,17 +132,6 @@
   padding-bottom: 4px;
 }
 
-/* .admin-add-btn.ant-btn {
-  height: 44px;
-  border-radius: 12px;
-  font-family: var(--font-heading);
-  font-weight: 700;
-}
-
-.admin-add-btn .material-symbols-outlined {
-  font-size: 18px;
-} */
-
 .admin-add-btn{
   background-color: var(--color-accent-dark);
   border-radius: 12px !important;
@@ -179,16 +168,5 @@
     margin-left: 0;
     width: 100%;
     height: auto;
-  }
-}
-
-@media (max-width: 640px) {
-  .admin-main {
-    padding: 20px 16px 24px;
-  }
-
-  .admin-heading {
-    font-size: 28px !important;
-    line-height: 34px !important;
   }
 }

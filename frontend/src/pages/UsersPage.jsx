@@ -9,6 +9,7 @@ import { navItems } from '../data/catalogData'
 import { userRoleOptions } from '../data/usersData'
 import { useUsers } from '../context/UsersContext'
 import './UsersPage.css'
+import './CatalogPage.css'
 
 const { Title } = Typography
 
@@ -43,10 +44,10 @@ function UsersPage() {
         <main className="users-main">
           <div className="users-title-row">
             <div>
-              <Title level={2} className="users-heading">
+              <Title level={2} className="title">
                 Пользователи системы
               </Title>
-              <div className="users-subtitle">
+              <div className="subtitle">
                 Исследуйте сообщество филателистов и экспертов со всего мира
               </div>
             </div>
