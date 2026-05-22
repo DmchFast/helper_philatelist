@@ -1,0 +1,142 @@
+.admin-stamps {
+  background: var(--color-surface);
+  border-radius: 16px;
+  border: 1px solid var(--color-border-light);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.admin-stamps__scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.admin-stamps__head {
+  display: grid;
+  grid-template-columns: 320px 160px 220px 100px 120px;
+  gap: 60px;
+  padding: 16px 24px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--color-muted-2);
+  border-bottom: 1px solid var(--color-border-light);
+  min-width: 920px;
+}
+
+.admin-stamps__body {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-stamps__row {
+  display: grid;
+  grid-template-columns: 320px 160px 220px 100px 120px;
+  gap: 60px;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--color-border-light);
+  min-width: 920px;
+}
+
+.admin-stamps__row:last-child {
+  border-bottom: none;
+}
+
+.admin-stamps__row--empty {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  color: var(--color-muted-2);
+  font-family: var(--font-body);
+}
+
+.admin-stamps__empty {
+  padding: 12px 0;
+}
+
+.admin-stamps__cell {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.admin-stamps__cell--stamp {
+  gap: 14px;
+}
+
+.admin-stamps__thumb {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  background: var(--color-input);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  box-shadow: var(--shadow-image);
+  flex-shrink: 0;
+}
+
+.admin-stamps__thumb img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+}
+
+.admin-stamps__title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.admin-stamps__name {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--color-text);
+}
+
+.admin-stamps__meta {
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--color-muted-2);
+}
+
+.admin-stamps__info {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.admin-stamps__year {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.admin-stamps__actions {
+  gap: 8px;
+}
+
+.admin-stamps__action {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  border: 1px solid var(--color-border-light);
+  background: var(--color-input);
+  color: var(--color-muted-2);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.admin-stamps__action:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-on-dark);
+}
