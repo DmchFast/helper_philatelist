@@ -1,9 +1,8 @@
-.admin-stamp-filters {
+.three-filtersfilters {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
-  width: 100%;
-  max-width: 100%;
+  max-width: 500px;
   background: var(--color-surface);
   border: 1px solid var(--color-border-light);
   border-radius: 16px;
@@ -12,22 +11,22 @@
   align-items: center;
 }
 
-.admin-stamp-filters__select {
+.three-filtersfilters__select {
   width: 100%;
 }
 
-.admin-stamp-filters__price-control {
+.three-filtersfilters__price-control {
   display: flex;
   flex-direction: column;
   gap: 8px;
   min-width: 0;
 }
 
-.admin-stamp-filters__price-slider {
+.three-filtersfilters__price-slider {
   width: 100%;
 }
 
-.admin-stamp-filters__price-label {
+.three-filtersfilters__price-label {
   font-family: var(--font-heading);
   font-size: 12px;
   line-height: 16px;
@@ -37,7 +36,7 @@
   color: var(--color-muted-2);
 }
 
-.admin-stamp-filters__price-value {
+.three-filtersfilters__price-value {
   font-family: var(--font-body);
   font-size: 13px;
   line-height: 18px;
@@ -45,14 +44,14 @@
 }
 
 @media (max-width: 1200px) {
-  .admin-stamp-filters {
+  .three-filtersfilters {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     min-width: 640px;
   }
 }
 
 @media (max-width: 700px) {
-  .admin-stamp-filters {
+  .three-filtersfilters {
     grid-template-columns: 1fr;
     min-width: 320px;
   }

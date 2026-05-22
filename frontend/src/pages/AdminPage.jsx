@@ -4,7 +4,7 @@ import Sidebar from '../components/bars/Sidebar'
 import HeaderBar from '../components/bars/HeaderBar'
 import AdminStampsTable from '../components/tables/AdminStampsTable'
 import AdminUsersTable from '../components/tables/AdminUsersTable'
-import AdminStampFilters from '../components/filters/AdminStampFilters'
+import ThreeFilters from '../components/filters/ThreeFilters'
 import SingleFilter from '../components/filters/SingleFilter'
 import CreateStampModal from '../components/modal/CreateStampModal'
 import DeleteConfirmModal from '../components/modal/DeleteConfirmModal'
@@ -12,15 +12,10 @@ import { navItems } from '../data/catalogData'
 import { userRoleOptions } from '../data/usersData'
 import { useCatalog } from '../context/CatalogContext'
 import { useUsers } from '../context/UsersContext'
+import { getUniqueCountries, getUniqueDecades, useStampFilters, SORT_OPTIONS_LIST_NO_PRICE } from '../useFilters'   // ← изменён импорт
 import './AdminPage.css'
-import './CatalogPage.css'
 
-const { Title, Text } = Typography
-
-const stampSortOptions = [
-  { value: 'По названию', label: 'По названию' },
-  { value: 'По году', label: 'По году' },
-]
+const { Title } = Typography
 
 function AdminPage() {
   const { stamps, addStamp, updateStamp, deleteStamp } = useCatalog()
@@ -30,7 +25,7 @@ function AdminPage() {
   const [activeTab, setActiveTab] = useState('stamps')
   const [createStampOpen, setCreateStampOpen] = useState(false)
   const [stampCountryValue, setStampCountryValue] = useState('Все страны')
-  const [stampYearValue, setStampYearValue] = useState('Все года')
+  const [stampDecadeValue, setStampDecadeValue] = useState('Все года')
   const [stampSortValue, setStampSortValue] = useState('По названию')
   const [stampPriceLimit, setStampPriceLimit] = useState(() =>
     Math.max(...stamps.map((stamp) => Number(stamp.price) || 0), 0)
@@ -38,57 +33,41 @@ function AdminPage() {
   const [roleFilter, setRoleFilter] = useState('Все роли')
   const [userToDelete, setUserToDelete] = useState(null)
 
-  const normalizedSearch = searchTerm.trim().toLowerCase()
+  const countryOptions = useMemo(() => {
+    const countries = getUniqueCountries(stamps)
+    return countries.map(c => ({ value: c, label: c }))
+  }, [stamps])
 
-  const stampMaxPrice = useMemo(
-    () => Math.max(...stamps.map((stamp) => Number(stamp.price) || 0), 0),
-    [stamps]
+  const decadeOptions = useMemo(() => {
+    return getUniqueDecades(stamps)
+  }, [stamps])
+
+  const sortOptions = SORT_OPTIONS_LIST_NO_PRICE   // ← изменено
+
+  const filteredStamps = useStampFilters(
+    stamps,
+    searchTerm,
+    stampCountryValue,
+    stampDecadeValue,
+    stampSortValue,
+    stampPriceLimit,
+    false // нет кнопки "Редкие"
   )
-
-  const stampCountryOptions = useMemo(() => {
-    const countries = Array.from(new Set(stamps.map((stamp) => stamp.country).filter(Boolean)))
-    return [{ value: 'Все страны', label: 'Все страны' }, ...countries.map((country) => ({ value: country, label: country }))]
-  }, [stamps])
-
-  const stampYearOptions = useMemo(() => {
-    const years = Array.from(new Set(stamps.map((stamp) => stamp.year).filter(Boolean)))
-    return [{ value: 'Все года', label: 'Все года' }, ...years.map((year) => ({ value: year, label: year }))]
-  }, [stamps])
-
-  const filteredStamps = useMemo(() => {
-    return stamps
-      .filter((stamp) => {
-        const fullText = [stamp.title, stamp.series, stamp.country].join(' ').toLowerCase()
-        return fullText.includes(normalizedSearch)
-      })
-      .filter((stamp) =>
-        stampCountryValue === 'Все страны' ? true : stamp.country === stampCountryValue
-      )
-      .filter((stamp) =>
-        stampYearValue === 'Все года' ? true : String(stamp.year) === String(stampYearValue)
-      )
-      .filter((stamp) => (stampPriceLimit ? (Number(stamp.price) || 0) <= stampPriceLimit : true))
-      .sort((a, b) => {
-        if (stampSortValue === 'По году') return Number(a.year) - Number(b.year)
-        return a.title.localeCompare(b.title)
-      })
-  }, [normalizedSearch, stampCountryValue, stampPriceLimit, stampSortValue, stampYearValue, stamps])
 
   const filteredUsers = useMemo(() => {
     return users.filter((user) => {
       const matchesSearch = [user.name, user.email, user.roleLabel || user.role]
         .join(' ')
         .toLowerCase()
-        .includes(normalizedSearch)
+        .includes(searchTerm.toLowerCase())
       const matchesRole = roleFilter === 'Все роли' || user.role === roleFilter
       return matchesSearch && matchesRole
     })
-  }, [normalizedSearch, roleFilter, users])
+  }, [searchTerm, roleFilter, users])
 
   const handleCreateStamp = (newStamp) => {
     addStamp(newStamp)
     setCreateStampOpen(false)
-    // Обновляем лимит цены
     const newMax = Math.max(...stamps.map(s => Number(s.price) || 0), Number(newStamp.price) || 0)
     setStampPriceLimit(newMax)
   }
@@ -98,19 +77,9 @@ function AdminPage() {
     setStampPriceLimit(prev => Math.max(prev, Number(updatedStamp.price) || 0))
   }
 
-  const handleDeleteStamp = (stampId) => {
-    deleteStamp(stampId)
-  }
-
-  const handleRoleChange = (user, role) => {
-    updateUserRole(user.id, role)
-  }
-
-  const handleConfirmDeleteUser = () => {
-    if (!userToDelete) return
-    deleteUser(userToDelete.id)
-    setUserToDelete(null)
-  }
+  const handleDeleteStamp = (stampId) => deleteStamp(stampId)
+  const handleRoleChange = (user, role) => updateUserRole(user.id, role)
+  const handleConfirmDeleteUser = () => { if (userToDelete) { deleteUser(userToDelete.id); setUserToDelete(null) } }
 
   const adminTabs = [
     {
@@ -129,21 +98,17 @@ function AdminPage() {
             </div>
 
             <div className="admin-section__controls">
-              <AdminStampFilters
+              <ThreeFilters
                 countryValue={stampCountryValue}
-                yearValue={stampYearValue}
+                decadeValue={stampDecadeValue}
                 sortValue={stampSortValue}
-                priceLimit={stampPriceLimit}
                 onCountryChange={setStampCountryValue}
-                onYearChange={setStampYearValue}
+                onDecadeChange={setStampDecadeValue}
                 onSortChange={setStampSortValue}
-                onPriceChange={setStampPriceLimit}
-                maxPrice={stampMaxPrice}
-                countryOptions={stampCountryOptions}
-                yearOptions={stampYearOptions}
-                sortOptions={stampSortOptions}
+                countryOptions={countryOptions}
+                decadeOptions={decadeOptions}
+                sortOptions={sortOptions}
               />
-
               <Button
                 type="primary"
                 className="admin-add-btn"
@@ -154,7 +119,6 @@ function AdminPage() {
               </Button>
             </div>
           </div>
-
           <div className="admin-table-wrapper">
             <AdminStampsTable
               stamps={filteredStamps}
@@ -181,21 +145,11 @@ function AdminPage() {
             </div>
 
             <div className="admin-section__controls">
-              <SingleFilter
-                value={roleFilter}
-                options={userRoleOptions}
-                onChange={setRoleFilter}
-                ariaLabel="Фильтр по роли пользователя"
-              />
+              <SingleFilter value={roleFilter} options={userRoleOptions} onChange={setRoleFilter} ariaLabel="Фильтр по роли пользователя" />
             </div>
           </div>
-
           <div className="admin-table-wrapper">
-            <AdminUsersTable
-              users={filteredUsers}
-              onRoleChange={handleRoleChange}
-              onDeleteUser={setUserToDelete}
-            />
+            <AdminUsersTable users={filteredUsers} onRoleChange={handleRoleChange} onDeleteUser={setUserToDelete} />
           </div>
         </div>
       ),
@@ -206,12 +160,7 @@ function AdminPage() {
     <div className="admin-page">
       <Sidebar items={navItems} />
       <div className="admin-content">
-        <HeaderBar
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          placeholder={activeTab === 'stamps' ? 'Поиск по маркам' : 'Поиск по пользователям'}
-        />
-
+        <HeaderBar searchTerm={searchTerm} onSearchChange={setSearchTerm} placeholder={activeTab === 'stamps' ? 'Поиск по маркам' : 'Поиск по пользователям'} />
         <main className="admin-main">
           <div className="admin-title-row">
             <div>
@@ -220,24 +169,11 @@ function AdminPage() {
               </Title>
             </div>
           </div>
-
           <Tabs className="admin-tabs" activeKey={activeTab} onChange={setActiveTab} items={adminTabs} />
         </main>
       </div>
-
-      <CreateStampModal
-        open={createStampOpen}
-        onCancel={() => setCreateStampOpen(false)}
-        onCreate={handleCreateStamp}
-        showPriceField={false}
-      />
-
-      <DeleteConfirmModal
-        open={Boolean(userToDelete)}
-        onCancel={() => setUserToDelete(null)}
-        onConfirm={handleConfirmDeleteUser}
-        title={`пользователя "${userToDelete?.name || ''}"`}
-      />
+      <CreateStampModal open={createStampOpen} onCancel={() => setCreateStampOpen(false)} onCreate={handleCreateStamp} showPriceField={false} />
+      <DeleteConfirmModal open={Boolean(userToDelete)} onCancel={() => setUserToDelete(null)} onConfirm={handleConfirmDeleteUser} title={`пользователя "${userToDelete?.name || ''}"`} />
     </div>
   )
 }

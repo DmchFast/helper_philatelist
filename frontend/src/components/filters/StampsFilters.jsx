@@ -3,18 +3,18 @@ import './StampsFilters.css'
 
 function StampsFilters({
   countryValue,
-  yearValue,
+  decadeValue,
   sortValue,
   priceLimit,
   rareOnly,
   onCountryChange,
-  onYearChange,
+  onDecadeChange,
   onSortChange,
   onPriceChange,
   onRareToggle,
   maxPrice,
   countryOptions,
-  yearOptions,
+  decadeOptions,
   sortOptions,
   showRareButton = true,
 }) {
@@ -29,9 +29,9 @@ function StampsFilters({
       />
       <Select
         className="stamps-filters__select"
-        value={yearValue}
-        onChange={onYearChange}
-        options={yearOptions}
+        value={decadeValue}
+        onChange={onDecadeChange}
+        options={decadeOptions}
         suffixIcon={<span className="material-symbols-outlined">expand_more</span>}
       />
       <div className="stamps-filters__price-control">

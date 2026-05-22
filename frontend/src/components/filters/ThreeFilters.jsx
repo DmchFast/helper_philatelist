@@ -1,38 +1,35 @@
-import { Select, Slider } from 'antd'
-import './AdminStampFilters.css'
+import { Select } from 'antd'
+import './ThreeFilters.css'
 
-function AdminStampFilters({
+function ThreeFilters({
   countryValue,
-  yearValue,
+  decadeValue,
   sortValue,
-  priceLimit,
   onCountryChange,
-  onYearChange,
+  onDecadeChange,
   onSortChange,
-  onPriceChange,
-  maxPrice,
   countryOptions,
-  yearOptions,
+  decadeOptions,
   sortOptions,
 }) {
   return (
-    <div className="admin-stamp-filters">
+    <div className="three-filtersfilters">
       <Select
-        className="admin-stamp-filters__select"
+        className="three-filtersfilters__select"
         value={countryValue}
         onChange={onCountryChange}
         options={countryOptions}
         suffixIcon={<span className="material-symbols-outlined">expand_more</span>}
       />
       <Select
-        className="admin-stamp-filters__select"
-        value={yearValue}
-        onChange={onYearChange}
-        options={yearOptions}
+        className="three-filtersfilters__select"
+        value={decadeValue}
+        onChange={onDecadeChange}
+        options={decadeOptions}
         suffixIcon={<span className="material-symbols-outlined">expand_more</span>}
       />
       <Select
-        className="admin-stamp-filters__select"
+        className="three-filtersfilters__select"
         value={sortValue}
         onChange={onSortChange}
         options={sortOptions}
@@ -42,4 +39,4 @@ function AdminStampFilters({
   )
 }
 
-export default AdminStampFilters
+export default ThreeFilters

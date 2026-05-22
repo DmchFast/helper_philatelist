@@ -54,7 +54,7 @@ export const stamps = [
     title: 'Победа!',
     series: 'Победа',
     year: '1945',
-    country: 'CCCР',
+    country: 'СССР',
     image: stamp,
   },
 
