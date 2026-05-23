@@ -75,14 +75,14 @@ const CreateStampModal = ({
           label="Название марки"
           rules={[{ required: true, message: 'Введите название' }]}
         >
-          <Input placeholder="Например: Первый полёт в космос" />
+          <Input placeholder="Полёт в космос" />
         </Form.Item>
         <Form.Item
           name="series"
           label="Серия"
           rules={[{ required: true, message: 'Введите серию' }]}
         >
-          <Input placeholder="Например: Космическая программа" />
+          <Input placeholder="Космическая программа" />
         </Form.Item>
         <div style={{ display: 'flex', gap: '12px' }}>
           <Form.Item
