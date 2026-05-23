@@ -4,15 +4,13 @@ import defaultStamp from '../assets/default-stamp.png'
 
 // Функция нормализации одной марки
 const normalizeStamp = (stamp, index) => {
-  // Определяем URL изображения:
   // приоритет: stamp.image (новый) > stamp.photo (старый) > defaultStamp
   const imageUrl = stamp.image || stamp.photo || defaultStamp
   return {
     ...stamp,
     id: stamp.id || `stamp-${Date.now()}-${index}`,
     image: imageUrl,
-    photo: imageUrl, // синхронизируем оба поля для совместимости со старым кодом
-    price: typeof stamp.price === 'number' ? stamp.price : (index + 1) * 250,
+    price: typeof stamp.price === 'number' ? stamp.price : (stamp.price ? Number(stamp.price) : 0),
     description: stamp.description || '',
     rarity: stamp.rarity || 'Обычная',
   }
@@ -34,11 +32,7 @@ export const CatalogProvider = ({ children }) => {
   // Добавление марки
   const addStamp = (newStamp) => {
     const nextId = `stamp-${Date.now()}`
-    const nextPrice = Math.max(...stamps.map(s => Number(s.price) || 0), 0) + 250
-    const stampToAdd = normalizeStamp(
-      { ...newStamp, id: nextId, price: nextPrice },
-      stamps.length
-    )
+    const stampToAdd = normalizeStamp({ ...newStamp, id: nextId }, stamps.length)
     setStamps(prev => [stampToAdd, ...prev])
     return stampToAdd
   }

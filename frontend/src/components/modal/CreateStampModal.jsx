@@ -33,6 +33,14 @@ const CreateStampModal = ({
     form
       .validateFields()
       .then((values) => {
+        // Преобразуем цену в число
+        let price = 0
+        if (showPriceField && values.price) {
+          price = typeof values.price === 'number' ? values.price : Number(values.price)
+        } else if (initialData?.price) {
+          price = typeof initialData.price === 'number' ? initialData.price : Number(initialData.price)
+        }
+
         const newStamp = {
           id: `stamp-${Date.now()}`,
           title: values.title,
@@ -42,7 +50,7 @@ const CreateStampModal = ({
           image: values.imageUrl || initialData?.photo || initialData?.image || defaultStamp,
           description: values.description || '',
           rarity: 'Обычная',
-          price: typeof values.price === 'number' ? values.price : initialData?.price || 0,
+          price: price,
         }
         form.resetFields()
         onCreate(newStamp)
