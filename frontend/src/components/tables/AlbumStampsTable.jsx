@@ -45,6 +45,12 @@ function AlbumStampsTable({ stamps = [], onEditStamp, onDeleteStamp }) {
     setSelectedStamp(null)
   }
 
+  // Проверка на редкую марку (цена >= 1000)
+  const isRare = (stamp) => {
+    const price = Number(stamp.price)
+    return !isNaN(price) && price >= 1000
+  }
+
   return (
     <div className="album-stamps">
       <div className="album-stamps__head">
@@ -64,6 +70,7 @@ function AlbumStampsTable({ stamps = [], onEditStamp, onDeleteStamp }) {
             <div key={stamp.id} className="album-stamps__row">
               <div className="album-stamps__cell album-stamps__cell--stamp">
                 <div className="album-stamps__thumb">
+                  {isRare(stamp) && <div className="album-stamps__rare-badge">Редкая</div>}
                   <img src={stamp.image || defaultStamp} alt={stamp.title} loading="lazy" />
                 </div>
               </div>

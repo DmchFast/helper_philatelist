@@ -7,10 +7,12 @@ const { Text } = Typography
 
 function AlbumStampCard({ stamp }) {
   const [detailOpen, setDetailOpen] = useState(false)
+  const isRare = stamp.price && stamp.price >= 1000
 
   return (
     <article className="album-stamp-card">
       <div className="album-stamp-card__image">
+        {isRare && <div className="album-stamp-card__rare-badge">Редкая</div>}
         <img src={stamp.image} alt="" loading="lazy" />
       </div>
       <div className="album-stamp-card__body">
