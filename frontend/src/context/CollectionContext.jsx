@@ -47,6 +47,17 @@ export const CollectionProvider = ({ children }) => {
     )
   }
 
+  // Изменение названия альбома
+  const updateAlbumTitle = (albumId, newTitleString) => {
+    setAlbums(prev =>
+      prev.map(album =>
+        album.id === albumId
+          ? { ...album, title: [newTitleString] }
+          : album
+      )
+    )
+  }
+
   // Добавление марки в альбом
   const addStampToAlbum = (albumId, stamp) => {
     setAlbums(prev =>
@@ -113,6 +124,7 @@ export const CollectionProvider = ({ children }) => {
       deleteAlbum,
       toggleAlbumVisibility,
       updateAlbum,
+      updateAlbumTitle,
       addStampToAlbum,
       updateStampInAlbum,
       deleteStampFromAlbum,

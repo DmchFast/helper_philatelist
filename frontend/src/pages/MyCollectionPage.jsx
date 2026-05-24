@@ -12,6 +12,7 @@ import { useCollection } from '../context/CollectionContext'
 import CreateAlbumModal from '../components/modal/CreateAlbumModal'
 import CreateStampModal from '../components/modal/CreateStampModal'
 import DeleteConfirmModal from '../components/modal/DeleteConfirmModal'
+import EditAlbumModal from '../components/modal/EditAlbumModal'
 import { useStampFilters, getUniqueCountries, getUniqueDecades, SORT_OPTIONS_LIST } from '../useFilters'
 import './CatalogPage.css'
 import './MyCollectionPage.css'
@@ -20,7 +21,7 @@ const { Title } = Typography
 
 function MyCollectionPage() {
   const { user } = useAuth()
-  const { albums, addAlbum, deleteAlbum, toggleAlbumVisibility, addStampToAlbum, updateStampInAlbum, deleteStampFromAlbum } = useCollection()
+  const { albums, addAlbum, deleteAlbum, toggleAlbumVisibility, addStampToAlbum, updateStampInAlbum, deleteStampFromAlbum, updateAlbumTitle } = useCollection()  // добавили updateAlbumTitle
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedAlbumId, setSelectedAlbumId] = useState(null)
   const [countryValue, setCountryValue] = useState('Все страны')
@@ -31,6 +32,7 @@ function MyCollectionPage() {
   const [createModalOpen, setCreateModalOpen] = useState(false)
   const [createStampModalOpen, setCreateStampModalOpen] = useState(false)
   const [albumToDelete, setAlbumToDelete] = useState(null)
+  const [albumToEdit, setAlbumToEdit] = useState(null)
 
   const filteredAlbums = albums.filter(album => album.title.join(' ').toLowerCase().includes(searchTerm.toLowerCase()))
   const selectedAlbum = albums.find(album => album.id === selectedAlbumId) || null
@@ -72,6 +74,17 @@ function MyCollectionPage() {
   const handleCreateStamp = (newStamp) => { if (selectedAlbum) addStampToAlbum(selectedAlbum.id, newStamp); setCreateStampModalOpen(false) }
   const handleEditStamp = (updatedStamp) => { if (selectedAlbum) updateStampInAlbum(selectedAlbum.id, updatedStamp) }
   const handleDeleteStamp = (stampId) => { if (selectedAlbum) deleteStampFromAlbum(selectedAlbum.id, stampId) }
+
+  const handleEditTitle = (album) => {
+    setAlbumToEdit(album)
+  }
+
+  const handleSaveTitle = (newTitle) => {
+    if (albumToEdit) {
+      updateAlbumTitle(albumToEdit.id, newTitle)
+    }
+    setAlbumToEdit(null)
+  }
 
   const getPluralLabel = (count, one, two, five) => { const mod10 = count % 10, mod100 = count % 100; if (mod10 === 1 && mod100 !== 11) return one; if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return two; return five }
   const stampCount = filteredAlbums.reduce((total, album) => total + (album.stamps?.length || 0), 0)
@@ -130,12 +143,23 @@ function MyCollectionPage() {
             <Button type="primary" className="add-album-btn" icon={<span className="material-symbols-outlined">add</span>} onClick={() => setCreateModalOpen(true)}>Создать альбом</Button>
           </div>
           <div className="my-collection-grid-wrapper">
-            <AlbumGrid albums={filteredAlbums} onAlbumClick={(album) => setSelectedAlbumId(album.id)} gridVariant="collection" cardComponent={MyAlbumCard} cardProps={{ onToggleVisibility: toggleAlbumVisibility, onDelete: handleDeleteAlbum }} />
+            <AlbumGrid albums={filteredAlbums} onAlbumClick={(album) => setSelectedAlbumId(album.id)} gridVariant="collection" cardComponent={MyAlbumCard} cardProps={{ 
+              onToggleVisibility: toggleAlbumVisibility, 
+              onDelete: handleDeleteAlbum,
+              onEditTitle: handleEditTitle
+            }} />
           </div>
         </main>
       </div>
       <CreateAlbumModal open={createModalOpen} onCancel={() => setCreateModalOpen(false)} onCreate={handleCreateAlbum} />
       <DeleteConfirmModal open={Boolean(albumToDelete)} onCancel={() => setAlbumToDelete(null)} onConfirm={handleConfirmDeleteAlbum} title={`альбом "${albumToDelete?.title?.join(' ') || ''}"`} />
+      
+      <EditAlbumModal
+        open={Boolean(albumToEdit)}
+        currentTitle={albumToEdit?.title}
+        onCancel={() => setAlbumToEdit(null)}
+        onSave={handleSaveTitle}
+      />
     </div>
   )
 }
