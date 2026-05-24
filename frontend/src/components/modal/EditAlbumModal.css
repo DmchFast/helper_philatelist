@@ -1,0 +1,68 @@
+.edit-album-modal .ant-modal-content {
+  border-radius: 24px;
+  background: var(--color-surface);
+  padding: 0;
+}
+
+.edit-album-modal .ant-modal-body {
+  padding: 28px 28px 24px;
+}
+
+.edit-album-modal__title {
+  text-align: center;
+  margin-bottom: 18px;
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.edit-album-modal .ant-form-item-label > label {
+  font-family: var(--font-body);
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+.edit-album-modal .ant-input {
+  background: var(--color-input);
+  border: 1px solid var(--color-input-border);
+  border-radius: 12px;
+  padding: 8px 16px;
+}
+
+.edit-album-modal .ant-input::placeholder {
+  color: var(--color-muted);
+}
+
+.edit-album-modal .ant-form-item {
+  margin-bottom: 14px;
+}
+
+.edit-album-modal__submit {
+  background: var(--color-accent-dark) !important;
+  border-color: var(--color-accent-dark) !important;
+  border-radius: 8px;
+  height: 44px;
+  font-weight: 500;
+  margin-top: 12px;
+  width: 100%;
+}
+
+.edit-album-modal__submit:hover {
+  background: var(--color-accent) !important;
+  border-color: var(--color-accent) !important;
+}
+
+@media (max-width: 480px) {
+  .edit-album-modal .ant-modal-body {
+    padding: 18px;
+  }
+
+  .edit-album-modal__title {
+    font-size: 18px;
+  }
+
+  .edit-album-modal .ant-form-item-label > label {
+    font-size: 12px;
+  }
+}
