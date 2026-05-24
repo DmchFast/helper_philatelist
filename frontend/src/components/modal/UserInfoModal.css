@@ -31,7 +31,7 @@
 }
 
 .user-info-modal__badge--admin {
-  background: rgba(35, 115, 235, 1);
+  background: var(--color-amin);
 }
 
 .user-info-modal__header {
@@ -49,7 +49,7 @@
 }
 
 .user-info-modal__avatar--admin {
-  background: rgba(35, 115, 235, 1);
+  background: var(--color-amin);
 }
 
 .user-info-modal__identity {
