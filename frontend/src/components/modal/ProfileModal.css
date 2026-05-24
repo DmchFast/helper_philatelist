@@ -1,0 +1,185 @@
+.profile-modal .ant-modal-content {
+  border-radius: 24px;
+  padding: 0;
+  overflow: hidden;
+  max-height: 600px;
+  height: auto;
+  overflow-y: auto;
+}
+
+.profile-modal .ant-modal-close {
+  top: 18px;
+  inset-inline-end: 18px;
+}
+
+.profile-modal__content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.profile-modal__badge {
+  align-self: flex-start;
+  padding: 4px 16px;
+  border-radius: 12px;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  line-height: 30px;
+  font-weight: 800;
+  letter-spacing: 0.55px;
+  text-transform: uppercase;
+  color: var(--color-on-dark);
+  background: var(--color-accent-dark);
+}
+
+.profile-modal__badge--admin {
+  background: var(--color-amin);
+}
+
+.profile-modal__avatar {
+  background: var(--color-accent-dark);
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 28px;
+  color: var(--color-on-dark);
+}
+
+.profile-modal__avatar--admin {
+  background: var(--color-amin);
+}
+
+.profile-modal__header-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.profile-modal__identity {
+  flex: 1;
+}
+
+.profile-modal__name-line {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.profile-modal__name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 26px;
+  color: var(--color-text);
+}
+
+.profile-modal__email {
+  font-family: var(--font-body);
+  color: var(--color-muted);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.profile-modal__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.profile-modal__stat {
+  border-radius: 16px;
+  background: var(--color-input);
+  padding: 8px 10px;
+  text-align: center;
+}
+
+.profile-modal__stat-value {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.profile-modal__stat-value--accent {
+  color: var(--color-accent-dark);
+}
+
+.profile-modal__stat-label {
+  font-family: var(--font-heading);
+  font-size: 10px;
+  line-height: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.profile-modal__form {
+  margin-top: 4px;
+}
+
+.profile-modal__form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.profile-modal__form-item {
+  margin-bottom: 10px;
+}
+
+.profile-modal .ant-input,
+.profile-modal .ant-input-affix-wrapper,
+.profile-modal .ant-picker {
+  background: var(--color-input);
+  border: 1px solid var(--color-input-border);
+  border-radius: 12px;
+  padding: 6px 12px;
+}
+
+.profile-modal .ant-form-item-label > label {
+  font-family: var(--font-body);
+  color: var(--color-muted);
+  font-size: 12px;
+}
+
+.profile-modal__actions {
+  margin-top: 8px;
+}
+
+.profile-modal__submit {
+  background: var(--color-accent-dark) !important;
+  border-color: var(--color-accent-dark) !important;
+  border-radius: 12px;
+  height: 40px;
+  font-weight: 600;
+  width: 100%;
+}
+
+.profile-modal__submit:hover {
+  background: var(--color-accent) !important;
+  border-color: var(--color-accent) !important;
+}
+
+@media (max-width: 640px) {
+  .profile-modal__content {
+    padding: 16px;
+  }
+
+  .profile-modal__header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: center;
+  }
+
+  .profile-modal__stats {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .profile-modal__form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
