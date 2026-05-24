@@ -149,3 +149,8 @@
 .header-register-btn:hover {
   background: var(--color-accent) !important;
 }
+
+.header-avatar--admin {
+  background: var(--color-amin);
+  border-color: var(--color-amin-dark);
+}

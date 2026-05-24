@@ -1,5 +1,6 @@
-import { createContext, useContext, useState, useMemo } from 'react'
+import { createContext, useContext, useState, useMemo, useEffect } from 'react'
 import { albums as initialAlbums } from '../data/myCollectionData'
+import { useAuth } from '../components/auth/AuthContext'
 
 const CollectionContext = createContext(null)
 
@@ -10,7 +11,15 @@ export const useCollection = () => {
 }
 
 export const CollectionProvider = ({ children }) => {
+  const { updateUserStats } = useAuth()
   const [albums, setAlbums] = useState(initialAlbums)
+
+  // Обновление статистики пользователя при изменении альбомов
+  useEffect(() => {
+    const albumsCount = albums.length
+    const stampsCount = albums.reduce((total, album) => total + (album.stamps?.length || 0), 0)
+    updateUserStats(albumsCount, stampsCount)
+  }, [albums, updateUserStats])
 
   const addAlbum = (title, ownerName) => {
     const newAlbum = {
@@ -47,18 +56,14 @@ export const CollectionProvider = ({ children }) => {
     )
   }
 
-  // Изменение названия альбома
   const updateAlbumTitle = (albumId, newTitleString) => {
     setAlbums(prev =>
       prev.map(album =>
-        album.id === albumId
-          ? { ...album, title: [newTitleString] }
-          : album
+        album.id === albumId ? { ...album, title: [newTitleString] } : album
       )
     )
   }
 
-  // Добавление марки в альбом
   const addStampToAlbum = (albumId, stamp) => {
     setAlbums(prev =>
       prev.map(album => {
@@ -76,7 +81,6 @@ export const CollectionProvider = ({ children }) => {
     )
   }
 
-  // Обновление марки в альбоме
   const updateStampInAlbum = (albumId, updatedStamp) => {
     setAlbums(prev =>
       prev.map(album => {
@@ -89,7 +93,6 @@ export const CollectionProvider = ({ children }) => {
     )
   }
 
-  // Удаление марки из альбома
   const deleteStampFromAlbum = (albumId, stampId) => {
     setAlbums(prev =>
       prev.map(album => {

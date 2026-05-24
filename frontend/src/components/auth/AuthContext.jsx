@@ -9,26 +9,57 @@ export const useAuth = () => {
 }
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null) // { name, email, role }
+  const [user, setUser] = useState(null)
 
   const login = async (email, password) => {
-    // Имитация запроса
     if (email === 'a@mail.ru' && password === '123') {
-      setUser({ name: 'Администратор', email, role: 'admin' })
+      setUser({
+        name: 'Администратор',
+        surname: '',
+        email,
+        role: 'admin',
+        city: '',
+        country: '',
+        bio: '',
+        collectionSince: new Date().getFullYear(),
+        stampsCount: 0,
+        albumsCount: 0
+      })
       return true
     }
     if (email && password) {
-      setUser({ name: email.split('@')[0], email, role: 'user' })
+      setUser({
+        name: email.split('@')[0],
+        surname: '',
+        email,
+        role: 'user',
+        city: '',
+        country: '',
+        bio: '',
+        collectionSince: new Date().getFullYear(),
+        stampsCount: 0,
+        albumsCount: 0
+      })
       return true
     }
     return false
   }
 
   const register = async (username, email, password) => {
-    // Нельзя зарегистрировать админа
     if (email === 'a@mail.ru') return false
     if (username && email && password) {
-      setUser({ name: username, email, role: 'user' })
+      setUser({
+        name: username,
+        surname: '',
+        email,
+        role: 'user',
+        city: '',
+        country: '',
+        bio: '',
+        collectionSince: new Date().getFullYear(),
+        stampsCount: 0,
+        albumsCount: 0
+      })
       return true
     }
     return false
@@ -38,8 +69,16 @@ export const AuthProvider = ({ children }) => {
     setUser(null)
   }
 
+  const updateUserProfile = (updatedData) => {
+    setUser(prev => prev ? { ...prev, ...updatedData } : prev)
+  }
+
+  const updateUserStats = (albumsCount, stampsCount) => {
+    setUser(prev => prev ? { ...prev, albumsCount, stampsCount } : prev)
+  }
+
   const value = useMemo(
-    () => ({ user, login, register, logout }),
+    () => ({ user, login, register, logout, updateUserProfile, updateUserStats }),
     [user]
   )
 

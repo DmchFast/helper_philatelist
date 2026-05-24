@@ -3,6 +3,7 @@ import { Avatar, Input, Typography, Button } from 'antd'
 import { useAuth } from '../auth/AuthContext'
 import LoginModal from '../auth/LoginModal'
 import RegisterModal from '../auth/RegisterModal'
+import ProfileModal from '../modal/ProfileModal'
 import './HeaderBar.css'
 
 const { Text } = Typography
@@ -11,6 +12,7 @@ function HeaderBar({ searchTerm, onSearchChange, placeholder }) {
   const { user, logout } = useAuth()
   const [loginOpen, setLoginOpen] = useState(false)
   const [registerOpen, setRegisterOpen] = useState(false)
+  const [profileOpen, setProfileOpen] = useState(false)
 
   const handleSwitchToRegister = () => {
     setRegisterOpen(true)
@@ -32,6 +34,13 @@ function HeaderBar({ searchTerm, onSearchChange, placeholder }) {
     setLoginOpen(false)
   }
 
+  const handleOpenProfile = () => {
+    setProfileOpen(true)
+  }
+
+  const isAdmin = user?.role === 'admin'
+  const displayName = user?.surname ? `${user.name} ${user.surname}` : user?.name
+
   return (
     <header className="catalog-header">
       <div className="header-search">
@@ -46,9 +55,15 @@ function HeaderBar({ searchTerm, onSearchChange, placeholder }) {
       <div className="header-actions">
         {user ? (
           <>
-            <Avatar className="header-avatar">{user.name?.[0] || 'U'}</Avatar>
+            <Avatar 
+              className={`header-avatar${isAdmin ? ' header-avatar--admin' : ''}`}
+              onClick={handleOpenProfile} 
+              style={{ cursor: 'pointer' }}
+            >
+              {user.name?.[0] || 'U'}
+            </Avatar>
             <div className="header-user">
-              <Text className="header-name">{user.name}</Text>
+              <Text className="header-name">{displayName}</Text>
               <Text className="header-role">
                 {user.role === 'admin' ? 'АДМИНИСТРАТОР' : 'КОЛЛЕКЦИОНЕР'}
               </Text>
@@ -80,6 +95,7 @@ function HeaderBar({ searchTerm, onSearchChange, placeholder }) {
         onCancel={() => setRegisterOpen(false)}
         onSwitchToLogin={handleSwitchToLogin}
       />
+      <ProfileModal open={profileOpen} onClose={() => setProfileOpen(false)} />
     </header>
   )
 }
