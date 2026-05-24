@@ -4,7 +4,7 @@ import './MyAlbumCard.css'
 
 const { Text } = Typography
 
-function MyAlbumCard({ album, onToggleVisibility, onDelete }) {
+function MyAlbumCard({ album, onToggleVisibility, onDelete, onEditTitle }) {
   const isPublic = album.isPublic !== false
   const visibilityLabel = isPublic ? 'Публичный' : 'Приватный'
   const visibilityIcon = isPublic ? 'public' : 'lock'
@@ -36,6 +36,14 @@ function MyAlbumCard({ album, onToggleVisibility, onDelete }) {
     e.preventDefault()
     if (onDelete) {
       onDelete(album.id)
+    }
+  }
+
+  const handleEditClick = (e) => {
+    e.stopPropagation()
+    e.preventDefault()
+    if (onEditTitle) {
+      onEditTitle(album)
     }
   }
 
@@ -72,14 +80,24 @@ function MyAlbumCard({ album, onToggleVisibility, onDelete }) {
             <span className="material-symbols-outlined">{visibilityIcon}</span>
             <Text className="my-album-card__visibility-text">{visibilityLabel}</Text>
           </button>
-          <button
-            type="button"
-            className="my-album-card__trash"
-            aria-label="Удалить альбом"
-            onClick={handleDeleteClick}
-          >
-            <span className="material-symbols-outlined">delete</span>
-          </button>
+          <div className="my-album-card__actions">
+            <button
+              type="button"
+              className="my-album-card__edit"
+              aria-label="Редактировать название"
+              onClick={handleEditClick}
+            >
+              <span className="material-symbols-outlined">edit</span>
+            </button>
+            <button
+              type="button"
+              className="my-album-card__trash"
+              aria-label="Удалить альбом"
+              onClick={handleDeleteClick}
+            >
+              <span className="material-symbols-outlined">delete</span>
+            </button>
+          </div>
         </div>
       </div>
     </article>
