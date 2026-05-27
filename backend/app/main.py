@@ -1,31 +1,13 @@
 import json
 from pathlib import Path
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy import select
+from sqlalchemy import select, text
 from app.core.database import engine, Base
 from app.db.models import Role, CatalogStamp
 from app.routers import auth, users, catalog, albums, public, categories
-
-app = FastAPI(title="Philatelist Handbook API")
-
-# CORS для фронтенда (React)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-app.include_router(auth.router)
-app.include_router(users.router)
-app.include_router(users.public_router)
-app.include_router(catalog.router)
-app.include_router(albums.router)
-app.include_router(public.router)
-app.include_router(categories.router)
 
 
 def _load_catalog_seed() -> list[dict]:
@@ -85,8 +67,25 @@ async def _sync_catalog_seed(conn):
             CatalogStamp.__table__.update().where(CatalogStamp.id == stamp_id).values(**values)
         )
 
-@app.on_event("startup")
-async def init_db():
+    # Seed uses explicit IDs, so Postgres sequence must be aligned to MAX(id)
+    # to avoid duplicate key errors on subsequent inserts without explicit ID.
+    if conn.dialect.name == "postgresql":
+        await conn.execute(
+            text(
+                """
+                SELECT setval(
+                    pg_get_serial_sequence('catalog_stamps', 'id'),
+                    COALESCE((SELECT MAX(id) FROM catalog_stamps), 1),
+                    true
+                )
+                """
+            )
+        )
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
         result = await conn.execute(select(Role))
@@ -94,5 +93,25 @@ async def init_db():
             await conn.execute(
                 Role.__table__.insert().values([{"role_name": "user"}, {"role_name": "admin"}])
             )
-
         await _sync_catalog_seed(conn)
+    yield
+
+
+app = FastAPI(title="Philatelist Handbook API", lifespan=lifespan)
+
+# CORS для фронтенда (React)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(auth.router)
+app.include_router(users.router)
+app.include_router(users.public_router)
+app.include_router(catalog.router)
+app.include_router(albums.router)
+app.include_router(public.router)
+app.include_router(categories.router)

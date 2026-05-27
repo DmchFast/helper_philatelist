@@ -14,7 +14,6 @@ const LoginModal = ({ open, onCancel, onSwitchToRegister }) => {
   const handleFinish = async (values) => {
     const success = await login(values.email, values.password)
     if (success) {
-      form.resetFields()
       onCancel()
     } else {
       message.error('Неверный email или пароль')
@@ -27,7 +26,7 @@ const LoginModal = ({ open, onCancel, onSwitchToRegister }) => {
   }
 
   return (
-    <Modal open={open} onCancel={onCancel} footer={null} centered width={440} className="auth-modal">
+    <Modal open={open} onCancel={onCancel} footer={null} centered width={440} className="auth-modal" forceRender>
       <Title level={3} className="auth-modal__title">
         Вход в учетную запись
       </Title>

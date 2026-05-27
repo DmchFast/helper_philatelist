@@ -61,9 +61,12 @@ function CatalogPage() {
     setCreateStampOpen(true)
   }
 
-  const handleCreateStampFromCatalog = (newStamp) => {
+  const handleCreateStampFromCatalog = async (newStamp) => {
     if (selectedAlbumId) {
-      addStampToAlbum(selectedAlbumId, newStamp);
+      await addStampToAlbum(selectedAlbumId, {
+        ...newStamp,
+        catalogStampId: selectedStampFromCatalog?.catalogStampId || selectedStampFromCatalog?.id,
+      })
       const album = albums.find(a => a.id === selectedAlbumId);
       const albumName = album ? (Array.isArray(album.title) ? album.title.join(' ') : album.title) : 'альбом'
       message.success(`Марка "${newStamp.title}" добавлена в альбом "${albumName}"`);

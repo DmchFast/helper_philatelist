@@ -29,6 +29,7 @@ const EditAlbumModal = ({ open, onCancel, onSave, currentTitle }) => {
       centered
       width={440}
       className="edit-album-modal"
+      forceRender
     >
       <div className="edit-album-modal__title">Изменение названия альбома</div>
 

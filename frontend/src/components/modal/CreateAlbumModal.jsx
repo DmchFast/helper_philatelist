@@ -23,7 +23,7 @@ const CreateAlbumModal = ({ open, onCancel, onCreate }) => {
   }
 
   return (
-    <Modal open={open} onCancel={handleCancel} footer={null} centered width={440} className="auth-modal">
+    <Modal open={open} onCancel={handleCancel} footer={null} centered width={440} className="auth-modal" forceRender>
       <div className="auth-modal__title">Создать новый альбом</div>
 
       <Form form={form} onFinish={handleFinish} layout="vertical" requiredMark={false}>

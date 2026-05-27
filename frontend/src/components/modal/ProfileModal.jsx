@@ -67,6 +67,7 @@ const ProfileModal = ({ open, onClose }) => {
       width={480}
       className="profile-modal"
       closable
+      forceRender
     >
       <div className="profile-modal__content">
         <div className={`profile-modal__badge${isAdmin ? ' profile-modal__badge--admin' : ''}`}>

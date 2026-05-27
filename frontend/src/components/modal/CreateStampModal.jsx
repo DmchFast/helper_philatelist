@@ -55,7 +55,7 @@ const CreateStampModal = ({
         form.resetFields()
         onCreate(newStamp)
       })
-      .catch(() => {})
+      .catch(() => { })
   }
 
   return (
@@ -67,6 +67,7 @@ const CreateStampModal = ({
       width={480}
       className="create-stamp-modal"
       closable={true}
+      forceRender
     >
       <div className="create-stamp-modal__title">Добавить марку</div>
       <Form form={form} layout="vertical" requiredMark={false}>

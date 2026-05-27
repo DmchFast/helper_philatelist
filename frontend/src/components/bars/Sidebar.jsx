@@ -8,7 +8,7 @@ function Sidebar({ items }) {
   // Филтрация пуктов меню, администрирование только для admin
   const visibleItems = items.filter(
     (item) => item.id !== 'admin' || user?.role === 'admin'
-)
+  )
 
   const getPath = (id) => {
     switch (id) {
@@ -20,12 +20,12 @@ function Sidebar({ items }) {
       default: return '/'
     }
   }
-  
+
   return (
     <aside className="sidebar">
       <div className="sidebar__brand">
         <div className="sidebar__brand-mark">Ф</div>
-        <div className="sidebar__brand-text">СПРАВОЧНИК <text>ФИЛАТЕЛИСТА</text></div>
+        <div className="sidebar__brand-text">СПРАВОЧНИК <span>ФИЛАТЕЛИСТА</span></div>
       </div>
       <nav className="sidebar__nav">
         {visibleItems.map((item) => {   // ← Было items, стало visibleItems

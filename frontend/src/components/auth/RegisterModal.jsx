@@ -14,7 +14,6 @@ const RegisterModal = ({ open, onCancel, onSwitchToLogin }) => {
   const handleFinish = async (values) => {
     const success = await register(values.username, values.email, values.password)
     if (success) {
-      form.resetFields()
       onCancel()
       message.success('Регистрация прошла успешно')
     } else {
@@ -28,7 +27,7 @@ const RegisterModal = ({ open, onCancel, onSwitchToLogin }) => {
   }
 
   return (
-    <Modal open={open} onCancel={onCancel} footer={null} centered width={440} className="auth-modal">
+    <Modal open={open} onCancel={onCancel} footer={null} centered width={440} className="auth-modal" forceRender>
       <Title level={3} className="auth-modal__title">
         Создать учетную запись
       </Title>
@@ -85,7 +84,7 @@ const RegisterModal = ({ open, onCancel, onSwitchToLogin }) => {
           className="auth-modal__social-btn auth-modal-btn"
           onClick={() => message.info('Регистрация через Google временно не доступна')}
         >
-          <img className='app-icon' src={GoogleIcon} alt="Google"/>
+          <img className='app-icon' src={GoogleIcon} alt="Google" />
         </Button>
         <Button
           shape="square"

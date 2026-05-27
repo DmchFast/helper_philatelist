@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
-import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom'
-import { AuthProvider, useAuth } from './components/auth/AuthContext'
+import { useState } from 'react'
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
+import { useAuth } from './components/auth/AuthContext'
 import LoginModal from './components/auth/LoginModal'
 import RegisterModal from './components/auth/RegisterModal'
 import CatalogPage from './pages/CatalogPage'
@@ -11,47 +11,35 @@ import AdminPage from './pages/AdminPage'
 
 // Компонент-защита только для маршрутов, требующих авторизации
 function PrivateRoute({ children }) {
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
   const navigate = useNavigate()
-  const [loginOpen, setLoginOpen] = useState(false)
-  const [registerOpen, setRegisterOpen] = useState(false)
-
-  useEffect(() => {
-    if (!user) {
-      setLoginOpen(true)
-    } else {
-      setLoginOpen(false)
-      setRegisterOpen(false)
-    }
-  }, [user])
+  const [authMode, setAuthMode] = useState('login')
 
   const handleSwitchToRegister = () => {
-    setLoginOpen(false)
-    setRegisterOpen(true)
+    setAuthMode('register')
   }
 
   const handleSwitchToLogin = () => {
-    setRegisterOpen(false)
-    setLoginOpen(true)
+    setAuthMode('login')
   }
 
   const handleCloseModals = () => {
-    setLoginOpen(false)
-    setRegisterOpen(false)
+    setAuthMode('login')
     navigate('/catalog', { replace: true })
   }
 
+  if (loading) return null
   if (user) return children
 
   return (
     <>
       <LoginModal
-        open={loginOpen}
+        open={authMode === 'login'}
         onCancel={handleCloseModals}
         onSwitchToRegister={handleSwitchToRegister}
       />
       <RegisterModal
-        open={registerOpen}
+        open={authMode === 'register'}
         onCancel={handleCloseModals}
         onSwitchToLogin={handleSwitchToLogin}
       />
@@ -69,40 +57,38 @@ function AdminRoute() {
 
 function App() {
   return (
-    <AuthProvider>
-      <Routes>
-        {/* Открытые для всех маршруты */}
-        <Route path="/catalog" element={<CatalogPage />} />
-        <Route path="/collection" element={<PublicAlbumsPage />} />
-        <Route path="/" element={<Navigate to="/catalog" replace />} />
+    <Routes>
+      {/* Открытые для всех маршруты */}
+      <Route path="/catalog" element={<CatalogPage />} />
+      <Route path="/collection" element={<PublicAlbumsPage />} />
+      <Route path="/" element={<Navigate to="/catalog" replace />} />
 
-        {/* Защищённые маршруты – требуют авторизации */}
-        <Route
-          path="/my-collection"
-          element={
-            <PrivateRoute>
-              <MyCollectionPage />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/users"
-          element={
-            <PrivateRoute>
-              <UsersPage />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/admin"
-          element={
-            <PrivateRoute>
-              <AdminRoute />
-            </PrivateRoute>
-          }
-        />
-      </Routes>
-    </AuthProvider>
+      {/* Защищённые маршруты – требуют авторизации */}
+      <Route
+        path="/my-collection"
+        element={
+          <PrivateRoute>
+            <MyCollectionPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/users"
+        element={
+          <PrivateRoute>
+            <UsersPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin"
+        element={
+          <PrivateRoute>
+            <AdminRoute />
+          </PrivateRoute>
+        }
+      />
+    </Routes>
   )
 }
 

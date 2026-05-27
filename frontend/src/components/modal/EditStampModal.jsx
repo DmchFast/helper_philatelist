@@ -3,13 +3,13 @@ import { useEffect } from 'react'
 import defaultStamp from '../../assets/default-stamp.png'
 import './EditStampModal.css'
 
-const EditStampModal = ({ 
-  open, 
-  onCancel, 
-  onSave, 
-  stamp, 
+const EditStampModal = ({
+  open,
+  onCancel,
+  onSave,
+  stamp,
   showPriceField = true,
-  showDescriptionField = true 
+  showDescriptionField = true
 }) => {
   const [form] = Form.useForm()
 
@@ -49,7 +49,7 @@ const EditStampModal = ({
         form.resetFields()
         onSave(updatedStamp)
       })
-      .catch(() => {})
+      .catch(() => { })
   }
 
   return (
@@ -61,6 +61,7 @@ const EditStampModal = ({
       width={480}
       className="edit-stamp-modal"
       closable={true}
+      forceRender
     >
       <div className="edit-stamp-modal__title">Редактировать марку</div>
       <Form form={form} layout="vertical" requiredMark={false}>

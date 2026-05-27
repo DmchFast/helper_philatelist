@@ -1,4 +1,15 @@
-import { createContext, useContext, useState, useMemo } from 'react'
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import {
+  getMe,
+  getProfile,
+  getStoredAuthToken,
+  login as loginRequest,
+  mapAuthUser,
+  register as registerRequest,
+  setAuthToken,
+  updateProfile as updateProfileRequest,
+} from '../../services/api'
 
 const AuthContext = createContext(null)
 
@@ -10,76 +21,124 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
 
-  const login = async (email, password) => {
-    if (email === 'a@mail.ru' && password === '123') {
-      setUser({
-        name: 'Администратор',
-        surname: '',
-        email,
-        role: 'admin',
-        city: '',
-        country: '',
-        bio: '',
-        collectionSince: new Date().getFullYear(),
-        stampsCount: 0,
-        albumsCount: 0
-      })
-      return true
-    }
-    if (email && password) {
-      setUser({
-        name: email.split('@')[0],
-        surname: '',
-        email,
-        role: 'user',
-        city: '',
-        country: '',
-        bio: '',
-        collectionSince: new Date().getFullYear(),
-        stampsCount: 0,
-        albumsCount: 0
-      })
-      return true
-    }
-    return false
-  }
+  useEffect(() => {
+    let active = true
 
-  const register = async (username, email, password) => {
-    if (email === 'a@mail.ru') return false
-    if (username && email && password) {
-      setUser({
-        name: username,
-        surname: '',
-        email,
-        role: 'user',
-        city: '',
-        country: '',
-        bio: '',
-        collectionSince: new Date().getFullYear(),
-        stampsCount: 0,
-        albumsCount: 0
-      })
-      return true
-    }
-    return false
-  }
+    const hydrateAuth = async () => {
+      const token = getStoredAuthToken()
+      if (!token) {
+        if (active) {
+          setLoading(false)
+        }
+        return
+      }
 
-  const logout = () => {
+      try {
+        setAuthToken(token)
+        const [me, profile] = await Promise.all([getMe(), getProfile()])
+        if (active) {
+          setUser(mapAuthUser(me, profile))
+        }
+      } catch {
+        setAuthToken(null)
+        if (active) {
+          setUser(null)
+        }
+      } finally {
+        if (active) {
+          setLoading(false)
+        }
+      }
+    }
+
+    hydrateAuth()
+
+    return () => {
+      active = false
+    }
+  }, [])
+
+  const applyAuthenticatedUser = useCallback(async (token) => {
+    setAuthToken(token)
+    const [me, profile] = await Promise.all([getMe(), getProfile()])
+    const nextUser = mapAuthUser(me, profile)
+    setUser(nextUser)
+    return nextUser
+  }, [])
+
+  const login = useCallback(async (email, password) => {
+    try {
+      const response = await loginRequest(email, password)
+      await applyAuthenticatedUser(response.access_token)
+      return true
+    } catch {
+      return false
+    }
+  }, [applyAuthenticatedUser])
+
+  const register = useCallback(async (username, email, password) => {
+    try {
+      const response = await registerRequest(username, email, password)
+      await applyAuthenticatedUser(response.access_token)
+      return true
+    } catch {
+      return false
+    }
+  }, [applyAuthenticatedUser])
+
+  const logout = useCallback(() => {
+    setAuthToken(null)
     setUser(null)
-  }
+  }, [])
 
-  const updateUserProfile = (updatedData) => {
-    setUser(prev => prev ? { ...prev, ...updatedData } : prev)
-  }
+  const updateUserProfile = useCallback(async (updatedData) => {
+    if (!user) return false
 
-  const updateUserStats = (albumsCount, stampsCount) => {
-    setUser(prev => prev ? { ...prev, albumsCount, stampsCount } : prev)
-  }
+    const payload = {
+      first_name: updatedData.name ?? updatedData.first_name ?? user.name,
+      last_name: updatedData.surname ?? updatedData.last_name ?? user.surname ?? '',
+      country: updatedData.country ?? user.country ?? '',
+      city: updatedData.city ?? user.city ?? '',
+      bio: updatedData.bio ?? user.bio ?? '',
+      avatar_url: updatedData.avatarUrl ?? updatedData.avatar_url ?? null,
+    }
+
+    try {
+      await updateProfileRequest(payload)
+      setUser((prev) =>
+        prev
+          ? {
+            ...prev,
+            ...updatedData,
+            name: payload.first_name,
+            surname: payload.last_name || '',
+            city: payload.city || '',
+            country: payload.country || '',
+            bio: payload.bio || '',
+          }
+          : prev
+      )
+      return true
+    } catch {
+      return false
+    }
+  }, [user])
+
+  const updateUserStats = useCallback((albumsCount, stampsCount) => {
+    setUser((prev) => {
+      if (!prev) return prev
+      if (prev.albumsCount === albumsCount && prev.stampsCount === stampsCount) {
+        return prev
+      }
+      return { ...prev, albumsCount, stampsCount }
+    })
+  }, [])
 
   const value = useMemo(
-    () => ({ user, login, register, logout, updateUserProfile, updateUserStats }),
-    [user]
+    () => ({ user, loading, login, register, logout, updateUserProfile, updateUserStats }),
+    [user, loading, login, register, logout, updateUserProfile, updateUserStats]
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

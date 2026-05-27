@@ -19,7 +19,7 @@ class User(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     role = relationship("Role")
-    profile = relationship("UserProfile", back_populates="user", uselist=False)
+    profile = relationship("UserProfile", back_populates="user", uselist=False, cascade="all, delete-orphan")
     albums = relationship("Album", back_populates="owner", cascade="all, delete-orphan")
 
 class UserProfile(Base):

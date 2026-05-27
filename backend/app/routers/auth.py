@@ -67,6 +67,18 @@ async def get_me(
 @router.get("/profile", response_model=ProfileOut)
 async def get_profile(current_user: User = Depends(get_current_active_user), db: AsyncSession = Depends(get_db)):
     profile = await current_user.awaitable_attrs.profile
+    if profile is None:
+        return ProfileOut(
+            user_id=current_user.id,
+            first_name=None,
+            last_name=None,
+            country=None,
+            city=None,
+            bio=None,
+            avatar_url=None,
+            updated_at=None,
+        )
+
     return ProfileOut(
         user_id=current_user.id,
         first_name=profile.first_name,
@@ -85,6 +97,11 @@ async def update_profile(
     db: AsyncSession = Depends(get_db)
 ):
     profile = await current_user.awaitable_attrs.profile
+    if profile is None:
+        profile = UserProfile(user_id=current_user.id)
+        db.add(profile)
+        await db.flush()
+
     if update.first_name is not None:
         profile.first_name = update.first_name
     if update.last_name is not None:

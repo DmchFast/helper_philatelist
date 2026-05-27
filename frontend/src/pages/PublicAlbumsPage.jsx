@@ -1,14 +1,15 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Typography, Button } from 'antd'
 import TwoFilters from '../components/filters/TwoFilters'
 import Sidebar from '../components/bars/Sidebar'
 import HeaderBar from '../components/bars/HeaderBar'
 import AlbumGrid from '../components/grids/AlbumGrid'
 import StampGrid from '../components/grids/StampGrid'
-import { countryOptions, navItems } from '../data/catalogData'
+import { navItems } from '../data/catalogData'
 import { albums as publicAlbumsData } from '../data/publicAlbumsData'
 import { useCollection } from '../context/CollectionContext'
 import { useStampFilters, getUniqueCountries, SORT_OPTIONS_LIST, getUniqueAlbumAuthors, getUniqueAlbumThemes, sortAlbums } from '../useFilters'
+import { getPublicAlbums, mergeById } from '../services/api'
 import './PublicAlbumsPage.css'
 import './CatalogPage.css'
 
@@ -16,6 +17,7 @@ const { Title, Text } = Typography
 
 function PublicAlbumsPage() {
   const { albums: collectionAlbums } = useCollection()
+  const [remotePublicAlbums, setRemotePublicAlbums] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedAlbum, setSelectedAlbum] = useState(null)
   const [authorValue, setAuthorValue] = useState('Все авторы')
@@ -23,11 +25,31 @@ function PublicAlbumsPage() {
   const [countryFilter, setCountryFilter] = useState('Все страны')
   const [sortMode, setSortMode] = useState('По названию')
 
+  useEffect(() => {
+    let active = true
+
+    const loadPublicAlbums = async () => {
+      try {
+        const albums = await getPublicAlbums()
+        if (active && albums.length > 0) {
+          setRemotePublicAlbums(albums)
+        }
+      } catch {
+        // fallback to local demo data
+      }
+    }
+
+    loadPublicAlbums()
+
+    return () => {
+      active = false
+    }
+  }, [])
+
   const allPublicAlbums = useMemo(() => {
-    const publicUserAlbums = collectionAlbums.filter(album => album.isPublic).map(album => ({ ...album, author: album.ownerName || album.author, ownerName: album.ownerName || album.author }))
-    const staticPublicAlbums = publicAlbumsData.map(album => ({ ...album, author: album.ownerName || album.author, ownerName: album.ownerName || album.author }))
-    return [...staticPublicAlbums, ...publicUserAlbums]
-  }, [collectionAlbums])
+    const publicUserAlbums = collectionAlbums.filter(album => album.isPublic)
+    return mergeById(remotePublicAlbums, publicUserAlbums, publicAlbumsData)
+  }, [collectionAlbums, remotePublicAlbums])
 
   const authorOptions = useMemo(() => {
     const authors = getUniqueAlbumAuthors(allPublicAlbums)
@@ -41,41 +63,18 @@ function PublicAlbumsPage() {
 
   const selectedPublicAlbum = useMemo(() => allPublicAlbums.find(album => album.id === selectedAlbum?.id) || null, [allPublicAlbums, selectedAlbum])
 
-  if (selectedPublicAlbum) {
-    const albumStamps = selectedPublicAlbum.stamps || []
-    const uniqueCountries = getUniqueCountries(albumStamps)
-    const countrySelectOptions = uniqueCountries.map(c => ({ value: c, label: c }))
-    const sortOptions = SORT_OPTIONS_LIST // для марок внутри альбома
-
-    const filteredStamps = useStampFilters(
-      albumStamps,
-      searchTerm,
-      countryFilter,
-      'Все года',
-      sortMode,
-      0,
-      false
-    )
-
-    return (
-      <div className="catalog-page">
-        <Sidebar items={navItems} />
-        <div className="catalog-content">
-          <HeaderBar searchTerm={searchTerm} onSearchChange={setSearchTerm} placeholder="Поиск по маркам альбома" />
-          <main className="catalog-main">
-            <div className="albums-title">
-              <div className="album-header-row">
-                <Button type="text" onClick={() => { setSelectedAlbum(null); setSearchTerm(''); setCountryFilter('Все страны'); setSortMode('По названию (А-Я)') }} icon={<span className="material-symbols-outlined">arrow_back</span>} className="album-back-btn" />
-                <div><Title level={2} className="albums-heading">{selectedPublicAlbum.title.join(' ')}</Title><Text className="albums-subtitle">{filteredStamps.length} марок в альбоме</Text></div>
-              </div>
-              <TwoFilters firstValue={countryFilter} secondValue={sortMode} firstOptions={countrySelectOptions} secondOptions={sortOptions} onFirstChange={setCountryFilter} onSecondChange={setSortMode} />
-            </div>
-            <StampGrid stamps={filteredStamps} cardVariant="album" />
-          </main>
-        </div>
-      </div>
-    )
-  }
+  const albumStamps = selectedPublicAlbum?.stamps || []
+  const countrySelectOptions = getUniqueCountries(albumStamps).map(c => ({ value: c, label: c }))
+  const albumSortOptions = SORT_OPTIONS_LIST
+  const filteredAlbumStamps = useStampFilters(
+    albumStamps,
+    searchTerm,
+    countryFilter,
+    'Все года',
+    sortMode,
+    0,
+    false
+  )
 
   const filteredAlbums = useMemo(() => {
     let result = allPublicAlbums.filter(album => {
@@ -89,6 +88,27 @@ function PublicAlbumsPage() {
     result = sortAlbums(result, sortMode)
     return result
   }, [allPublicAlbums, searchTerm, authorValue, themeValue, sortMode])
+
+  if (selectedPublicAlbum) {
+    return (
+      <div className="catalog-page">
+        <Sidebar items={navItems} />
+        <div className="catalog-content">
+          <HeaderBar searchTerm={searchTerm} onSearchChange={setSearchTerm} placeholder="Поиск по маркам альбома" />
+          <main className="catalog-main">
+            <div className="albums-title">
+              <div className="album-header-row">
+                <Button type="text" onClick={() => { setSelectedAlbum(null); setSearchTerm(''); setCountryFilter('Все страны'); setSortMode('По названию (А-Я)') }} icon={<span className="material-symbols-outlined">arrow_back</span>} className="album-back-btn" />
+                <div><Title level={2} className="albums-heading">{selectedPublicAlbum.title.join(' ')}</Title><Text className="albums-subtitle">{filteredAlbumStamps.length} марок в альбоме</Text></div>
+              </div>
+              <TwoFilters firstValue={countryFilter} secondValue={sortMode} firstOptions={countrySelectOptions} secondOptions={albumSortOptions} onFirstChange={setCountryFilter} onSecondChange={setSortMode} />
+            </div>
+            <StampGrid stamps={filteredAlbumStamps} cardVariant="album" />
+          </main>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="albums-page">
