@@ -12,6 +12,23 @@ from app.core.dependencies import get_current_active_user
 
 router = APIRouter(prefix="/albums", tags=["albums"])
 
+
+def build_collection_stamp_out(collection_stamp: CollectionStamp, catalog_stamp: CatalogStamp | None):
+    return CollectionStampOut(
+        id=collection_stamp.id,
+        catalog_stamp=CatalogStampOut.model_validate(catalog_stamp, from_attributes=True) if catalog_stamp else None,
+        catalog_stamp_id=collection_stamp.catalog_stamp_id,
+        title=collection_stamp.title or (catalog_stamp.name_code if catalog_stamp else None),
+        series=collection_stamp.series or (catalog_stamp.theme_series if catalog_stamp else None),
+        year_issued=collection_stamp.year_issued or (catalog_stamp.year_issued if catalog_stamp else None),
+        country=collection_stamp.country or (catalog_stamp.country if catalog_stamp else None),
+        image_url=collection_stamp.image_url or (catalog_stamp.image_url if catalog_stamp else None),
+        purchase_price=collection_stamp.purchase_price,
+        purchase_date=collection_stamp.purchase_date,
+        condition_status=collection_stamp.condition_status,
+        custom_notes=collection_stamp.custom_notes,
+    )
+
 @router.get("/", response_model=list[AlbumOut])
 async def list_my_albums(
     current_user=Depends(get_current_active_user),
@@ -113,17 +130,8 @@ async def get_album_stamps(
     stamps = result.scalars().all()
     out = []
     for cs in stamps:
-        cat = await db.get(CatalogStamp, cs.catalog_stamp_id)
-        if not cat:
-            continue
-        out.append(CollectionStampOut(
-            id=cs.id,
-            catalog_stamp=CatalogStampOut.model_validate(cat, from_attributes=True),
-            purchase_price=cs.purchase_price,
-            purchase_date=cs.purchase_date,
-            condition_status=cs.condition_status,
-            custom_notes=cs.custom_notes
-        ))
+        cat = await db.get(CatalogStamp, cs.catalog_stamp_id) if cs.catalog_stamp_id else None
+        out.append(build_collection_stamp_out(cs, cat))
     return out
 
 @router.post("/{album_id}/stamps", response_model=CollectionStampOut)
@@ -139,6 +147,11 @@ async def add_stamp_to_album(
     new_stamp = CollectionStamp(
         album_id=album_id,
         catalog_stamp_id=stamp_data.catalog_stamp_id,
+        title=stamp_data.title,
+        series=stamp_data.series,
+        year_issued=stamp_data.year_issued,
+        country=stamp_data.country,
+        image_url=stamp_data.image_url,
         purchase_price=stamp_data.purchase_price,
         purchase_date=stamp_data.purchase_date,
         condition_status=stamp_data.condition_status,
@@ -147,17 +160,8 @@ async def add_stamp_to_album(
     db.add(new_stamp)
     await db.commit()
     await db.refresh(new_stamp)
-    catalog_stamp = await db.get(CatalogStamp, new_stamp.catalog_stamp_id)
-    if not catalog_stamp:
-        raise HTTPException(404, "Catalog stamp not found")
-    return CollectionStampOut(
-        id=new_stamp.id,
-        catalog_stamp=CatalogStampOut.model_validate(catalog_stamp, from_attributes=True),
-        purchase_price=new_stamp.purchase_price,
-        purchase_date=new_stamp.purchase_date,
-        condition_status=new_stamp.condition_status,
-        custom_notes=new_stamp.custom_notes
-    )
+    catalog_stamp = await db.get(CatalogStamp, new_stamp.catalog_stamp_id) if new_stamp.catalog_stamp_id else None
+    return build_collection_stamp_out(new_stamp, catalog_stamp)
 
 @router.put("/{album_id}/stamps/{stamp_id}")
 async def update_collection_stamp(

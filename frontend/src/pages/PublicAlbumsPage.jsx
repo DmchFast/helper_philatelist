@@ -6,7 +6,6 @@ import HeaderBar from '../components/bars/HeaderBar'
 import AlbumGrid from '../components/grids/AlbumGrid'
 import StampGrid from '../components/grids/StampGrid'
 import { navItems } from '../data/catalogData'
-import { albums as publicAlbumsData } from '../data/publicAlbumsData'
 import { useCollection } from '../context/CollectionContext'
 import { useStampFilters, getUniqueCountries, SORT_OPTIONS_LIST, getUniqueAlbumAuthors, getUniqueAlbumThemes, sortAlbums } from '../useFilters'
 import { getPublicAlbums, mergeById } from '../services/api'
@@ -48,7 +47,7 @@ function PublicAlbumsPage() {
 
   const allPublicAlbums = useMemo(() => {
     const publicUserAlbums = collectionAlbums.filter(album => album.isPublic)
-    return mergeById(remotePublicAlbums, publicUserAlbums, publicAlbumsData)
+    return mergeById(remotePublicAlbums, publicUserAlbums)
   }, [collectionAlbums, remotePublicAlbums])
 
   const authorOptions = useMemo(() => {

@@ -83,11 +83,24 @@ async def _sync_catalog_seed(conn):
         )
 
 
+async def _sync_collection_stamp_schema(conn):
+    if conn.dialect.name != "postgresql":
+        return
+
+    await conn.execute(text("ALTER TABLE collection_stamps ALTER COLUMN catalog_stamp_id DROP NOT NULL"))
+    await conn.execute(text("ALTER TABLE collection_stamps ADD COLUMN IF NOT EXISTS title VARCHAR"))
+    await conn.execute(text("ALTER TABLE collection_stamps ADD COLUMN IF NOT EXISTS series VARCHAR"))
+    await conn.execute(text("ALTER TABLE collection_stamps ADD COLUMN IF NOT EXISTS year_issued INTEGER"))
+    await conn.execute(text("ALTER TABLE collection_stamps ADD COLUMN IF NOT EXISTS country VARCHAR"))
+    await conn.execute(text("ALTER TABLE collection_stamps ADD COLUMN IF NOT EXISTS image_url VARCHAR"))
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        await _sync_collection_stamp_schema(conn)
         result = await conn.execute(select(Role))
         if not result.scalars().first():
             await conn.execute(

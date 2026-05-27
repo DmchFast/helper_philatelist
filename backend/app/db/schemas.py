@@ -93,13 +93,24 @@ class CatalogStampOut(CatalogStampCreate):
     id: int
 
 class CollectionStampCreate(BaseModel):
-    catalog_stamp_id: int
+    catalog_stamp_id: Optional[int] = None
+    title: Optional[str] = None
+    series: Optional[str] = None
+    year_issued: Optional[int] = None
+    country: Optional[str] = None
+    image_url: Optional[str] = None
     purchase_price: Optional[float] = None
     purchase_date: Optional[date] = None
     condition_status: Optional[str] = None
     custom_notes: Optional[str] = None
 
 class CollectionStampUpdate(BaseModel):
+    catalog_stamp_id: Optional[int] = None
+    title: Optional[str] = None
+    series: Optional[str] = None
+    year_issued: Optional[int] = None
+    country: Optional[str] = None
+    image_url: Optional[str] = None
     purchase_price: Optional[float] = None
     purchase_date: Optional[date] = None
     condition_status: Optional[str] = None
@@ -107,7 +118,13 @@ class CollectionStampUpdate(BaseModel):
 
 class CollectionStampOut(BaseModel):
     id: int
-    catalog_stamp: CatalogStampOut
+    catalog_stamp: Optional[CatalogStampOut] = None
+    catalog_stamp_id: Optional[int] = None
+    title: Optional[str] = None
+    series: Optional[str] = None
+    year_issued: Optional[int] = None
+    country: Optional[str] = None
+    image_url: Optional[str] = None
     purchase_price: Optional[float]
     purchase_date: Optional[date]
     condition_status: Optional[str]

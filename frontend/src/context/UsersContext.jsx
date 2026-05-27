@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from 'react'
-import { users as initialUsers, userRoleOptions } from '../data/usersData'
-import { deleteUser as deleteUserRequest, getUsers, mapUserListItem, mergeById, updateUserRole as updateUserRoleRequest } from '../services/api'
+import { userRoleOptions } from '../data/usersData'
+import { deleteUser as deleteUserRequest, getAdminUsers, getUsers, mapUserListItem, updateUserRole as updateUserRoleRequest } from '../services/api'
 import { useAuth } from '../components/auth/AuthContext'
 
 const UsersContext = createContext(null)
@@ -13,7 +13,7 @@ export const useUsers = () => {
 }
 
 export const UsersProvider = ({ children }) => {
-  const [users, setUsers] = useState(() => initialUsers)
+  const [users, setUsers] = useState([])
   const { user } = useAuth()
 
   useEffect(() => {
@@ -23,12 +23,13 @@ export const UsersProvider = ({ children }) => {
       if (!user) return
 
       try {
-        const remoteUsers = await getUsers()
-        if (active && remoteUsers.length > 0) {
-          setUsers(prev => mergeById(remoteUsers.map(mapUserListItem), prev))
+        const remoteUsers = user.role === 'admin' ? await getAdminUsers() : await getUsers()
+        if (active) {
+          const mappedUsers = remoteUsers.map(mapUserListItem)
+          setUsers(mappedUsers.filter((currentUser) => currentUser.email !== user.email))
         }
       } catch {
-        // fallback to demo data
+        // keep the current in-memory state if the backend is unavailable
       }
     }
 
@@ -37,7 +38,7 @@ export const UsersProvider = ({ children }) => {
     return () => {
       active = false
     }
-  }, [user])
+  }, [user?.id, user?.role])
 
   // Изменение роли пользователя
   const updateUserRole = async (userId, newRole) => {

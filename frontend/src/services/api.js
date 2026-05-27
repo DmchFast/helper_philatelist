@@ -102,17 +102,21 @@ export const mapFrontendStampToCatalogPayload = (stamp) => ({
 
 export const mapCollectionStamp = (collectionStamp) => {
   const catalogStamp = collectionStamp.catalog_stamp || {}
-  const image = catalogStamp.image_url || defaultStamp
+  const image = collectionStamp.image_url || catalogStamp.image_url || defaultStamp
   const price = collectionStamp.purchase_price ?? catalogStamp.catalog_price ?? 0
+  const title = collectionStamp.title || catalogStamp.name_code || ''
+  const series = collectionStamp.series || catalogStamp.theme_series || ''
+  const year = collectionStamp.year_issued || catalogStamp.year_issued || ''
+  const country = collectionStamp.country || catalogStamp.country || ''
 
   return {
     id: collectionStamp.id,
     collectionStampId: collectionStamp.id,
-    catalogStampId: catalogStamp.id,
-    title: catalogStamp.name_code || '',
-    series: catalogStamp.theme_series || '',
-    year: catalogStamp.year_issued ? String(catalogStamp.year_issued) : '',
-    country: catalogStamp.country || '',
+    catalogStampId: collectionStamp.catalog_stamp_id ?? catalogStamp.id ?? null,
+    title,
+    series,
+    year: year ? String(year) : '',
+    country,
     image,
     photo: image,
     price: Number(price) || 0,
@@ -124,7 +128,12 @@ export const mapCollectionStamp = (collectionStamp) => {
 }
 
 export const mapFrontendStampToCollectionPayload = (stamp) => ({
-  catalog_stamp_id: stamp.catalogStampId || stamp.catalog_stamp_id || stamp.id,
+  catalog_stamp_id: stamp.catalogStampId ?? stamp.catalog_stamp_id ?? null,
+  title: stamp.title || null,
+  series: stamp.series || null,
+  year_issued: stamp.year ? Number(stamp.year) || null : null,
+  country: stamp.country || null,
+  image_url: stamp.image || stamp.photo || null,
   purchase_price: stamp.price !== undefined ? Number(stamp.price) || 0 : null,
   purchase_date: stamp.purchaseDate || null,
   condition_status: stamp.conditionStatus || null,

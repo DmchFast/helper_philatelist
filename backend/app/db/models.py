@@ -74,7 +74,12 @@ class CollectionStamp(Base):
     __tablename__ = "collection_stamps"
     id = Column(Integer, primary_key=True)
     album_id = Column(Integer, ForeignKey("albums.id"), nullable=False)
-    catalog_stamp_id = Column(Integer, ForeignKey("catalog_stamps.id"), nullable=False)
+    catalog_stamp_id = Column(Integer, ForeignKey("catalog_stamps.id"), nullable=True)
+    title = Column(String)
+    series = Column(String)
+    year_issued = Column(Integer)
+    country = Column(String)
+    image_url = Column(String)
     purchase_price = Column(Numeric(10,2))
     purchase_date = Column(Date)
     condition_status = Column(String)  # 'Гашеная', 'Чистая', 'С дефектом'

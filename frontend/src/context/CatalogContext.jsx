@@ -1,6 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from 'react'
-import { stamps as initialStamps } from '../data/catalogData'
 import defaultStamp from '../assets/default-stamp.png'
 import {
   createCatalogStamp,
@@ -26,8 +25,6 @@ const normalizeStamp = (stamp, index) => {
   }
 }
 
-const normalizedInitialStamps = initialStamps.map((stamp, idx) => normalizeStamp(stamp, idx))
-
 const CatalogContext = createContext(null)
 
 export const useCatalog = () => {
@@ -37,7 +34,7 @@ export const useCatalog = () => {
 }
 
 export const CatalogProvider = ({ children }) => {
-  const [stamps, setStamps] = useState(() => normalizedInitialStamps)
+  const [stamps, setStamps] = useState([])
 
   useEffect(() => {
     let active = true
@@ -45,11 +42,11 @@ export const CatalogProvider = ({ children }) => {
     const loadCatalog = async () => {
       try {
         const remoteStamps = await getCatalogStamps()
-        if (active && remoteStamps.length > 0) {
-          setStamps(prev => mergeById(remoteStamps.map(mapCatalogStamp), prev))
+        if (active) {
+          setStamps(remoteStamps.map(mapCatalogStamp))
         }
       } catch {
-        // keep demo data when the backend is unavailable
+        // keep the current in-memory state if the backend is unavailable
       }
     }
 

@@ -8,6 +8,23 @@ from typing import List
 
 router = APIRouter(prefix="/public", tags=["public"])
 
+
+def build_collection_stamp_out(collection_stamp: CollectionStamp, catalog_stamp: CatalogStamp | None):
+    return CollectionStampOut(
+        id=collection_stamp.id,
+        catalog_stamp=CatalogStampOut.model_validate(catalog_stamp, from_attributes=True) if catalog_stamp else None,
+        catalog_stamp_id=collection_stamp.catalog_stamp_id,
+        title=collection_stamp.title or (catalog_stamp.name_code if catalog_stamp else None),
+        series=collection_stamp.series or (catalog_stamp.theme_series if catalog_stamp else None),
+        year_issued=collection_stamp.year_issued or (catalog_stamp.year_issued if catalog_stamp else None),
+        country=collection_stamp.country or (catalog_stamp.country if catalog_stamp else None),
+        image_url=collection_stamp.image_url or (catalog_stamp.image_url if catalog_stamp else None),
+        purchase_price=collection_stamp.purchase_price,
+        purchase_date=collection_stamp.purchase_date,
+        condition_status=collection_stamp.condition_status,
+        custom_notes=collection_stamp.custom_notes,
+    )
+
 @router.get("/albums", response_model=list[PublicAlbumOut])
 async def list_public_albums(
     search: str = Query(None),
@@ -44,15 +61,8 @@ async def list_public_albums(
         stamps = stamps_result.scalars().all()
         stamps_out = []
         for cs in stamps:
-            cat = await cs.awaitable_attrs.catalog_stamp
-            stamps_out.append(CollectionStampOut(
-                id=cs.id,
-                catalog_stamp=CatalogStampOut.model_validate(cat, from_attributes=True),
-                purchase_price=cs.purchase_price,
-                purchase_date=cs.purchase_date,
-                condition_status=cs.condition_status,
-                custom_notes=cs.custom_notes
-            ))
+            cat = await cs.awaitable_attrs.catalog_stamp if cs.catalog_stamp_id else None
+            stamps_out.append(build_collection_stamp_out(cs, cat))
         out.append(PublicAlbumOut(
             id=a.id,
             title=a.title,

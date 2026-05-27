@@ -1,12 +1,10 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from 'react'
-import { albums as initialAlbums } from '../data/myCollectionData'
 import { useAuth } from '../components/auth/AuthContext'
 import defaultStamp from '../assets/default-stamp.png'
 import {
   addStampToAlbum as addStampToAlbumRequest,
   createAlbum as createAlbumRequest,
-  createCatalogStamp,
   deleteAlbum as deleteAlbumRequest,
   deleteCollectionStamp,
   getMyAlbums,
@@ -14,9 +12,7 @@ import {
   mapCollectionStamp,
   mapFrontendStampToCatalogPayload,
   mapFrontendStampToCollectionPayload,
-  mergeById,
   updateAlbum as updateAlbumRequest,
-  updateCatalogStamp,
   updateCollectionStamp,
 } from '../services/api'
 
@@ -30,7 +26,7 @@ export const useCollection = () => {
 
 export const CollectionProvider = ({ children }) => {
   const { user, updateUserStats } = useAuth()
-  const [albums, setAlbums] = useState(initialAlbums)
+  const [albums, setAlbums] = useState([])
   const userId = user?.email || null
 
   // Обновление статистики пользователя при изменении альбомов
@@ -50,11 +46,11 @@ export const CollectionProvider = ({ children }) => {
 
       try {
         const remoteAlbums = await getMyAlbums()
-        if (active && remoteAlbums.length > 0) {
-          setAlbums(prev => mergeById(remoteAlbums, prev))
+        if (active) {
+          setAlbums(remoteAlbums)
         }
       } catch {
-        // fallback to demo data
+        // keep current in-memory state if the backend is unavailable
       }
     }
 
@@ -187,15 +183,8 @@ export const CollectionProvider = ({ children }) => {
 
     try {
       if (!String(albumId).startsWith('my-')) {
-        let catalogStampId = stamp.catalogStampId || stamp.id
-        if (!catalogStampId || String(catalogStampId).startsWith('stamp-')) {
-          const createdCatalogStamp = await createCatalogStamp(mapFrontendStampToCatalogPayload(stamp))
-          catalogStampId = createdCatalogStamp.id
-        }
-
         const remoteStamp = await addStampToAlbumRequest(albumId, {
-          ...mapFrontendStampToCollectionPayload({ ...stamp, catalogStampId }),
-          catalog_stamp_id: catalogStampId,
+          ...mapFrontendStampToCollectionPayload(stamp),
         })
         const normalizedRemoteStamp = mapCollectionStamp(remoteStamp)
 
@@ -246,9 +235,6 @@ export const CollectionProvider = ({ children }) => {
 
     try {
       if (!String(albumId).startsWith('my-')) {
-        if (catalogStampId) {
-          await updateCatalogStamp(catalogStampId, mapFrontendStampToCatalogPayload(updatedStamp))
-        }
         if (collectionStampId) {
           await updateCollectionStamp(albumId, collectionStampId, mapFrontendStampToCollectionPayload(updatedStamp))
         }
