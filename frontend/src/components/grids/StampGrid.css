@@ -1,0 +1,17 @@
+.stamp-grid-wrapper {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+}
+
+.stamp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 216px);
+  padding-top: 5px;
+  gap: 23px;
+  width: 100%;
+  box-sizing: border-box;
+
+}

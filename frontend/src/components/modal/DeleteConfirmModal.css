@@ -1,0 +1,61 @@
+.delete-confirm-modal .ant-modal-content {
+  border-radius: 24px;
+  background: var(--color-surface);
+  padding: 0;
+}
+
+.delete-confirm-modal .ant-modal-body {
+  padding: 32px 24px;
+  text-align: center;
+}
+
+.delete-confirm-modal__icon {
+  font-size: 48px;
+  color: var(--color-error);
+  margin-bottom: 16px;
+}
+
+.delete-confirm-modal__icon .material-symbols-outlined {
+  font-size: 48px;
+}
+
+.delete-confirm-modal__title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 28px;
+  margin-bottom: 12px;
+  color: var(--color-text);
+}
+
+.delete-confirm-modal__message {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-muted);
+  margin-bottom: 28px;
+  word-break: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.delete-confirm-modal__actions {
+  display: flex;
+  justify-content: center;
+}
+
+.delete-confirm-modal__submit {
+  border-radius: 12px;
+  height: 44px;
+  padding: 0 24px;
+  color: var(--color-surface);
+  background: var(--color-error) !important;
+  border-color: var(--color-error) !important;
+  font-weight: 500;
+  width: 100%;
+}
+
+.delete-confirm-modal__submit:hover {
+  background: var(--color-error-light) !important;
+  border-color: var(--color-error-light) !important;
+  color: var(--color-surface) !important;
+}
