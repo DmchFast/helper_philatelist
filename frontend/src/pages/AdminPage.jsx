@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Button, Tabs, Typography } from 'antd'
+import { useAuth } from '../components/auth/AuthContext'
 import Sidebar from '../components/bars/Sidebar'
 import HeaderBar from '../components/bars/HeaderBar'
 import AdminStampsTable from '../components/tables/AdminStampsTable'
@@ -18,6 +19,7 @@ import './AdminPage.css'
 const { Title } = Typography
 
 function AdminPage() {
+  const { user: currentUser } = useAuth()
   const { stamps, addStamp, updateStamp, deleteStamp } = useCatalog()
   const { users, updateUserRole, deleteUser } = useUsers()
 
@@ -56,6 +58,7 @@ function AdminPage() {
 
   const filteredUsers = useMemo(() => {
     return users.filter((user) => {
+      if (currentUser?.email && user.email === currentUser.email) return false
       const matchesSearch = [user.name, user.email, user.roleLabel || user.role]
         .join(' ')
         .toLowerCase()
@@ -63,7 +66,7 @@ function AdminPage() {
       const matchesRole = roleFilter === 'Все роли' || user.role === roleFilter
       return matchesSearch && matchesRole
     })
-  }, [searchTerm, roleFilter, users])
+  }, [currentUser?.email, searchTerm, roleFilter, users])
 
   const handleCreateStamp = (newStamp) => {
     addStamp(newStamp)

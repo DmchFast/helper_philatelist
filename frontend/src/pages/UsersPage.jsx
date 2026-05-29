@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Typography } from 'antd'
+import { useAuth } from '../components/auth/AuthContext'
 import Sidebar from '../components/bars/Sidebar'
 import HeaderBar from '../components/bars/HeaderBar'
 import SingleFilter from '../components/filters/SingleFilter'
@@ -14,6 +15,7 @@ import './CatalogPage.css'
 const { Title } = Typography
 
 function UsersPage() {
+  const { user: currentUser } = useAuth()
   const { users } = useUsers()
   const [searchTerm, setSearchTerm] = useState('')
   const [roleFilter, setRoleFilter] = useState('Все роли')
@@ -23,6 +25,7 @@ function UsersPage() {
     const normalizedSearch = searchTerm.trim().toLowerCase()
 
     return users.filter((user) => {
+      if (currentUser?.email && user.email === currentUser.email) return false
       const matchesRole = roleFilter === 'Все роли' || user.role === roleFilter
       const matchesSearch =
         user.name.toLowerCase().includes(normalizedSearch) ||
@@ -30,7 +33,7 @@ function UsersPage() {
 
       return matchesRole && matchesSearch
     })
-  }, [roleFilter, searchTerm, users])
+  }, [currentUser?.email, roleFilter, searchTerm, users])
 
   return (
     <div className="users-page">

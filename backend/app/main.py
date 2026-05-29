@@ -1,13 +1,19 @@
 import json
+import logging
+import time
 from pathlib import Path
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import select, text
 from app.core.database import engine, Base
 from app.db.models import Role, CatalogStamp
 from app.routers import auth, users, catalog, albums, public, categories
+
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logger = logging.getLogger("api_logger")
 
 
 def _load_catalog_seed() -> list[dict]:
@@ -95,6 +101,24 @@ async def _sync_collection_stamp_schema(conn):
     await conn.execute(text("ALTER TABLE collection_stamps ADD COLUMN IF NOT EXISTS image_url VARCHAR"))
 
 
+async def log_requests(request: Request, call_next):
+    start_time = time.time()
+    response = await call_next(request)
+    process_time = time.time() - start_time
+
+    client_host = request.client.host if request.client else "unknown"
+    logger.info(
+        "IP: %s | Method: %s | URL: %s | Status: %s | Duration: %.4fs",
+        client_host,
+        request.method,
+        request.url.path,
+        response.status_code,
+        process_time,
+    )
+
+    return response
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
@@ -111,6 +135,8 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="Philatelist Handbook API", lifespan=lifespan)
+
+app.middleware("http")(log_requests)
 
 # CORS для фронтенда (React)
 app.add_middleware(

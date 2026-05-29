@@ -107,11 +107,11 @@
   cursor: pointer;
   font: inherit;
   color: inherit;
-  transition: opacity 0.2s;
+  transition: color 0.2s ease;
 }
 
 .my-album-card__visibility-btn:hover {
-  opacity: 0.5;
+  color: var(--color-muted);
 }
 
 .my-album-card__visibility-btn .material-symbols-outlined {

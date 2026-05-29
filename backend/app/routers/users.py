@@ -84,9 +84,10 @@ async def get_all_users(
     search: str = Query(None),
     role: str = Query(None),
     db: AsyncSession = Depends(get_db),
-    _=Depends(get_current_admin_user)
+    current_user=Depends(get_current_admin_user)
 ):
     query = select(User)
+    query = query.where(User.id != current_user.id)
     if role and role != "Все роли":
         role_obj = await db.execute(select(Role).where(Role.role_name == role))
         role_id = role_obj.scalar_one_or_none()
