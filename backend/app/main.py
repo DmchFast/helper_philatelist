@@ -1,31 +1,19 @@
 import json
+import logging
+import time
 from pathlib import Path
+from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy import select
+from sqlalchemy import select, text
 from app.core.database import engine, Base
 from app.db.models import Role, CatalogStamp
 from app.routers import auth, users, catalog, albums, public, categories
 
-app = FastAPI(title="Philatelist Handbook API")
 
-# CORS для фронтенда (React)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-app.include_router(auth.router)
-app.include_router(users.router)
-app.include_router(users.public_router)
-app.include_router(catalog.router)
-app.include_router(albums.router)
-app.include_router(public.router)
-app.include_router(categories.router)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logger = logging.getLogger("api_logger")
 
 
 def _load_catalog_seed() -> list[dict]:
@@ -85,14 +73,84 @@ async def _sync_catalog_seed(conn):
             CatalogStamp.__table__.update().where(CatalogStamp.id == stamp_id).values(**values)
         )
 
-@app.on_event("startup")
-async def init_db():
+    # Seed uses explicit IDs, so Postgres sequence must be aligned to MAX(id)
+    # to avoid duplicate key errors on subsequent inserts without explicit ID.
+    if conn.dialect.name == "postgresql":
+        await conn.execute(
+            text(
+                """
+                SELECT setval(
+                    pg_get_serial_sequence('catalog_stamps', 'id'),
+                    COALESCE((SELECT MAX(id) FROM catalog_stamps), 1),
+                    true
+                )
+                """
+            )
+        )
+
+
+async def _sync_collection_stamp_schema(conn):
+    if conn.dialect.name != "postgresql":
+        return
+
+    await conn.execute(text("ALTER TABLE collection_stamps ALTER COLUMN catalog_stamp_id DROP NOT NULL"))
+    await conn.execute(text("ALTER TABLE collection_stamps ADD COLUMN IF NOT EXISTS title VARCHAR"))
+    await conn.execute(text("ALTER TABLE collection_stamps ADD COLUMN IF NOT EXISTS series VARCHAR"))
+    await conn.execute(text("ALTER TABLE collection_stamps ADD COLUMN IF NOT EXISTS year_issued INTEGER"))
+    await conn.execute(text("ALTER TABLE collection_stamps ADD COLUMN IF NOT EXISTS country VARCHAR"))
+    await conn.execute(text("ALTER TABLE collection_stamps ADD COLUMN IF NOT EXISTS image_url VARCHAR"))
+
+
+async def log_requests(request: Request, call_next):
+    start_time = time.time()
+    response = await call_next(request)
+    process_time = time.time() - start_time
+
+    client_host = request.client.host if request.client else "unknown"
+    logger.info(
+        "IP: %s | Method: %s | URL: %s | Status: %s | Duration: %.4fs",
+        client_host,
+        request.method,
+        request.url.path,
+        response.status_code,
+        process_time,
+    )
+
+    return response
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        await _sync_collection_stamp_schema(conn)
         result = await conn.execute(select(Role))
         if not result.scalars().first():
             await conn.execute(
                 Role.__table__.insert().values([{"role_name": "user"}, {"role_name": "admin"}])
             )
-
         await _sync_catalog_seed(conn)
+    yield
+
+
+app = FastAPI(title="Philatelist Handbook API", lifespan=lifespan)
+
+app.middleware("http")(log_requests)
+
+# CORS для фронтенда (React)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(auth.router)
+app.include_router(users.router)
+app.include_router(users.public_router)
+app.include_router(catalog.router)
+app.include_router(albums.router)
+app.include_router(public.router)
+app.include_router(categories.router)
