@@ -39,8 +39,23 @@
     width: 100%;
     flex-wrap: wrap;
   }
-
   .two-filter {
     width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .two-filters {
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding: 12px;
+  }
+  .two-filter {
+    min-width: 0;
+    flex: 1;
+  }
+  .two-filter .ant-select-selection-item,
+  .two-filter .ant-select-selection-placeholder {
+    font-size: 12px;
   }
 }

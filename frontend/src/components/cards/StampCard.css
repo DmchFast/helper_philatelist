@@ -100,3 +100,11 @@
     width: 100%;
   }
 }
+
+@media (max-width: 640px) {
+  .stamp-card {
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+}

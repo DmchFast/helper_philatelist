@@ -140,3 +140,86 @@
   border-color: var(--color-accent);
   color: var(--color-on-dark);
 }
+
+@media (max-width: 900px) {
+  .admin-stamps__head {
+    display: none;
+  }
+
+  .admin-stamps__row {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 20px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-light);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    min-width: auto;
+    gap: 16px;
+  }
+
+  .admin-stamps__cell {
+    display: block;
+    margin-bottom: 0;
+  }
+
+  .admin-stamps__cell--stamp {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    width: 100%;
+  }
+  .admin-stamps__thumb {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+  }
+  .admin-stamps__thumb img {
+    width: 70px;
+    height: 70px;
+  }
+  .admin-stamps__name {
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+  .admin-stamps__meta {
+    font-size: 12px;
+  }
+
+  .admin-stamps__cell:nth-child(3) {
+    display: none;
+  }
+
+  .admin-stamps__cell:nth-child(2),
+  .admin-stamps__cell:nth-child(4),
+  .admin-stamps__cell.admin-stamps__actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 1 0;
+  }
+
+  .admin-stamps__actions {
+    flex-grow: 0;
+    flex-shrink: 0;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+  .admin-stamps__action {
+    width: 36px;
+    height: 36px;
+  }
+
+  .admin-stamps__cell:nth-child(2),
+  .admin-stamps__cell:nth-child(4) {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .admin-stamps__info,
+  .admin-stamps__year {
+    font-size: 16px;
+    font-weight: 500;
+  }
+}

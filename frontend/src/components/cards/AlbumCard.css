@@ -114,3 +114,11 @@
   font-size: 14px;
   color: var(--color-muted);
 }
+
+@media (max-width: 640px) {
+  .album-card {
+    width: 280px;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+}

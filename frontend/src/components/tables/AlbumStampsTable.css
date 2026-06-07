@@ -54,6 +54,7 @@
   align-items: center;
 }
 
+/* Стили для фото */
 .album-stamps__thumb {
   position: relative;
   width: 80px;
@@ -64,8 +65,8 @@
   place-items: center;
   box-shadow: var(--shadow-image);
   overflow: visible;
+  flex-shrink: 0;
 }
-
 .album-stamps__thumb img {
   width: 64px;
   height: 64px;
@@ -74,19 +75,28 @@
   display: block;
 }
 
+/* Блок с названием и серией – на десктопе скрыт, на мобильных показан */
+.album-stamps__title-block {
+  display: none;
+}
 .album-stamps__name {
   font-family: var(--font-heading);
   font-weight: 600;
   font-size: 16px;
   color: var(--color-text);
 }
+.album-stamps__meta {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-muted-2);
+}
 
+/* Стили для второй ячейки (информация) – на десктопе видна */
 .album-stamps__info {
   font-family: var(--font-body);
   font-size: 14px;
   color: var(--color-muted);
 }
-
 .album-stamps__price {
   background: var(--color-badge-bg);
   color: var(--color-badge-text);
@@ -97,17 +107,14 @@
   border-radius: 12px;
   border: 1px solid var(--color-border-light);
 }
-
 .album-stamps__year {
   font-family: var(--font-heading);
   font-weight: 600;
   color: var(--color-text);
 }
-
 .album-stamps__actions {
   gap: 8px;
 }
-
 .album-stamps__action {
   width: 32px;
   height: 32px;
@@ -121,13 +128,11 @@
   padding: 0;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
-
 .album-stamps__action:hover {
   background: var(--color-accent);
   border-color: var(--color-accent);
   color: var(--color-on-dark);
 }
-
 .album-stamps__rare-badge {
   position: absolute;
   top: -4px;
@@ -149,6 +154,7 @@
   pointer-events: none;
 }
 
+/* Планшеты */
 @media (max-width: 1100px) {
   .album-stamps__head,
   .album-stamps__row {
@@ -157,17 +163,84 @@
   }
 }
 
+/* Мобильная версия */
 @media (max-width: 900px) {
   .album-stamps__head {
     display: none;
   }
 
   .album-stamps__row {
-    grid-template-columns: 1fr;
-    gap: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 20px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-light);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    gap: 16px;
+  }
+
+  /* Первая ячейка: фото и текстовый блок в ряд */
+  .album-stamps__cell--stamp {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    width: 100%;
+  }
+  .album-stamps__title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .album-stamps__name {
+    font-size: 18px;
+    margin-bottom: 0;
+  }
+  .album-stamps__meta {
+    font-size: 12px;
+  }
+
+  /* Вторую ячейку (информация) скрываем */
+  .album-stamps__cell:nth-child(2) {
+    display: none;
+  }
+
+  /* Ячейки с ценой, годом и действиями – на одной строке */
+  .album-stamps__cell:nth-child(3),
+  .album-stamps__cell:nth-child(4),
+  .album-stamps__cell:nth-child(5) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 1 0;
+    text-align: center;
   }
 
   .album-stamps__actions {
-    justify-content: flex-start;
+    flex-grow: 0;
+    flex-shrink: 0;
+    gap: 12px;
+  }
+  .album-stamps__action {
+    width: 36px;
+    height: 36px;
+  }
+
+  .album-stamps__price {
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-accent-dark);
+    padding: 0;
+  }
+  .album-stamps__year {
+    font-size: 16px;
+  }
+
+  /* Убираем подписи data-label */
+  .album-stamps__cell::before {
+    display: none;
   }
 }

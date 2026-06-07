@@ -183,3 +183,16 @@
     gap: 0;
   }
 }
+
+@media (max-width: 480px) {
+  .ant-modal {
+    max-width: calc(100vw - 32px) !important;
+    margin: 16px !important;
+  }
+  .ant-modal-content {
+    border-radius: 20px !important;
+  }
+  .ant-modal-body {
+    padding: 20px !important;
+  }
+}

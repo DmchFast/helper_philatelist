@@ -50,9 +50,16 @@
   }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 640px) {
   .three-filtersfilters {
-    grid-template-columns: 1fr;
-    min-width: 320px;
+    width: 100%;
+    margin: 0 auto;
+    grid-template-columns: 1fr 1fr;
+    min-width: auto;
+    gap: 12px;
+    padding: 12px;
+  }
+  .three-filtersfilters__select:last-child {
+    grid-column: span 2;
   }
 }
