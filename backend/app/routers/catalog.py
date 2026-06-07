@@ -3,6 +3,7 @@ from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from app.core.database import get_db
+from app.core.catalog_seed import persist_catalog_seed
 from app.db.models import CatalogStamp, User
 from app.db.schemas import CatalogStampCreate, CatalogStampUpdate, CatalogStampOut
 from app.core.dependencies import get_current_admin_user, get_current_user
@@ -35,6 +36,7 @@ async def create_catalog_stamp(
     db.add(new_stamp)
     await db.commit()
     await db.refresh(new_stamp)
+    await persist_catalog_seed(db)
     return new_stamp
 
 @router.put("/stamps/{stamp_id}", response_model=CatalogStampOut)
@@ -51,6 +53,7 @@ async def update_catalog_stamp(
         setattr(stamp, key, value)
     await db.commit()
     await db.refresh(stamp)
+    await persist_catalog_seed(db)
     return stamp
 
 @router.delete("/stamps/{stamp_id}")
@@ -64,4 +67,5 @@ async def delete_catalog_stamp(
         raise HTTPException(404, "Stamp not found")
     await db.delete(stamp)
     await db.commit()
+    await persist_catalog_seed(db)
     return {"message": "Stamp deleted"}

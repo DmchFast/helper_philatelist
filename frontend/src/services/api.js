@@ -102,17 +102,17 @@ export const mapFrontendStampToCatalogPayload = (stamp) => ({
 
 export const mapCollectionStamp = (collectionStamp) => {
   const catalogStamp = collectionStamp.catalog_stamp || {}
-  const image = collectionStamp.image_url || catalogStamp.image_url || defaultStamp
-  const price = collectionStamp.purchase_price ?? catalogStamp.catalog_price ?? 0
+  const image = collectionStamp.image_url || collectionStamp.image || collectionStamp.photo || catalogStamp.image_url || defaultStamp
+  const price = collectionStamp.purchase_price ?? collectionStamp.price ?? catalogStamp.catalog_price ?? 0
   const title = collectionStamp.title || catalogStamp.name_code || ''
   const series = collectionStamp.series || catalogStamp.theme_series || ''
-  const year = collectionStamp.year_issued || catalogStamp.year_issued || ''
+  const year = collectionStamp.year_issued || collectionStamp.year || catalogStamp.year_issued || ''
   const country = collectionStamp.country || catalogStamp.country || ''
 
   return {
     id: collectionStamp.id,
     collectionStampId: collectionStamp.id,
-    catalogStampId: collectionStamp.catalog_stamp_id ?? catalogStamp.id ?? null,
+    catalogStampId: collectionStamp.catalog_stamp_id ?? collectionStamp.catalogStampId ?? catalogStamp.id ?? null,
     title,
     series,
     year: year ? String(year) : '',
@@ -120,10 +120,10 @@ export const mapCollectionStamp = (collectionStamp) => {
     image,
     photo: image,
     price: Number(price) || 0,
-    description: collectionStamp.custom_notes || catalogStamp.features || '',
+    description: collectionStamp.custom_notes || collectionStamp.description || catalogStamp.features || '',
     rarity: deriveRarity(price),
-    purchaseDate: collectionStamp.purchase_date || null,
-    conditionStatus: collectionStamp.condition_status || null,
+    purchaseDate: collectionStamp.purchase_date || collectionStamp.purchaseDate || null,
+    conditionStatus: collectionStamp.condition_status || collectionStamp.conditionStatus || null,
   }
 }
 
