@@ -79,7 +79,7 @@ async def list_users(
         ))
     return out
 
-@router.get("/", response_model=list[UserForAdmin])
+@router.get("/", response_model=list[UserListOut]) #UserForAdmin
 async def get_all_users(
     search: str = Query(None),
     role: str = Query(None),
@@ -118,15 +118,20 @@ async def get_all_users(
             .join(Album, CollectionStamp.album_id == Album.id)
             .where(Album.user_id == u.id)
         )
-        out.append(UserForAdmin(
+        display_name = build_display_name(profile, u.email)
+        out.append(UserListOut(
             id=u.id,
             email=u.email,
             role=role_res.role_name,
-            first_name=profile.first_name if profile else None,
-            last_name=profile.last_name if profile else None,
+            roleLabel=build_role_label(role_res.role_name),
+            name=display_name,
+            avatar=build_avatar(profile, display_name),
+            albumsCount=albums_count or 0,
+            stampsCount=stamps_count or 0,
+            city=profile.city if profile else None,
             country=profile.country if profile else None,
-            albums_count=albums_count or 0,
-            stamps_count=stamps_count or 0
+            joinedAt=u.created_at.year,
+            bio=profile.bio if profile else None
         ))
     return out
 

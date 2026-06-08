@@ -1,5 +1,37 @@
 # Справочник филателиста 🎴
 
+## Docker
+[![Docker](https://img.shields.io/badge/Docker-29.4.0-2496ED?style=for-the-badge&logo=docker&labelColor=303030&logoColor=white)](https://www.docker.com)
+
+
+Обычный запуск:
+
+```bash
+docker compose -p helper_philatelist up --build
+```
+
+Режим с автопересборкой и отслеживанием изменений:
+
+```bash
+docker compose -p helper_philatelist watch
+```
+
+При частом изменение кода, что бы не пересобирать образ вручную после каждого изменения можно использовать docker compose watch. Держать docker compose watch запущенным в отдельном терминале. В этом режиме изменения будут синхронизироваться автоматически, а пересборка нужна только при изменении файлов, влияющих на образ.
+
+После запуска:
+
+- Frontend: `http://localhost:5173`
+- Backend API: `http://localhost:7000`
+- Swagger: `http://localhost:7000/docs`
+
+Остановить:
+
+```bash
+docker compose -p helper_philatelist down
+```
+
+
+
 ## Frontend
 [![HTML5](https://img.shields.io/badge/HTML5-E34C26?style=for-the-badge&logo=html5&logoColor=E34C26&label=HTML&labelColor=303030)]()
 [![CSS3](https://img.shields.io/badge/CSS3-264DE4?style=for-the-badge&logo=css&logoColor=264DE4&label=CSS&labelColor=303030)]()

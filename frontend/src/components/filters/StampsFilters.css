@@ -99,15 +99,41 @@
   color: var(--color-on-dark);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   .stamps-filters {
-    flex-direction: column;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    align-items: start;
   }
 
-  .stamps-filters__select,
-  .stamps-filters__price-control,
+  .stamps-filters__select:first-child {
+    order: 1;
+  }
+
+  .stamps-filters__select:nth-child(2) {
+    order: 2;
+  }
+
+  .stamps-filters__price-control {
+    order: 5;
+    grid-column: span 2;
+    min-width: auto;
+    width: 100%;
+  }
+
+  .stamps-filters__select:nth-child(4) {
+    order: 3;
+  }
+
   .stamps-filters__rare-btn {
+    order: 4;
+    width: 100%;
+    text-align: center;
+  }
+
+  .stamps-filters__select {
+    min-width: auto;
     width: 100%;
   }
 }

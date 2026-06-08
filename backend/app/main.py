@@ -1,13 +1,12 @@
-import json
 import logging
 import time
-from pathlib import Path
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import select, text
 from app.core.database import engine, Base
+from app.core.catalog_seed import load_catalog_seed
 from app.db.models import Role, CatalogStamp
 from app.routers import auth, users, catalog, albums, public, categories
 
@@ -15,15 +14,8 @@ from app.routers import auth, users, catalog, albums, public, categories
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("api_logger")
 
-
-def _load_catalog_seed() -> list[dict]:
-    seed_path = Path(__file__).resolve().parent.parent / "catalog_seed.json"
-    with seed_path.open("r", encoding="utf-8") as handle:
-        return json.load(handle)
-
-
 async def _sync_catalog_seed(conn):
-    catalog_seed = _load_catalog_seed()
+    catalog_seed = load_catalog_seed()
     existing_result = await conn.execute(select(CatalogStamp.__table__))
     existing_rows = existing_result.mappings().all()
     existing_by_id = {row["id"]: row for row in existing_rows}

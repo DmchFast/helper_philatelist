@@ -9,6 +9,11 @@ const roleOptions = [
 ]
 
 function AdminUsersTable({ users = [], onRoleChange, onDeleteUser }) {
+  // Преобразование для отображения: 'user' -> 'collector'
+  const getSelectValue = (role) => role === 'user' ? 'collector' : role
+  // Преобразование для сохранения: 'collector' -> 'user'
+  const getBackendValue = (selectValue) => selectValue === 'collector' ? 'user' : selectValue
+
   return (
     <div className="admin-users">
       <div className="admin-users__scroll">
@@ -45,9 +50,9 @@ function AdminUsersTable({ users = [], onRoleChange, onDeleteUser }) {
                 <div className="admin-users__cell admin-users__cell--role">
                   <Select
                     className="admin-users__role-select"
-                    value={user.role}
+                    value={getSelectValue(user.role)}
                     options={roleOptions}
-                    onChange={(value) => onRoleChange?.(user, value)}
+                    onChange={(value) => onRoleChange?.(user, getBackendValue(value))}
                     suffixIcon={<span className="material-symbols-outlined">expand_more</span>}
                   />
                 </div>

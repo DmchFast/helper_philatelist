@@ -99,3 +99,17 @@
     width: 100%;
   }
 }
+
+@media (max-width: 640px) {
+  .my-collection-album-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .my-collection-album-title {
+    flex-wrap: wrap;
+  }
+  .add-stamp-btn,
+  .add-album-btn {
+    width: 100%;
+  }
+}

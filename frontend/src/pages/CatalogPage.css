@@ -61,3 +61,40 @@
     height: auto;
   }
 }
+
+@media (max-width: 768px) {
+  .catalog-content,
+  .albums-content,
+  .users-content,
+  .admin-content,
+  .my-collection-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    padding-bottom: 80px !important; /* было 70px – увеличил */
+  }
+
+  .catalog-main,
+  .albums-main,
+  .users-main,
+  .admin-main {
+    padding: 16px !important;
+  }
+
+  .title {
+    font-size: 24px !important;
+    line-height: 30px !important;
+  }
+
+  .subtitle {
+    font-size: 14px !important;
+  }
+
+  .catalog-title,
+  .albums-title,
+  .my-collection-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}

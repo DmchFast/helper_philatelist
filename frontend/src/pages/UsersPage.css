@@ -54,12 +54,12 @@
 }
 
 @media (max-width: 640px) {
-  .users-main {
-    padding: 20px 16px 24px;
+  .users-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
   }
-
-  .users-heading {
-    font-size: 28px !important;
-    line-height: 34px !important;
+  .users-title-row .single-filter {
+    align-self: flex-end;
   }
 }

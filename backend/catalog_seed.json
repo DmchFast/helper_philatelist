@@ -4,8 +4,8 @@
     "title": "Слава труду!",
     "series": "Трудовые будни",
     "year": "1958",
-    "country": "ГДР",
-    "image": null
+    "country": "СССР",
+    "image": "https://avatars.mds.yandex.net/i?id=c001785d0eec066e61e5d5c6f1de4e9453d80df2-5321688-images-thumbs&n=13"
   },
   {
     "id": "2",
@@ -21,23 +21,23 @@
     "series": "Первый полет",
     "year": "1980",
     "country": "СССР",
-    "image": null
+    "image": "https://avatars.mds.yandex.net/i?id=6d193d740c07d41bba63b44bed8a37527cd43d06-5858886-images-thumbs&n=13"
   },
   {
     "id": "4",
     "title": "Животные Арктики",
-    "series": "Фауна севера",
-    "year": "1980",
+    "series": "Fauna",
+    "year": "1967",
     "country": "СССР",
-    "image": null
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2-O2CP0FouYmS8hDyBaY6zG9AHe3hxLZ3IZIlXL8zgHJlZI88MwN3DqFltk2A"
   },
   {
     "id": "5",
     "title": "Шедевры Эрмитажа",
-    "series": "Русское искусство",
+    "series": "Искусство",
     "year": "1966",
     "country": "СССР",
-    "image": null
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTEhhcsMddw9fbo1WgJYKIuImVhftyAVi5jyshfcpmo8WmM7r-vtvupLMd0Bx2"
   },
   {
     "id": "6",
@@ -45,6 +45,126 @@
     "series": "Победа",
     "year": "1945",
     "country": "СССР",
-    "image": null
+    "image": "https://yandex-images.clstorage.net/rzyP55101/8b1475MWj/CC6pagvIEPgO5Q1iURqrQxdSSj7tc8teIgwOzWFXPKKcpYkGP_ByAxx6n8110o7pzM_aMO6d8O-_cS1Ioviwjm0-oF86xRyFc7QZE1Aqt2cHL2ZLzXLXL2ogUqA4NxiObFUc5-Mdm4Lo8j9wQJavqcinryC-bGiONxQpFcupvIfQpikeR1zB5IZVGMLlqkvbS_8upjnqz1dikMs0GfpVVnAVFEtfTfeeFE6r9PBGI_EMVhtQ5lCtziMkcQE7ASD_BPKdoku8veSisex67ZZHTxcfZkotNp-31riTtGXK-fb48Xh7D_HP0uxKvxj4DiOdxP6zeM64HUZHQGXJuy3YA5i68banmD18DhUo9qkGO7Mni5pCIYbHP_qk-wjpxk0i2K0Ub68B425kcl98DPIDrdhaH8AiMFlGWyjxhWc9mFMAbhnyg9BJ8HrJmJ4pMqcHSzem4vF2Qx_C9CckFd4ZJjhppFd7OXtClIqfUJxK23WAGkc8cthBSuNcGdHnDZCPhHLpoi8McXwSZdSGEc4va1tX_tLZHrc_lkiroF2K4frQpQTzQ8mP8hwOL5gsCi-BVEKTJMKoscLHRPFxzwVc1zhKjY5PzDkQ2k2Egq0OqxO7o6bC5R7jQxqwiySxFn3yhGWU01vBTx4cagOYLBZHvdTq94xCWA2eI6SNOYc1aHfMThVy3yDp8K5h8FJt-l8fTyvuVu2m6yOKlAts1R5Natz5oLurbZdybC4fUBh2vwW8ogs0VtjFZqt0AZlrnVQ7yOqxEmcUQYyevRzelUIbh18nwtLJ7iMvhswDfFkmSUrEtVzLL8GPCuTK81yQWp-1-CKzoNYMzTqjeNlRJ_2ol1yutSZXwAUEWkGc_tU6N-cXL1qWkf4j62Jkz4yNbkUmtJ3ET69Zq-LYDi8ICMpHBfxSW-DiCBFaL8hRdTfxXLM8rjEWK7AFpC7l1EaBKlvXj6e2rplmR0tmwEMUkQJw"
+  },
+  {
+    "id": "7",
+    "title": "Черный пенни",
+    "series": "Классика",
+    "year": "1840",
+    "country": "Великобритания",
+    "image": "https://yastatic.net/naydex/yandex-search/anOX6L001/0c010aRfZ/Zqp5zkX-XwFeDSNwyv1HmVEPssfHlf5miJXeivHhN1yBpwcrCHRIZgKuxp5VNvWD8VddK4bhNpn6U4UL7QlLrZ-6HWK9MpaxlqGm7DJdx-1BVprrsvyKLmA4"
+  },
+  {
+    "id": "8",
+    "title": "Перевернутая Дженни",
+    "series": "Авиапочта",
+    "year": "1918",
+    "country": "США",
+    "image": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSxs0h3NXXSsTyFDTB_toUQ9fUE5fUSwbTINaf6AlA_VAia-Jn4_D6jVr8yrsWu"
+  },
+  {
+    "id": "9",
+    "title": "Голубой Маврикий",
+    "series": "Раритеты",
+    "year": "1847",
+    "country": "Маврикий",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxEVjVJRLRsU2eMCeWLHstk-64aysOcJHetdc13-r7U3KF-CZd7wnMDI6Savev"
+  },
+  {
+    "id": "10",
+    "title": "Желтый трехскиллинговик",
+    "series": "Ошибки",
+    "year": "1855",
+    "country": "Швеция",
+    "image": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcT2fAnuTZZCFBFFXp63j1iyfc9Bq7UjLqJo5YbuM9j-3_kFKGUA0fFvK2N9xO4R"
+  },
+  {
+    "id": "11",
+    "title": "Сидящая Гельвеция",
+    "series": "Дева",
+    "year": "1862",
+    "country": "Швейцария",
+    "image": "https://yastatic.net/naydex/yandex-search/anOX8L065/0c010aRfZ/Zqp5zkX-XwFeDSNwyv1HmVEPssfHlf5f4OD76tGlCwThQhc6WCUUXm67kqJdL73esVoVL7r4apHqI1CCzF167ALnONN0_19kO0QvBZrdS41ZesfLg-SWTpSJ8pr98H81kB4Hw_C4wM_DV0tnlMcA2rAmDHKCiDOQS5A"
+  },
+  {
+    "id": "12",
+    "title": "Бычий глаз",
+    "series": "Империя",
+    "year": "1843",
+    "country": "Бразилия",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbjo6aAobVW_KGeOPj9nVJwA766PJptUytmwwYULXpuv7XnRdoJ4w0ErVmLFsx"
+  },
+  {
+    "id": "13",
+    "title": "Высадка на Луну",
+    "series": "Космос",
+    "year": "1969",
+    "country": "США",
+    "image": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRCJi7bTsCS5rMiBCrmzArXr2wN1Uqjq3ph45SlHJkNwQNRg29aKCyKFqvTa14j"
+  },
+  {
+    "id": "14",
+    "title": "Союз-Аполлон",
+    "series": "Космос",
+    "year": "1975",
+    "country": "СССР",
+    "image": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSOLWfSRlR1pTy-tbGVq7pvku3_HYueBmoSrA4v6fQhYULpYHDQVTu3HPOiiCDj"
+  },
+  {
+    "id": "15",
+    "title": "Элвис Пресли",
+    "series": "Музыка",
+    "year": "1993",
+    "country": "США",
+    "image": "https://avatars.mds.yandex.net/i?id=816a9116effc34a5763dce867a473964b59540fa-4099495-images-thumbs&n=13"
+  },
+  {
+    "id": "16",
+    "title": "Бенджамин Франклин",
+    "series": "История",
+    "year": "1847",
+    "country": "США",
+    "image": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTkeajV-8Fc20Bc80Po2JSe-cMHfFl2btyPmyNjvMS7K5v-vh9ILpggA3OFsbtk"
+  },
+  {
+    "id": "17",
+    "title": "Джордж Вашингтон",
+    "series": "История",
+    "year": "1932",
+    "country": "США",
+    "image": "https://avatars.mds.yandex.net/i?id=518b696c403d0676c06fc609041a0255899b7c8a-5338789-images-thumbs&n=13"
+  },
+  {
+    "id": "18",
+    "title": "Выставка Колумба",
+    "series": "Экспо",
+    "year": "1893",
+    "country": "США",
+    "image": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQqu_k9X8QPd6ihZIlcGG_uND-chNNzida4PwRMcrkciKwJrBCRWSS2jJRKgFW0"
+  },
+  {
+    "id": "19",
+    "title": "Проект Меркурий",
+    "series": "Космос",
+    "year": "1962",
+    "country": "США",
+    "image": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSU_PGrs1cFPSVJqxDYOFGvl6mTzBgd_-5AhmtLNz7glznjvLM4Calj1pyeh49q"
+  },
+  {
+    "id": "20",
+    "title": "Розовая Гронки",
+    "series": "Визиты",
+    "year": "1961",
+    "country": "Италия",
+    "image": "https://yastatic.net/naydex/yandex-search/anOX8L065/0c010aRfZ/Zqp5zkX-XwFeDSNwyv1HmVEPssfHlf5f4OD76tDQRwGwG0JyWXxMSmK7jpZVMvSyrUNFI6b8f9SuK1Ce6Fl7gCOjLNN003NsM0AzHZrdS41ZesfLg-SWTpSJ8pr98H81kB4Hw_C4wM_DV0tnlMcA2rAmDHKCiDOQS5A"
+  },
+  {
+    "id": "21",
+    "title": "Октябрьская революция",
+    "series": "Юбилеи",
+    "year": "1957",
+    "country": "СССР",
+    "image": "https://avatars.mds.yandex.net/i?id=a50f069d719215d14263143e41e9b64d0e31e097-5651184-images-thumbs&n=13"
   }
 ]

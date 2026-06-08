@@ -54,7 +54,7 @@ function AdminStampsTable({ stamps = [], onEditStamp, onDeleteStamp }) {
           ) : (
             stamps.map((stamp) => (
               <div key={stamp.id} className="admin-stamps__row">
-                <div className="admin-stamps__cell admin-stamps__cell--stamp">
+                <div className="admin-stamps__cell admin-stamps__cell--stamp" data-label="Марка">
                   <div className="admin-stamps__thumb">
                     <img src={stamp.image || defaultStamp} alt={stamp.title} loading="lazy" />
                   </div>
@@ -64,19 +64,19 @@ function AdminStampsTable({ stamps = [], onEditStamp, onDeleteStamp }) {
                   </div>
                 </div>
 
-                <div className="admin-stamps__cell">
+                <div className="admin-stamps__cell" data-label="Страна">
                   <Text className="admin-stamps__info">{stamp.country}</Text>
                 </div>
 
-                <div className="admin-stamps__cell">
+                <div className="admin-stamps__cell" data-label="Серия">
                   <Text className="admin-stamps__info">{stamp.series}</Text>
                 </div>
 
-                <div className="admin-stamps__cell">
+                <div className="admin-stamps__cell" data-label="Год">
                   <Text className="admin-stamps__year">{stamp.year}</Text>
                 </div>
 
-                <div className="admin-stamps__cell admin-stamps__actions">
+                <div className="admin-stamps__cell admin-stamps__actions" data-label="Действия">
                   <button
                     type="button"
                     className="admin-stamps__action"

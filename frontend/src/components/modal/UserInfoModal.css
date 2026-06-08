@@ -168,3 +168,32 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Мобильная версия модалки пользователя — убираем аватар, улучшаем отступы */
+@media (max-width: 640px) {
+  .user-info-modal__avatar {
+    display: none;
+  }
+
+  .user-info-modal__header {
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .user-info-modal__identity {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .user-info-modal__stats {
+    gap: 8px;
+  }
+
+  .user-info-modal__stat {
+    padding: 12px 8px;
+  }
+
+  .user-info-modal__detail-row {
+    padding: 12px;
+  }
+}

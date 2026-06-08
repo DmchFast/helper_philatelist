@@ -162,3 +162,28 @@
     height: auto;
   }
 }
+
+@media (max-width: 640px) {
+  .admin-section__head {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .admin-section__title-block {
+    flex: none;
+    width: 100%;
+  }
+  .admin-section__controls {
+    margin-top: 0;
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .admin-add-btn {
+    width: 100%;
+    margin-top: 8px;
+  }
+  .admin-section__controls .single-filter {
+    margin-left: auto;
+    width: auto;
+  }
+}

@@ -1,0 +1,56 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile.backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql+asyncpg://postgres:1234@host.docker.internal:5432/helper_philatelist_db}
+      SECRET_KEY: ${SECRET_KEY:-dev-secret-key-change-me}
+      ALGORITHM: ${ALGORITHM:-HS256}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-1440}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "7000:7000"
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./backend/app
+          target: /app/backend/app
+          ignore:
+            - __pycache__/
+            - "*.pyc"
+        - action: sync+restart
+          path: ./backend/run.py
+          target: /app/backend/run.py
+        - action: rebuild
+          path: ./backend/pyproject.toml
+        - action: rebuild
+          path: ./backend/catalog_seed.json
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile.frontend
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:7000}
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+    develop:
+      watch:
+        - action: rebuild
+          path: ./frontend/src
+        - action: rebuild
+          path: ./frontend/public
+        - action: rebuild
+          path: ./frontend/index.html
+        - action: rebuild
+          path: ./frontend/vite.config.js
+        - action: rebuild
+          path: ./frontend/package.json
+        - action: rebuild
+          path: ./frontend/package-lock.json
